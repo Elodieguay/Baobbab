@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+
+  api:  
+    build:
+        context: .
+        dockerfile: apps/api/Dockerfile
+    container_name: baobbab-api
+    command: pnpm start:dev
+    volumes:
+      - ./apps/api:/app/api
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: localhost
+      DB_PORT: 5435
+      DB_USER: postgres
+      DB_PASSWORD: ponpon
+      DB_NAME: baobbab_db
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: baobbab-postgres
+    ports:
+      - 5435:5432
+    expose:
+      - "5435"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ponpon
+      POSTGRES_DB: baobbab_db
+    volumes:
+      - ./services/postgres/data:/var/lib/postgresql/data
+      - ./services/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+
