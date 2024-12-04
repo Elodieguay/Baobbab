@@ -9,6 +9,8 @@ import {
 
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
+import {ApolloProvider} from "@apollo/client/index.js";
+import {client }from "./apollo";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -23,6 +25,8 @@ export const links: Route.LinksFunction = () => [
   },
   { rel: "stylesheet", href: stylesheet },
 ];
+
+
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -43,7 +47,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  
+
+  return (
+  <ApolloProvider client={client}>
+    <Outlet />
+  </ApolloProvider> 
+  )
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

@@ -13,22 +13,15 @@ import { Query } from '@nestjs/graphql';
 @Injectable()
 export class UserService {
 
- private readonly users = [
-   {id: 1, username: "test", password: "test1"},
-   {id: 2, username: "jean", password: "jean2"}, 
- ]
-
- private readonly usersRegister = [
-  {id: "1", username: "test", password: "test1", email: "test1@test.com"},
-  {id: "2", username: "jean", password: "jean2", email: "jean2@test.com"},
-]
   constructor(
     private readonly em: EntityManager
   ) {}
 
   async findOneUser(username: string): Promise<User | null> {
     return this.em.findOne(User, { username });
-}
+  }
 
-
+  async findAllUsers(): Promise<User[]>  {
+    return this.em.find(User, {});
+  }
 }

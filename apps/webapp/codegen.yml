@@ -1,0 +1,17 @@
+schema: "http://localhost:5000/graphql" 
+documents: "src/**/*.graphql"           # Chemin où tes requêtes GraphQL sont définies
+generates:
+  src/graphql/types.ts:            # Fichier de sortie
+    plugins:
+      - "typescript"    
+  src/:
+      preset: near-operation-file
+      presetConfig:
+        baseTypesPath: "graphql/types.ts"
+        extensions: .generated.tsx
+      plugins:
+      - "typescript-operations"
+      - "typescript-react-apollo"
+      config:
+        withHooks: true
+      

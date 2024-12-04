@@ -11,6 +11,7 @@ type UserDTO {
 
 type Query {
   getUserByUsername(username: String!): UserDTO!
+  getAllUsers: [UserDTO!]!
 }
 
 type Mutation {

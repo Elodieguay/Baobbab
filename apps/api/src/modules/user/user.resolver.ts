@@ -22,6 +22,12 @@ export class UserResolver {
         return user
     }
 
+    @Query(() => [UserDTO])
+    async getAllUsers(): Promise<Omit<UserDTO, 'password'>[]>{
+        const users = await this.userService.findAllUsers();
+        return users.map(({id, username, email}) => ({id, username, email}))
+    }
+
 
     
     
