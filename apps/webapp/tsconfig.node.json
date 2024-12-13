@@ -5,6 +5,11 @@
     "lib": ["ES2023"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+        "@/*": ["./src/*"],
+        "@baobbab/dtos/*":["../../packages/dtos/src/*"]
+    },  
 
     /* Bundler mode */
     "moduleResolution": "bundler",

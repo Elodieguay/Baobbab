@@ -1,19 +1,17 @@
 
+import { ApolloProvider } from '@apollo/client';
 import './App.css'
-import Login from './components/login/Login'
-import { BrowserRouter as Router } from "react-router"
+import Router from "./router/Router";
+import { AuthProvider } from './context/Auth.context';
+import { client } from './apollo';
 function App() {
 
   return (
-
-    <Router>
-      <div>
-        <Login/>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </Router>
+    <ApolloProvider client={client}>
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
+    </ApolloProvider>
   )
 }
 

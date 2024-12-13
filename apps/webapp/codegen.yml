@@ -1,4 +1,4 @@
-schema: "http://localhost:5000/graphql" 
+schema: `http://localhost:${import.meta.env.VITE_API_PORT}/graphql`" 
 documents: "src/**/*.graphql"           # Chemin où tes requêtes GraphQL sont définies
 generates:
   src/graphql/types.ts:            # Fichier de sortie

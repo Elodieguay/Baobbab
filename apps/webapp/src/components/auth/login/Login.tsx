@@ -3,7 +3,9 @@ import { useGetAllUserQuery } from './getUser.generated'
 const Login = () => {
 
     const {data, loading, error} = useGetAllUserQuery()
-
+  console.log('data', data);
+  console.log('useGeallUserQuery', useGetAllUserQuery());
+  
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error: {error.message}</p>
 

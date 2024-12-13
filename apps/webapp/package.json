@@ -13,10 +13,12 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.10",
+    "@baobbab/dtos": "workspace:*",
     "@graphql-codegen/cli": "^5.0.3",
     "@graphql-codegen/typescript": "^4.1.2",
     "@graphql-codegen/typescript-operations": "^4.4.0",
     "@graphql-codegen/typescript-react-apollo": "^4.3.2",
+    "dotenv": "^16.4.5",
     "graphql": "^16.9.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@types/dotenv": "^8.2.3",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
