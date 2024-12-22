@@ -1,8 +1,10 @@
-import React from 'react'
+import Register from "@/components/auth/Register"
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div className="m-12">Home
+      <Register />
+    </div>
   )
 }
 

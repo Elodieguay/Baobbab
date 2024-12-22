@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "start:dev": "tsc -p tsconfig.json --watch",
+    "dev": "tsc -p tsconfig.json --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {

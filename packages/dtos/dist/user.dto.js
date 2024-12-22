@@ -1,2 +1,2 @@
-export const maximum = 500000145;
+export {};
 //# sourceMappingURL=user.dto.js.map

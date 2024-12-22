@@ -17,10 +17,5 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": true,
-    "paths": {
-      "src/*": ["apps/api/src/*"]
-    }
   },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "dist"]
 }

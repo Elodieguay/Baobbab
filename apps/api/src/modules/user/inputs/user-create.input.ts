@@ -1,18 +1,10 @@
-import { Field, ID, InputType } from "@nestjs/graphql";
+import { UserRole } from "../../auth/types/enum.types";
 
-@InputType()
-export class UserCreateInput {
-
-
-    @Field({nullable:false})
-    username!: string
-
-    @Field({nullable:false})
-    password!: string
-
-    @Field({nullable:false})
-    email!: string
-
+export interface UserCreateInput {
+    username: string;
+    password: string
+    email: string
+    role: UserRole
 
 }
 

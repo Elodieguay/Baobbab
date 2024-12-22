@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from "react";
-import { client } from "../apollo";
 import { UserRole } from "../router/enumRoute";
 
 
@@ -7,7 +6,7 @@ import { UserRole } from "../router/enumRoute";
 export type AuthContextType = {
     authToken?: string | undefined,
     role: UserRole | null,
-    setAuthToken: (token: string) => void
+    setAuthToken: (token: string, userRole: UserRole) => void
     removeAuthToken: () => void
 }
 // On Crée le contexte
@@ -15,21 +14,21 @@ const AuthContext = createContext<Partial<AuthContextType>>({})
 
 // Fournisseur du contexte
 
-export const AuthProvider = ({children}:React.ComponentProps<any>) => {
+export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
     
     const [authToken, setAuthToken] = useState<string | undefined>(localStorage.getItem('JWT_AUTH') || undefined);
     const [role, setRole] = useState<UserRole |null>(null);
-    const setToken = (token: string) => {
+    
+    const setToken = (token: string, userRole:UserRole) => {
         localStorage.setItem('JWT_AUTH', token);
         setAuthToken(token)
-        setRole(role)
+        setRole(userRole)
     }
 
     const removeToken = () => {
         localStorage.removeItem('JWT_AUTH');
         setAuthToken(undefined);
         setRole(null)
-        client.cache.reset()
     }
 
 

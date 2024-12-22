@@ -18,6 +18,7 @@ export default [
     ignores: ["dist", "node_modules"],
     plugins: {
       tsPlugin,
+      prettier: require('eslint-plugin-prettier'),
     },
     languageOptions: {
       ecmaVersion: 2021,
@@ -31,6 +32,7 @@ export default [
     rules: {
       "tsPlugin/interface-name-prefix": "off",
       "tsPlugin/explicit-function-return-type": "error",
+      "prettier/prettier": "error",
     },
   },
   // Frontend

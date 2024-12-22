@@ -1,35 +1,39 @@
-import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { UserDTO } from "@baobbab/dtos/src/user.dto";
 import { UserService } from "./user.service";
-import { UserDTO } from "./dto/user.dtos";
-import { User } from "../../entities/user.entity";
-import { UserCreateInput } from "./inputs/user-create.input";
+import { Body, Controller, Get} from "@nestjs/common";
 
-@Resolver(() => UserDTO)
-export class UserResolver {
+@Controller('user')
+export class UserController {
     constructor(
         private readonly userService: UserService
     ) {}
 
     //Récuperer un utilisateur par son nom d'utilisateur
-    @Query(() => UserDTO)
+
+    @Get('user')
     async getUserByUsername(
-        @Args('username') username: string
+        @Body('username') username: string
     ): Promise<UserDTO> {
         const user = await this.userService.findOneUser(username);
         if (!user) {
             throw new Error('User not found');
         }
-        return user
+        return {
+            ...user,
+            password: '',
+            created_at: user.createdAt,
+            updated_at: user.updatedAt
+        }
     }
 
-    @Query(() => [UserDTO])
+    @Get('users')
     async getAllUsers(): Promise<Omit<UserDTO, 'password'>[]>{
         const users = await this.userService.findAllUsers();
         console.log('users', users);
-        
-        return users.map(({id, username, email}) => ({id, username, email}))
+        return users.map(({id, username, email, role, createdAt, updatedAt}) => ({id, username, email, role, created_at: createdAt, updated_at: updatedAt}))
     }
 
+    
 
     
     

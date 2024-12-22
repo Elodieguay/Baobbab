@@ -3,8 +3,8 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const mikroOrmConfig =  defineConfig({
-    entities: ["dist/entities"],
-    entitiesTs: ["src/entities"],
+    entities: ["./dist/entities"],
+    entitiesTs: ["./src/entities"],
     dbName: 'baobbab_db',
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
@@ -12,7 +12,8 @@ const mikroOrmConfig =  defineConfig({
     password: process.env.DB_PASSWORD,
     debug: true,
     migrations: {
-        path: './migrations',
+        path: './dist/migrations',
+        pathTs: './src/migrations',
         allOrNothing: true,
         disableForeignKeys: true,
     }
