@@ -1,9 +1,9 @@
-import Register from "@/components/auth/Register"
+import Account from "../account/Account"
 
 const Home = () => {
   return (
     <div className="m-12">Home
-      <Register />
+      <Account />
     </div>
   )
 }
