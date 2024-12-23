@@ -21,20 +21,20 @@ const passwordValidation = new RegExp(
 );
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  username: z.string().min(4, {
+    message: 'Le nom doit contenir au moins 4 caractères.',
   }),
   email: z.string().email({
-    message: "Please enter a valid email address.",
+    message: "L'adresse email n'est pas valide.",
   }),
   password: z
   .string()
-  .min(8, {
-    message: "Password must be at least 8 characters.",
-  })
+  .min(8, 
+    { message: 'Le mot de passe doit contenir au moins 8 caractères.' }
+  )
   .regex(passwordValidation, {
     message:
-    "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
+    "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.",
   }),
 })
 
@@ -60,14 +60,10 @@ export default function Login() {
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
+            <FormItem         className="rounded-lg"
+>              <FormControl>
+                <Input placeholder="nom" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -78,13 +74,9 @@ export default function Login() {
         name="email"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Email</FormLabel>
             <FormControl>
-              <Input placeholder="Votre email" {...field} />
+              <Input placeholder="adresse email" {...field} />
             </FormControl>
-            <FormDescription>
-              We will never share your email.
-            </FormDescription>
             <FormMessage />
           </FormItem>
         )}
@@ -95,19 +87,16 @@ export default function Login() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="********" {...field} />
+                <Input type="password" placeholder="mot de passe" {...field} />
               </FormControl>
-              <FormDescription>
-                Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}  
         />
-        
-        <Button type="submit">Submit</Button>
+        <Button 
+        type="submit"
+        className="w-full bg-[#0b927a] rounded-xl hover:bg-[#fdcf63]">Se connecter</Button>
       </form>
     </Form>
   )
