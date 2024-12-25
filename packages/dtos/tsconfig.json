@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
+      "module": "NodeNext",
       "declaration": true,
+      "moduleResolution": "Nodenext",
       "removeComments": true,
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,

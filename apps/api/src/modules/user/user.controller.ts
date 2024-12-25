@@ -1,6 +1,7 @@
 import { UserDTO } from "@baobbab/dtos/src/user.dto";
 import { UserService } from "./user.service";
 import { Body, Controller, Get} from "@nestjs/common";
+import { UserRole } from "@baobbab/dtos";
 
 @Controller('user')
 export class UserController {
@@ -20,18 +21,20 @@ export class UserController {
         }
         return {
             ...user,
+            username: user.username || '',
             password: '',
+            role: UserRole.USER,
             created_at: user.createdAt,
-            updated_at: user.updatedAt
+            updated_at: user.updatedAt || new Date()
         }
     }
 
-    @Get('users')
-    async getAllUsers(): Promise<Omit<UserDTO, 'password'>[]>{
-        const users = await this.userService.findAllUsers();
-        console.log('users', users);
-        return users.map(({id, username, email, role, createdAt, updatedAt}) => ({id, username, email, role, created_at: createdAt, updated_at: updatedAt}))
-    }
+    // @Get('users')
+    // async getAllUsers(): Promise<Omit<UserDTO, 'password'>[]>{
+    //     const users = await this.userService.findAllUsers();
+    //     console.log('users', users);
+    //     return users.map(({id, username, email, role, createdAt, updatedAt}) => ({id, username, email, role, created_at: createdAt, updated_at: updatedAt}))
+    // }
 
     
 

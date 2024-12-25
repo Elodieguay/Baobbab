@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Login from './auth/Login';
-import { Button } from './ui/button';
+import Login from './FormLogin';
+import { Button } from '../ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,12 +8,29 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog';
-import Register from './auth/Register';
+} from '../ui/dialog';
+import Register from './FormRegister';
+import {formSchema, UserLoginDTO, UserRegisterDTO} from '@baobbab/dtos'
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+import { useLoginMutation, useRegisterMutation } from '@/hooks/useAuthMutation';
+
+export type FormSchemaType = z.infer<typeof formSchema>;
 
 const Modal = () => {
-
   const [isRegister, setIsRegister] = useState(false)
+
+  const {mutate: registerMutate} = useRegisterMutation()
+  const {mutate: loginMutate} = useLoginMutation()
+
+  const userRegisterDTO = ( userRegister: UserRegisterDTO) => {
+    registerMutate(userRegister)
+  }
+  const userLoginDTO = ( userLogin: UserLoginDTO) => {
+    loginMutate(userLogin)
+  }
 
   const openRegister = () => {
     setIsRegister(true)
@@ -21,6 +38,17 @@ const Modal = () => {
   const openLogin = () => {
     setIsRegister(false)
   }
+
+const form = useForm<z.infer<typeof formSchema>>({
+  resolver: zodResolver(formSchema),
+  mode:'onChange',
+  defaultValues: {
+    username: '',
+    email: '',
+    password: '',
+  },
+});
+  
 
   return (
     <Dialog>
@@ -31,12 +59,12 @@ const Modal = () => {
           <DialogTitle className='text-center'>Connection</DialogTitle>}
         </DialogHeader>
         {isRegister ? (
-          <Register/>
+          <Register form={form} onSubmit={userRegisterDTO}/>
         ) : (
-          <Login />
+          <Login form={form} onSubmit={userLoginDTO} />
         )}
         <DialogDescription className='space-y-4'>            
-          <p className='text-center font-semibold'>ou</p>
+          <span className='text-center font-semibold'>ou</span>
           {isRegister ? (
             <Button 
             variant="outline"

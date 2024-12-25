@@ -19,7 +19,7 @@ export class AuthService {
 
   async register(
     createUserInput: UserCreateInput,
-  ): Promise<Omit<User, 'password'>> {
+  ): Promise<Omit<User, 'password'> & { access_token: string }> {
     // On vérifie si le user existe déjà
     const existingUser = await this.em.findOne(User, {
       username: createUserInput.username,
@@ -39,16 +39,25 @@ export class AuthService {
     });
     // On l'enregistre dans la base de données
     await this.em.persistAndFlush(user);
-    // On retire le mot de passe de la réponse
-    const { password: pass, ...result } = user;
 
-    return result;
+    // On génére un JWT pour l'utilisateur nouvellement créé
+    const payload = { id: user.id, email: user.email };
+    // On génère le token
+    const secret = this.configService.get('JWT_SECRET');
+    const access_token = await this.jwtService.signAsync(payload, {
+      secret,
+    });
+    return {
+      ...user,
+      access_token, 
+    };
+ 
   }
 
   async validateUser(
-  {username, password}: AuthPayloadDto
+  {email, password}: AuthPayloadDto
   ): Promise<Omit<User, 'password'>> {
-    const user = await this.em.findOne(User, { username });
+    const user = await this.em.findOne(User, { email });
     console.log('user:', user);
     
     if (!user) {
@@ -72,11 +81,11 @@ export class AuthService {
   }
 
   // Générer un JWT après validation avec les informations de l'utilisateur
-  async login({username, password}:AuthPayloadDto): Promise<LoginResponse> {
+  async login({email, password}:AuthPayloadDto): Promise<LoginResponse> {
     // On valide l'utilisateur
-    const user = await this.validateUser({username, password});
+    const user = await this.validateUser({email, password});
     // On génère le payload pour le JWT
-    const payload = { id: user.id, username: user.username };
+    const payload = { id: user.id, email: user.email };
     //on génère le token
     const secret = this.configService.get('JWT_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
@@ -85,6 +94,7 @@ export class AuthService {
     return {
       access_token,
       userId: user.id,
+      username: user.username,
     };
   }
 }

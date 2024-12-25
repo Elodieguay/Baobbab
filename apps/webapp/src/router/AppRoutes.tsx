@@ -53,7 +53,7 @@ const AppRoutes: { [key in RouteNames]: AppRoute } = {
     accessMode: RouteAccessMode.Public,
   },
   Login: {
-    path: "/login",
+    path: "/auth/register",
     accessMode: RouteAccessMode.UnAuthenticated,
     redirects:{
       authenticated: RouteNames.Home,

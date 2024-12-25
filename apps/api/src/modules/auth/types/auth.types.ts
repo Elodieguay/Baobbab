@@ -2,9 +2,10 @@
 export interface LoginResponse  {
     access_token: string
     userId: string
+    username?: string
 }
 
 export class AuthPayloadDto {
-    username: string
+    email: string
     password: string
 }

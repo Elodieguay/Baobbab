@@ -10,10 +10,12 @@ import {
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { UserCreateInput } from '../user/inputs/user-create.input';
 import { AuthPayloadDto, LoginResponse } from './types/auth.types';
-import { UserDTO } from '@baobbab/dtos/src/user.dto';
+import { UserDTO, UserRegisterDTO } from '@baobbab/dtos/src/user.dto';
 import { LocalGuard } from './guards/local.guards';
 import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
+import { UserRole } from '@baobbab/dtos';
+import { log } from 'console';
 
 @Controller('auth')
 export class AuthController {
@@ -21,16 +23,17 @@ export class AuthController {
 
   // Un user s'inscrit
   @Post('register')
-  async register(@Body() createUserInput: UserCreateInput): Promise<UserDTO> {
+  async register(@Body() createUserInput: UserRegisterDTO): Promise<UserRegisterDTO> {
     console.log('ici');
     const user = await this.authService.register(createUserInput);
     console.log('user du register du resolver', user);
 
     return {
       ...user,
+      username: user.username || '',
       password: '',
+      role: UserRole.USER,
       created_at: user.createdAt,
-      updated_at: user.updatedAt,
     };
   }
 
@@ -40,7 +43,10 @@ export class AuthController {
   async login(
     @Body() authPayloadDto: AuthPayloadDto
   ): Promise<LoginResponse> {   
+    console.log('authPayloadDto', authPayloadDto);
+    
     const user = this.authService.login(authPayloadDto);
+    logger.debug('inside AuthController login', user);
     return user
 
   }

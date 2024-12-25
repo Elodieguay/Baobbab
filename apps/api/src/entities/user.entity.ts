@@ -9,7 +9,7 @@ export class User {
     id!: string
     
     @Property({type: 'text', unique: true})
-    username!: string
+    username?: string
     
     @Property({type: 'text'})
     email!: string
@@ -24,5 +24,5 @@ export class User {
     createdAt: Date = new Date()
 
     @Property({onUpdate: () => new Date(), nullable: true})
-    updatedAt: Date = new Date()
+    updatedAt?: Date = new Date()
 }
