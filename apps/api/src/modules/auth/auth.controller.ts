@@ -46,6 +46,7 @@ export class AuthController {
     console.log('authPayloadDto', authPayloadDto);
     
     const user = this.authService.login(authPayloadDto);
+    console.log('user du login du controller', user);
     logger.debug('inside AuthController login', user);
     return user
 

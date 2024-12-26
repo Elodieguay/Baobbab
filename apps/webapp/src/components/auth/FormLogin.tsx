@@ -1,5 +1,4 @@
-import { UseFormReturn } from 'react-hook-form';
-import { z } from 'zod';
+import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -9,51 +8,56 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { formSchema, UserRegisterDTO, UserRole } from '@baobbab/dtos';
+import { FormSchemaType, UserRegisterDTO, UserRole } from '@baobbab/dtos';
+  
 
 export default function Login({
   form,
   onSubmit,
 }: {
-  form: UseFormReturn<z.infer<typeof formSchema>>;
+  form: ReturnType<typeof useForm<FormSchemaType>>;
   onSubmit: (userRegister: UserRegisterDTO) => void;
 }) {
-  const onSubmitForm = (values: z.infer<typeof formSchema>) => {
-    onSubmit({
+
+const { handleSubmit, register } = form;
+
+  
+  const onSubmitForm = (values: FormSchemaType) => {
+    console.log("Form values:", values);
+
+    const userRegister: UserRegisterDTO = { 
+   
+      username: values.username || '',
       email: values.email,
       password: values.password,
       role: UserRole.USER,
       created_at: new Date(),
-    });
-    console.warn(values);
+    };
+    console.warn(userRegister); // Debug : affiche les données envoyées
+    onSubmit(userRegister);
   };
 
   console.log('all values', form.getValues());
-
+  // console.log('handleSubmit', handleSubmit);
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmitForm)} className="space-y-8">
-        {/* <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem className="rounded-lg">
-              {' '}
-              <FormControl>
-                <Input placeholder="nom" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
+      <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-8">
+           {/* Champ hidden pour username */}
+           <input
+          type="hidden"
+          {...register("username", { value: 'defaultUsername' })} // Définir la valeur du champ username
+        />
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="adresse email" {...field} />
+                <Input 
+                placeholder="adresse email" 
+                {...field}
+                {...register("email", { required: "Email est requis" })} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -66,7 +70,12 @@ export default function Login({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input type="password" placeholder="mot de passe" {...field} />
+                <Input 
+                type="password" 
+                placeholder="mot de passe" 
+                {...field} 
+                {...register("password", { required: "Mot de passe requis" })} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

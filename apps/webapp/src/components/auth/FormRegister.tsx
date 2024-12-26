@@ -1,4 +1,4 @@
-import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,7 +20,7 @@ export default function Register({
 }) {
   function onSubmitForm(values: z.infer<typeof formSchema>) {
     onSubmit({
-      username: values.username,
+      username: values.username || '',
       email: values.email,
       password: values.password,
       role: UserRole.USER,
@@ -28,7 +28,7 @@ export default function Register({
     }),
       console.warn(values);
   }
-  console.log('all values', form.getValues());
+  // console.log('all values', form.getValues());
 
   return (
     <Form {...form}>

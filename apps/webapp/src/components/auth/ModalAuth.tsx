@@ -24,6 +24,8 @@ const Modal = () => {
 
   const {mutate: registerMutate} = useRegisterMutation()
   const {mutate: loginMutate} = useLoginMutation()
+  // console.log('loginMutate', loginMutate);
+  
 
   const userRegisterDTO = ( userRegister: UserRegisterDTO) => {
     registerMutate(userRegister)
@@ -31,6 +33,7 @@ const Modal = () => {
   const userLoginDTO = ( userLogin: UserLoginDTO) => {
     loginMutate(userLogin)
   }
+// console.log('userLoginDTO', userLoginDTO);
 
   const openRegister = () => {
     setIsRegister(true)
@@ -39,7 +42,7 @@ const Modal = () => {
     setIsRegister(false)
   }
 
-const form = useForm<z.infer<typeof formSchema>>({
+const form = useForm<FormSchemaType>({
   resolver: zodResolver(formSchema),
   mode:'onChange',
   defaultValues: {

@@ -9,8 +9,14 @@ export interface UserDTO {
     created_at: Date;
     updated_at: Date;
 }
+export interface UserCreateInput {
+    username: string;
+    password: string;
+    email: string;
+    role: UserRole;
+}
 export interface UserRegisterDTO {
-    username?: string;
+    username: string;
     email: string;
     password: string;
     role: UserRole.USER;

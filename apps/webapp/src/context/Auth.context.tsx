@@ -16,17 +16,19 @@ const AuthContext = createContext<Partial<AuthContextType>>({})
 
 export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
     
-    const [authToken, setAuthToken] = useState<string | undefined>(localStorage.getItem('JWT_AUTH') || undefined);
+    const [authToken, setAuthToken] = useState<string | undefined>(sessionStorage.getItem('JWT_AUTH') || undefined);
     const [role, setRole] = useState<UserRole |null>(null);
     
     const setToken = (token: string, userRole:UserRole) => {
-        localStorage.setItem('JWT_AUTH', token);
+        sessionStorage.setItem('JWT_AUTH', token);
+        sessionStorage.setItem('ROLE', userRole)
         setAuthToken(token)
         setRole(userRole)
     }
 
     const removeToken = () => {
-        localStorage.removeItem('JWT_AUTH');
+        sessionStorage.removeItem('JWT_AUTH');
+        sessionStorage.removeItem('ROLE');
         setAuthToken(undefined);
         setRole(null)
     }

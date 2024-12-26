@@ -39,7 +39,12 @@ export async function registerUser(createUser: UserRegisterDTO) : Promise<UserRe
   }
 }
 
+// la fonction permet de connecter un utilisateur
 export async function loginUser(loginUser: UserLoginDTO): Promise<UserLoginDTO> {
+  console.log('je suis dans loginUser');
+  
+  console.log("loginUser", loginUser);
+  
   const validationResult = registerSchema.safeParse(loginUser);
   console.log("validationResult", validationResult);
 
