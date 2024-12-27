@@ -1,8 +1,5 @@
+const Booking = (): JSX.Element => {
+    return <div>Booking</div>;
+};
 
-const Booking = () => {
-  return (
-    <div>Booking</div>
-  )
-}
-
-export default Booking
+export default Booking;

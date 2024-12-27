@@ -1,13 +1,27 @@
 import { z } from 'zod';
 import { UserRole } from './enum';
-export interface UserDTO {
-    id: string;
+export interface RegisterResponse {
     username: string;
     email: string;
     password: string;
-    role: string;
+    role: UserRole.USER;
     created_at: Date;
-    updated_at: Date;
+    access_token: string;
+}
+export interface LoginResponse {
+    username: string;
+    email: string;
+    role: UserRole.USER;
+    access_token: string;
+}
+export interface UserDTO {
+    id: string;
+    username?: string;
+    email: string;
+    password: string;
+    role: UserRole;
+    created_at?: Date;
+    updated_at?: Date;
 }
 export interface UserCreateInput {
     username: string;
@@ -40,4 +54,14 @@ export declare const formSchema: z.ZodObject<{
     email: string;
     password: string;
     username?: string | undefined;
+}>;
+export declare const formLoginSchema: z.ZodObject<{
+    email: z.ZodString;
+    password: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    email: string;
+    password: string;
+}, {
+    email: string;
+    password: string;
 }>;

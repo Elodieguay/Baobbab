@@ -8,6 +8,7 @@ import { EntityManager } from '@mikro-orm/core';
 import { logger } from '@mikro-orm/nestjs';
 import { AuthPayloadDto, LoginResponse } from './types/auth.types';
 import * as bcrypt from 'bcrypt';
+import { RegisterResponse, UserRole } from '@baobbab/dtos';
 @Injectable()
 export class AuthService {
   constructor(
@@ -49,17 +50,17 @@ export class AuthService {
     });
     return {
       ...user,
-      access_token, 
+      access_token,
     };
- 
   }
 
-  async validateUser(
-  {email, password}: AuthPayloadDto
-  ): Promise<Omit<User, 'password'>> {
+  async validateUser({
+    email,
+    password,
+  }: AuthPayloadDto): Promise<Omit<User, 'password'>> {
     const user = await this.em.findOne(User, { email });
     console.log('user:', user);
-    
+
     if (!user) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
@@ -81,9 +82,14 @@ export class AuthService {
   }
 
   // Générer un JWT après validation avec les informations de l'utilisateur
-  async login({email, password}:AuthPayloadDto): Promise<LoginResponse> {
+  async login({
+    email,
+    password,
+  }: AuthPayloadDto): Promise<
+    Omit<User, 'password'> & { access_token: string }
+  > {
     // On valide l'utilisateur
-    const user = await this.validateUser({email, password});
+    const user = await this.validateUser({ email, password });
     // On génère le payload pour le JWT
     const payload = { id: user.id, email: user.email };
     //on génère le token
@@ -92,9 +98,8 @@ export class AuthService {
       secret,
     });
     return {
+      ...user,
       access_token,
-      userId: user.id,
-      username: user.username,
     };
   }
 }

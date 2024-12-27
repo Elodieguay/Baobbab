@@ -1,8 +1,13 @@
+import { useModal } from '@/context/Modal.context';
 
-const CourseById = () => {
-  return (
-    <div>CourseById</div>
-  )
-}
+const CourseById = (): JSX.Element => {
+    const { openModal } = useModal();
 
-export default CourseById
+    return (
+        <div>
+            <h1>Détails du cours</h1>
+            <button onClick={openModal}>Réserver un cours d'essai</button>
+        </div>
+    );
+};
+export default CourseById;

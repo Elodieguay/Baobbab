@@ -10,8 +10,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import authConfig from './modules/auth/auth.config';
 
 @Module({
-  imports: [ 
-
+  imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [ormConfig],
@@ -19,7 +18,7 @@ import authConfig from './modules/auth/auth.config';
     MikroOrmModule,
     OrmModule,
     UserModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

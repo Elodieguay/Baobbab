@@ -1,12 +1,5 @@
 import { AuthService } from './auth.service';
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { UserCreateInput } from '../user/inputs/user-create.input';
 import { AuthPayloadDto, LoginResponse } from './types/auth.types';
@@ -16,6 +9,7 @@ import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
 import { UserRole } from '@baobbab/dtos';
 import { log } from 'console';
+import { User } from 'src/entities/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +17,9 @@ export class AuthController {
 
   // Un user s'inscrit
   @Post('register')
-  async register(@Body() createUserInput: UserRegisterDTO): Promise<UserRegisterDTO> {
+  async register(
+    @Body() createUserInput: UserRegisterDTO,
+  ): Promise<UserRegisterDTO> {
     console.log('ici');
     const user = await this.authService.register(createUserInput);
     console.log('user du register du resolver', user);
@@ -41,15 +37,14 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalGuard)
   async login(
-    @Body() authPayloadDto: AuthPayloadDto
-  ): Promise<LoginResponse> {   
+    @Body() authPayloadDto: AuthPayloadDto,
+  ): Promise<Omit<UserDTO, 'password'> & { access_token: string }> {
     console.log('authPayloadDto', authPayloadDto);
-    
+
     const user = this.authService.login(authPayloadDto);
     console.log('user du login du controller', user);
     logger.debug('inside AuthController login', user);
-    return user
-
+    return user;
   }
 
   // Endpoint protégé : on verifie si l'utilisateur est authentifié // route auth/protected
@@ -61,11 +56,10 @@ export class AuthController {
 
   @Get('status')
   @UseGuards(JwtAuthGuard)
-  status(@Req() req: Request) {
+  status(@Req() req: Request): unknown {
     console.log('helloopp');
-    
-    logger.debug('inside AuthController status', req.user);
-    return req.user
 
+    logger.debug('inside AuthController status', req.user);
+    return req.user;
   }
 }

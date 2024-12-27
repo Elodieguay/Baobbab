@@ -15,13 +15,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET,
     });
-
-    
   }
-  async validate(payload: AuthPayloadDto) {
+  async validate(payload: AuthPayloadDto): Promise<typeof payload> {
     console.log('ici jwtstrategy');
     console.log('payload:', payload);
-    logger.debug('inside jwtstrategy')
+    logger.debug('inside jwtstrategy');
     return payload;
   }
 }

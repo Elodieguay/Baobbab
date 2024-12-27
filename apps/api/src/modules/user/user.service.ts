@@ -10,17 +10,14 @@ import { logger } from '@mikro-orm/nestjs';
 
 @Injectable()
 export class UserService {
-
-  constructor(
-    private readonly em: EntityManager
-  ) {}
+  constructor(private readonly em: EntityManager) {}
 
   async findOneUser(username: string): Promise<User | null> {
     return this.em.findOne(User, { username });
   }
 
-  async findAllUsers(): Promise<User[]>  {
-    logger.debug(this.em.find(User, {}))
+  async findAllUsers(): Promise<User[]> {
+    logger.debug(this.em.find(User, {}));
     return this.em.find(User, {});
   }
 }

@@ -1,17 +1,12 @@
-import Register from "../../components/auth/FormRegister"
+// import Register from '../../components/auth/FormRegister';
 
-const Account = () => {
+const Account = (): JSX.Element => {
+    return (
+        <div>
+            Account
+            {/* <Register /> */}
+        </div>
+    );
+};
 
-  
-
-  return (
-
-    <div>Account
-
-      <Register/>
-    </div>
-    
-  )
-}
-
-export default Account
+export default Account;

@@ -1,54 +1,52 @@
-import { createBrowserRouter, RouterProvider} from 'react-router'
-import AppRoutes from './AppRoutes'
-import Home from '../pages/home/Home'
-import Courses from '../pages/courses/Courses'
-import Login from '../components/auth/FormLogin'
-import Booking from '../pages/courses/Booking'
-import Dashboard from '../pages/dashboard/Dashboard'
-import Profile from '../pages/profile/Profile'
-import ProtectedRoutes from './ProtectedRoutes'
+import { createBrowserRouter, RouterProvider } from 'react-router';
+import AppRoutes from './AppRoutes';
+import Home from '../pages/home/Home';
+import Courses from '../pages/courses/Courses';
+import Booking from '../pages/courses/Booking';
+import Dashboard from '../pages/dashboard/Dashboard';
+import Profile from '../pages/profile/Profile';
+import ProtectedRoutes from './ProtectedRoutes';
+import CourseById from '@/pages/courses/CourseById';
 
 const router = createBrowserRouter([
-
     // version v7
 
     {
-      path: AppRoutes.Home.path,
-      element: <Home />,
+        path: AppRoutes.Home.path,
+        element: <Home />,
     },
     {
-      path: AppRoutes.Courses.path,
-      element: <Courses />,
+        path: AppRoutes.Courses.path,
+        element: <Courses />,
     },
     {
-      path: AppRoutes.CourseById.path,
-      element: <Courses />,
+        path: AppRoutes.CourseById.path,
+        element: <CourseById />,
     },
+    // {
+    //   path: AppRoutes.Login.path,
+    //   element: <Login />,
+    // },
     {
-      path: AppRoutes.Login.path,
-      element: <Login />,
-    },
-    {
-      element: <ProtectedRoutes />, 
+        element: <ProtectedRoutes />,
         children: [
-          {
-            path: AppRoutes.Booking.path,
-            element: <Booking />,
-          },
-          {
-            path: AppRoutes.Dashboard.path,
-            element: <Dashboard />,
-          },
-          {
-            path: AppRoutes.Profile.path,
-            element: <Profile />,
-          },
+            {
+                path: AppRoutes.Booking.path,
+                element: <Booking />,
+            },
+            {
+                path: AppRoutes.Dashboard.path,
+                element: <Dashboard />,
+            },
+            {
+                path: AppRoutes.Profile.path,
+                element: <Profile />,
+            },
         ],
-      },
- 
-])
-const Router = () => {
-  return <RouterProvider router={router} />;
+    },
+]);
+const Router = (): JSX.Element => {
+    return <RouterProvider router={router} />;
 };
 
 export default Router;

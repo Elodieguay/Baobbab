@@ -1,2 +1,2 @@
 export * from './user.dto';
-export * from './enum'
+export * from './enum';
