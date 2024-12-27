@@ -1,5 +1,5 @@
 const Navbar = (): JSX.Element => {
-    return <div>Navbar bonjour tu es où</div>;
+    return <div>Navbar bonjour tu es où le lint</div>;
 };
 
 export default Navbar;
