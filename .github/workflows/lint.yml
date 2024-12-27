@@ -2,16 +2,13 @@ name: "Lint"
 
 on:
   push:
-    branches:
-      -dev     
+    branches: ['dev']     
   pull_request:
     types: [opened, reopened]
-    branches:
-      -staging
-      -main
+    branches: [ 'staging', 'main']
   
 jobs:
-  eslint:
+  lint:
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout code
