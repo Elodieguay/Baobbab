@@ -1,4 +1,3 @@
-import { jsx } from 'react/jsx-runtime';
 import { useAuth } from '../context/Auth.context';
 import AppRoutes, { RouteAccessMode, RouteNames } from './AppRoutes';
 import { UserRole } from './enumRoute';
