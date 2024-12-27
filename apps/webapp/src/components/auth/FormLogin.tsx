@@ -8,12 +8,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-    formLoginSchema,
-    formSchema,
-    UserLoginDTO,
-    UserRole,
-} from '@baobbab/dtos';
+import { formLoginSchema, UserLoginDTO, UserRole } from '@baobbab/dtos';
 import { z } from 'zod';
 
 export default function Login({

@@ -1,10 +1,4 @@
-import React, {
-    Context,
-    createContext,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { UserRole } from '../router/enumRoute';
 
 export type AuthContextType = {
