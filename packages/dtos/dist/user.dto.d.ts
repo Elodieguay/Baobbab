@@ -81,10 +81,23 @@ export declare const formLoginSchema: z.ZodObject<{
 export type forgottenPasswordSchemaType = z.infer<typeof forgottenPasswordSchema>;
 export declare const forgottenPasswordSchema: z.ZodObject<{
     email: z.ZodString;
+    password: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     email: string;
+    password: string;
 }, {
     email: string;
+    password: string;
+}>;
+export declare const formLoginSchema: z.ZodObject<{
+    email: z.ZodString;
+    password: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    email: string;
+    password: string;
+}, {
+    email: string;
+    password: string;
 }>;
 export type resetPasswordSchemaType = z.infer<typeof resetPasswordSchema>;
 export declare const resetPasswordSchema: z.ZodObject<{

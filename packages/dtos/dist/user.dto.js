@@ -40,6 +40,27 @@ exports.forgottenPasswordSchema = zod_1.z.object({
     email: zod_1.z.string().email({
         message: "L'adresse email n'est pas valide.",
     }),
+    password: zod_1.z
+        .string()
+        .min(8, {
+        message: 'Le mot de passe doit contenir au moins 8 caractères.',
+    })
+        .regex(exports.passwordValidation, {
+        message: 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.',
+    }),
+});
+exports.formLoginSchema = zod_1.z.object({
+    email: zod_1.z.string().email({
+        message: "L'adresse email n'est pas valide.",
+    }),
+    password: zod_1.z
+        .string()
+        .min(8, {
+        message: 'Le mot de passe doit contenir au moins 8 caractères.',
+    })
+        .regex(exports.passwordValidation, {
+        message: 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.',
+    }),
 });
 exports.resetPasswordSchema = zod_1.z.object({
     password: zod_1.z

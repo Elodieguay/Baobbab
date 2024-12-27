@@ -59,16 +59,10 @@ export class UserController {
     };
   }
 
-
-    // @Get('users')
-    // async getAllUsers(): Promise<Omit<UserDTO, 'password'>[]>{
-    //     const users = await this.userService.findAllUsers();
-    //     console.log('users', users);
-    //     return users.map(({id, username, email, role, createdAt, updatedAt}) => ({id, username, email, role, created_at: createdAt, updated_at: updatedAt}))
-    // }
-
-    
-
-    
-    
+  // @Get('users')
+  // async getAllUsers(): Promise<Omit<UserDTO, 'password'>[]>{
+  //     const users = await this.userService.findAllUsers();
+  //     console.log('users', users);
+  //     return users.map(({id, username, email, role, createdAt, updatedAt}) => ({id, username, email, role, created_at: createdAt, updated_at: updatedAt}))
+  // }
 }
