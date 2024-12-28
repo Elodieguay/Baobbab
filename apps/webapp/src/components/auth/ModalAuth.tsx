@@ -100,8 +100,10 @@ const Modal = (): JSX.Element => {
 
     return (
         <Dialog>
-            <DialogTrigger>Open</DialogTrigger>
-            <DialogContent className="bg-[#faf7f0] px-10">
+            <DialogTrigger className="text-sm font-medium">
+                Je me connecte
+            </DialogTrigger>
+            <DialogContent className="bg-[#faf7f0] px-10 font-normal ">
                 <DialogHeader>
                     {isRegister ? (
                         <DialogTitle className="text-center">
@@ -118,8 +120,10 @@ const Modal = (): JSX.Element => {
                 ) : (
                     <Login form={formLogin} onSubmit={userLoginDTO} />
                 )}
-                <DialogDescription className="space-y-4">
-                    <span className="text-center font-semibold">ou</span>
+                <DialogDescription className="space-y-4 flex flex-col ">
+                    <span className="text-center justify-center font-semibold">
+                        ou
+                    </span>
                     {isRegister ? (
                         <Button
                             variant="outline"
@@ -137,6 +141,14 @@ const Modal = (): JSX.Element => {
                             Créer un compte
                         </Button>
                     )}
+                    <span className="font-bold">
+                        <Button
+                            variant="outline"
+                            className="rounded-xl w-full bg-[#ffcd00] text-base"
+                        >
+                            Je suis une association
+                        </Button>
+                    </span>
                 </DialogDescription>
             </DialogContent>
         </Dialog>

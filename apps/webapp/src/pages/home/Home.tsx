@@ -1,9 +1,11 @@
-import Modal from "@/components/auth/ModalAuth"
+import Navbar from '@/components/navbar.tsx/Navbar';
 
 const Home = (): JSX.Element => {
     return (
-        <div className="m-12">
-            <Modal />
+        <div className="w-full h-full m-0">
+            <div>
+                <Navbar />
+            </div>
         </div>
     );
 };
