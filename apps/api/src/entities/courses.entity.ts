@@ -1,11 +1,7 @@
-import {
-  Entity,
-  ManyToOne,
-  OneToOne,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { Categories } from './categories.entity';
+import { Organisation } from './organisation.entity';
+import { Point } from '@baobbab/dtos';
 
 @Entity()
 export class Courses {
@@ -19,7 +15,7 @@ export class Courses {
   description: string | null = null;
 
   @Property({ type: 'text', nullable: true })
-  image!: string;
+  image: string;
 
   @Property({ type: 'text', nullable: true })
   startDate: Date | null = null;
@@ -39,6 +35,12 @@ export class Courses {
   @Property({ type: 'text', nullable: true })
   place: string | null = null;
 
+  @Property({ type: 'json', nullable: true })
+  position: Point | null = null;
+
   @ManyToOne(() => Categories)
   category: Categories;
+
+  @ManyToOne(() => Organisation)
+  organisation: Organisation;
 }

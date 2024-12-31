@@ -146,7 +146,7 @@ const Modal = (): JSX.Element => {
                             variant="outline"
                             className="rounded-xl w-full bg-[#ffcd00] text-base"
                         >
-                            Je suis une association
+                            Je suis une Organisation
                         </Button>
                     </span>
                 </DialogDescription>

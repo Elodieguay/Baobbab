@@ -34,7 +34,14 @@ export default [
         },
         rules: {
             '@typescript-eslint/interface-name-prefix': 'off',
-            '@typescript-eslint/explicit-function-return-type': 'error',
+            '@typescript-eslint/explicit-function-return-type': [
+                "error",
+                {
+                    "allowExpressions": true, 
+                    "allowTypedFunctionExpressions": true, 
+                    "allowHigherOrderFunctions": true
+                }
+            ],
             '@typescript-eslint/no-unused-vars': 'off',
             'prettier/prettier': 'error',
             'no-unused-vars': 'off',

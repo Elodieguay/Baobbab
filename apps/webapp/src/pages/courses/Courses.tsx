@@ -1,12 +1,13 @@
-import { useModal } from '@/context/Modal.context';
+import Navbar from '@/components/navbar.tsx/Navbar';
+import { Outlet } from 'react-router';
 
 const Courses = (): JSX.Element => {
-    const { openModal } = useModal();
-
+    //  const {city} = useParams()
     return (
         <div>
-            <h1>Détails du cours</h1>
-            <button onClick={openModal}>Réserver un cours d'essai</button>
+            <Navbar />
+
+            <Outlet />
         </div>
     );
 };

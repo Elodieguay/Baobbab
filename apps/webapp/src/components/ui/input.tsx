@@ -1,19 +1,29 @@
 import * as React from 'react';
 
 import { cn } from '@/utils/utils';
+interface InputProps extends React.ComponentProps<'input'> {
+    icon?: React.ReactNode;
+}
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
-    ({ className, type, ...props }, ref) => {
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+    ({ className, type, icon, ...props }, ref) => {
         return (
-            <input
-                type={type}
-                className={cn(
-                    'flex h-10 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-base ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-neutral-950 placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:file:text-neutral-50 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-300',
-                    className
+            <div className="flex items-center border border-gray-800 rounded-xl bg-transparent px-3 py-2">
+                {icon && (
+                    <div className="mr-2 text-neutral-500 dark:text-neutral-400 w-1/4">
+                        {icon}
+                    </div>
                 )}
-                ref={ref}
-                {...props}
-            />
+                <input
+                    type={type}
+                    className={cn(
+                        'flex h-10 w-full rounded-xl border outline-none border-neutral-200 bg-white px-3 py-2  ring-offset-white file:border-0 file:bg-transparent file:font-medium file:text-neutral-950 placeholder:text-neutral-500   disabled:cursor-not-allowed disabled:opacity-50  dark:file:text-neutral-50 dark:placeholder:text-neutral-400 ',
+                        className
+                    )}
+                    ref={ref}
+                    {...props}
+                />
+            </div>
         );
     }
 );

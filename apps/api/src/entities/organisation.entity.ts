@@ -1,7 +1,14 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  OneToMany,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
+import { Courses } from './courses.entity';
 
 @Entity()
-export class Association {
+export class Organisation {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id!: string;
 
@@ -12,7 +19,7 @@ export class Association {
   siret!: number;
 
   @Property({ type: 'varchar' })
-  phone!: number;
+  phone!: string;
 
   @Property({ type: 'text' })
   address!: string;
@@ -22,4 +29,7 @@ export class Association {
 
   @Property({ type: 'text' })
   password!: string;
+
+  @OneToMany(() => Courses, (course) => course.organisation)
+  courses: Courses[];
 }

@@ -8,6 +8,14 @@ export default {
   ],
   theme: {
   	extend: {
+      backgroundImage:{
+        'home-svg':"url('/src/assets/baobbab_home.svg')",
+        'home-img':"url('/src/assets/bhome.png')"
+      },
+      fontFamily:{
+        sketch: ['Cabin Sketch', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif']
+      }
   		
   	}
   },
