@@ -1,10 +1,4 @@
-import {
-  Entity,
-  ManyToOne,
-  OneToOne,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { Categories } from './categories.entity';
 import { Organisation } from './organisation.entity';
 import { Booking } from './booking.entity';
@@ -48,6 +42,9 @@ export class Courses {
     cascade: [Cascade.REMOVE],
   })
   schedule = new Collection<Schedule>(this);
+
+  @Property({ type: 'json', nullable: true })
+  position: Point | null = null;
 
   @ManyToOne(() => Categories)
   category: Categories;

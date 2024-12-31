@@ -2,7 +2,8 @@ export enum RouteNames {
     // Public routes
     Home = 'Home',
     Courses = 'Courses',
-    CourseById = 'CourseById',
+    // CourseById = 'CourseById',
+    // CourseByCity ='CourseByCity',
     // Login = "Login",
     Register = 'Register',
 
@@ -45,10 +46,14 @@ const AppRoutes: { [key in RouteNames]: AppRoute } = {
         path: '/courses',
         accessMode: RouteAccessMode.Public,
     },
-    CourseById: {
-        path: '/courses/:courseId',
-        accessMode: RouteAccessMode.Public,
-    },
+    // CourseById: {
+    //     path: '/courses/:id',
+    //     accessMode: RouteAccessMode.Public,
+    // },
+    // CourseByCity: {
+    //     path : '/courses/:city',
+    //     accessMode: RouteAccessMode.Public
+    // },
     // Login: {
     //   path: "/auth/register",
     //   accessMode: RouteAccessMode.UnAuthenticated,

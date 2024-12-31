@@ -7,6 +7,7 @@ import Dashboard from '../pages/dashboard/Dashboard';
 import Profile from '../pages/profile/Profile';
 import ProtectedRoutes from './ProtectedRoutes';
 import CourseById from '@/pages/courses/CourseById';
+import CourseByCity from '@/pages/courses/CourseByCity';
 
 const router = createBrowserRouter([
     // version v7
@@ -18,11 +19,18 @@ const router = createBrowserRouter([
     {
         path: AppRoutes.Courses.path,
         element: <Courses />,
+        children: [
+            {
+                path: ':city',
+                element: <CourseByCity />,
+            },
+            {
+                path: ':id',
+                element: <CourseById />,
+            },
+        ],
     },
-    {
-        path: AppRoutes.CourseById.path,
-        element: <CourseById />,
-    },
+
     // {
     //   path: AppRoutes.Login.path,
     //   element: <Login />,

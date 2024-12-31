@@ -22,3 +22,7 @@ export const formSchema = z.object({
                 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.',
         }),
 });
+
+export const citySchema = z.object({
+    city: z.string().min(2, 'Une ville est requise'),
+});

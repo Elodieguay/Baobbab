@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/Auth.context';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
@@ -24,10 +25,10 @@ const Profile = (): JSX.Element => {
     console.log('authToken', authToken);
 
     return (
-        <div>
+        <div className="flex flex-col justify-center items-center gap-5">
             <p>Page de votre profil</p>
             <p>Role: {role || 'Non défini'}</p>
-            <button onClick={removeAuthToken}>Se déconnecter</button>
+            <Button onClick={removeAuthToken}>Se déconnecter</Button>
         </div>
     );
 };

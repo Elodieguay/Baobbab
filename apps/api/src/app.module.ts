@@ -8,6 +8,7 @@ import { OrmModule } from './modules/orm/orm.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import authConfig from './modules/auth/auth.config';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -19,13 +20,9 @@ import authConfig from './modules/auth/auth.config';
     OrmModule,
     UserModule,
     AuthModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  constructor() {
-    // Log pour vérifier si les configurations sont correctement chargées
-    console.log('AuthConfig:', authConfig);
-  }
-}
+export class AppModule {}
