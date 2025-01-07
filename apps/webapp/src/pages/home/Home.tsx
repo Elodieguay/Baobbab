@@ -26,18 +26,18 @@ const Home = (): JSX.Element => {
     console.log('selectedCity', selectedCity);
 
     return (
-        <div className="w-full h-screen flex justify-center  ">
-            <div className="w-2/3 bg-home-img bg-opacity-90   flex flex-col gap-8 justify-center items-center font-semibold">
-                <h1 className="text-8xl text-gray-600 font-sketch ">Baobbab</h1>
-                <p className="text-2xl text-gray-600 font-poppins">
+        <div className="w-full h-screen bg-home-img bg-opacity-80 flex flex-col m-0">
+            <div className="flex items-center justify-between p-4 container mx-auto">
+                <h1 className="text-5xl text-gray-600 font-sketch">Baobbab</h1>
+                <h2 className="text-base text-gray-600 font-poppins">
+                    Se connecter
+                </h2>
+            </div>
+            <div className="flex flex-col items-center justify-center flex-grow container mx-auto">
+                <p className="text-2xl text-gray-600 font-poppins mb-4">
                     Trouve ton activité à proximité
                 </p>
-            </div>
-            <div className="flex w-1/3  bg-[#5ac1a5]    ">
-                <div className="w-full flex ">
-                    {/* <MapPin size={40} /> */}
-                    <SelectCityForm form={form} onSubmit={onSubmit} />
-                </div>
+                <SelectCityForm form={form} onSubmit={onSubmit} />
             </div>
         </div>
     );

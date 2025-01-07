@@ -48,7 +48,7 @@ const SelectCityForm = ({
                                 defaultValue={field.value}
                             >
                                 <FormControl>
-                                    <SelectTrigger className="h-14 rounded-xl text-base ">
+                                    <SelectTrigger className="h-12 rounded-xl text-base ">
                                         <SelectValue placeholder="Selectionne une ville" />
                                     </SelectTrigger>
                                 </FormControl>
@@ -64,7 +64,7 @@ const SelectCityForm = ({
                 />
                 <Button
                     type="submit"
-                    className="h-14 bg-[#0b927a] rounded-xl hover:bg-[#d6667e] text-base"
+                    className="h-12 bg-[#0b927a] rounded-xl hover:bg-[#d6667e] text-base"
                 >
                     Je me lance
                 </Button>
