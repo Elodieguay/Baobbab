@@ -14,8 +14,10 @@ const Navbar = (): JSX.Element => {
     };
 
     return (
-        <div className="w-full h-24 bg-[#0b927a] flex justify-around items-center text-white">
-            <h1 className="text-2xl font-semibold">Baobbab</h1>
+        <div className="w-full h-32  flex justify-between items-center text-gray-600 px-10 border-b-2">
+            <h1 className="text-4xl font-semibold font-sketch text-left">
+                Baobbab
+            </h1>
             <div>
                 <NavbarMenu />
             </div>

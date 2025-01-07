@@ -1,5 +1,5 @@
 import { config } from '@/config';
-import { GeocodingFeatureCollection } from '@baobbab/dtos';
+import { GeocodingFeatureCollection, Geometry, Point } from '@baobbab/dtos';
 import ky from 'ky';
 
 interface GetAddressesDTO {
@@ -24,3 +24,12 @@ export async function geocodingAdresses(
 
     return response;
 }
+
+export const getCoordinates = async (city: string): Promise<Point> => {
+    const url = `https://api-adresse.data.gouv.fr/search/?q=${city}`;
+    const response = (await ky.get(url).json()) as GeocodingFeatureCollection;
+    console.log('response in getCoordinates', response);
+
+    const coordinates = response.features[0].geometry.coordinate;
+    return { lng: coordinates[0], lat: coordinates[1] };
+};
