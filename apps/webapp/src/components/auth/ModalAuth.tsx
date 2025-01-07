@@ -23,6 +23,7 @@ import { z } from 'zod';
 
 import { useLoginMutation, useRegisterMutation } from '@/hooks/useAuthMutation';
 import { useAuth } from '@/context/Auth.context';
+import { UserRound } from 'lucide-react';
 
 export type FormSchemaType = z.infer<typeof formSchema>;
 
@@ -100,8 +101,9 @@ const Modal = (): JSX.Element => {
 
     return (
         <Dialog>
-            <DialogTrigger className="text-sm font-medium">
-                Je me connecte
+            <DialogTrigger className="flex flex-col items-center text-base font-medium">
+                <UserRound />
+                connection
             </DialogTrigger>
             <DialogContent className="bg-[#faf7f0] px-10 font-normal ">
                 <DialogHeader>
