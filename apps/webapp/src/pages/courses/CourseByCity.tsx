@@ -1,12 +1,49 @@
+import Maplibre from '@/components/map/Maplibre';
 import { useParams } from 'react-router';
+import { coursesNantes } from '@/utils/coursesGeocoding';
+import { getCoordinates } from '@/api/geocoding';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import CardsCourses from '@/components/map/CardsCourses';
 
-const CourseByCity = (): JSX.Element => {
-    const { city } = useParams();
-    console.log('city', city);
+const CourseByCity = (): JSX.Element | null => {
+    const { city } = useParams<{ city: string }>();
+    if (!city) {
+        return null;
+    }
+    const {
+        data: coordinates,
+        isLoading,
+        error,
+    } = useQuery({
+        queryKey: ['coordinates', city],
+        queryFn: () => getCoordinates(city),
+        enabled: !!city,
+    });
+
+    console.log('coordinates dans coursebycity', coordinates);
+
+    const [hoveredCardId, setHoveredCardId] = useState<number | null>(null);
 
     return (
-        <div className="flex justify-center items-center text-5xl">
-            CourseByCity
+        <div className="flex w-full h-full mt-4 fixed ">
+            <div className="w-1/2 grid grid-cols items-center justify-center px-9 gap-4 overflow-y-scroll scrollbar-none ">
+                {coursesNantes.map((item) => (
+                    <CardsCourses
+                        item={item}
+                        setHoveredCardId={setHoveredCardId}
+                    />
+                ))}
+            </div>
+            <div className="w-1/2 sticky ">
+                <Maplibre
+                    loadCoordinates={coordinates ?? null}
+                    isLoading={isLoading}
+                    error={error}
+                    data={coursesNantes}
+                    hoveredCardId={hoveredCardId}
+                />
+            </div>
         </div>
     );
 };
