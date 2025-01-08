@@ -16,6 +16,7 @@ import {
     SelectContent,
     SelectItem,
 } from '../ui/select';
+import { useCity } from '@/context/City.context';
 
 const SelectCityForm = ({
     form,
@@ -24,10 +25,13 @@ const SelectCityForm = ({
     form: UseFormReturn<z.infer<typeof citySchema>>;
     onSubmit: (data: z.infer<typeof citySchema>) => void;
 }): JSX.Element => {
+    const { setCity } = useCity();
     const onSubmitForm = (values: z.infer<typeof citySchema>): void => {
         onSubmit({
             city: values.city,
         });
+        setCity(values.city);
+
         console.log('hello');
     };
     console.log('city', form.getValues('city'));
