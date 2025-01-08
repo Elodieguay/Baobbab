@@ -8,7 +8,7 @@ interface InputProps extends React.ComponentProps<'input'> {
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, type, icon, ...props }, ref) => {
         return (
-            <div className="flex items-center border border-gray-800 rounded-xl bg-transparent px-3 py-2">
+            <div className="flex items-center rounded-xl bg-transparent ">
                 {icon && (
                     <div className="mr-2 text-neutral-500 dark:text-neutral-400 w-1/4">
                         {icon}
