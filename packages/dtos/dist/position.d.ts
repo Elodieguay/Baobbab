@@ -12,7 +12,7 @@ export interface coordinate{
 }
 export interface Geometry {
     type: Point;
-    coordinate: [number, number];
+    coordinates: [number, number];
 }
 export interface GeocodingProperties {
     label: string;
