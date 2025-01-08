@@ -5,8 +5,10 @@ import { useState } from 'react';
 import { useAuth } from '@/context/Auth.context';
 import { Link } from 'react-router';
 import { Button } from '../ui/button';
+import { useCity } from '@/context/City.context';
 
-const Navbar = ({ city }: { city: string }): JSX.Element => {
+const Navbar = (): JSX.Element => {
+    const { city } = useCity();
     const { authToken, removeAuthToken } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = (): void => {
