@@ -10,7 +10,7 @@ export default {
   	extend: {
       backgroundImage:{
         'home-svg':"url('/src/assets/baobbab_home.svg')",
-        'home-img':"url('/src/assets/bhome.png')"
+        'home-img':"url('/src/assets/images/escalade.jpg')"
       },
       fontFamily:{
         sketch: ['Cabin Sketch', 'sans-serif'],
