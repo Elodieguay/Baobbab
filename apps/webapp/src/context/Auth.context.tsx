@@ -1,18 +1,27 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { UserRole } from '../router/enumRoute';
+import { userInfo } from 'os';
 
+export type UserInformation = {
+    email: string | null;
+    username: string | null;
+};
 export type AuthContextType = {
     authToken?: string | undefined;
     role: UserRole | null;
-    setAuthToken: (token: string, userRole: UserRole) => void;
+    setAuthToken: (
+        token: string,
+        userRole: UserRole,
+        userInfo: UserInformation
+    ) => void;
     removeAuthToken: () => void;
     loading: boolean;
+    infos: UserInformation | null;
 };
 // On Crée le contexte
 const AuthContext = createContext<Partial<AuthContextType>>({});
 
 // Fournisseur du contexte
-
 export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
     children,
 }) => {
@@ -22,30 +31,40 @@ export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
     const [role, setRole] = useState<UserRole | null>(
         (sessionStorage.getItem('ROLE') as UserRole) || null
     );
+    const [infos, setInfos] = useState<UserInformation | null>(
+        sessionStorage.getItem('USER_INFO')
+            ? JSON.parse(sessionStorage.getItem('USER_INFO')!)
+            : undefined
+    );
     const [loading, setLoading] = useState<boolean>(true);
-    console.log('je suis dans le authprovider', authToken, role);
 
     useEffect(() => {
         const token = sessionStorage.getItem('JWT_AUTH');
         const storeRole = sessionStorage.getItem('ROLE');
+        const userInfo = sessionStorage.getItem('USER_INFO');
         if (token) {
-            console.log('Token in session storage', token);
-            console.log('Role in session storage', storeRole);
-
             setAuthToken(token);
             setRole(storeRole as UserRole);
+            if (userInfo) {
+                setInfos(JSON.parse(userInfo));
+            }
         }
         setLoading(false);
     }, []);
-    console.log('role du setter SetRole', role);
 
-    const setToken = (token: string, userRole: UserRole): void => {
-        console.log('setToken', token, userRole);
+    const setToken = (
+        token: string,
+        userRole: UserRole,
+        userInfo: UserInformation
+    ): void => {
+        console.log('setToken', token, userRole, userInfo);
 
         sessionStorage.setItem('JWT_AUTH', token);
         sessionStorage.setItem('ROLE', userRole);
+        sessionStorage.setItem('USER_INFO', JSON.stringify(userInfo));
         setAuthToken(token);
         setRole(userRole);
+        setInfos(userInfo);
     };
 
     const removeToken = (): void => {
@@ -53,8 +72,10 @@ export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
 
         sessionStorage.removeItem('JWT_AUTH');
         sessionStorage.removeItem('ROLE');
+        sessionStorage.removeItem('USER_INFO');
         setAuthToken(undefined);
         setRole(null);
+        setInfos(null);
     };
 
     return (
@@ -65,6 +86,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
                 setAuthToken: setToken,
                 removeAuthToken: removeToken,
                 loading,
+                infos,
             }}
         >
             {children}

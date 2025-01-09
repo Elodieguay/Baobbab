@@ -16,7 +16,7 @@ import AvatarUser from '../auth/AvatarUser';
 const Navbar = (): JSX.Element => {
     const navigate = useNavigate();
     const { city } = useCity();
-    const { authToken, removeAuthToken } = useAuth();
+    const { authToken, removeAuthToken, infos } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
     const [selectedCity, setSelectedCity] = useState<string>('');
 
@@ -36,12 +36,12 @@ const Navbar = (): JSX.Element => {
         setSelectedCity(data.city);
         navigate(`/courses/${data.city}`);
     };
+    console.log('infoUserNavbar', infos);
 
     return (
         <div className="w-full flex flex-col ">
-            <div className="w-full  flex items-center justify-between border-b px-8">
+            <div className="w-full h-16 flex items-center justify-between border-b px-8">
                 <h1 className="text-3xl font-semibold font-poppins">Baobbab</h1>
-                <AvatarUser />
                 <div className="w-1/4 flex justify-around items-center rounded-3xl border gap-2">
                     <div className="flex w-1/3 gap-3 pl-5">
                         {/* <House /> */}
@@ -62,18 +62,22 @@ const Navbar = (): JSX.Element => {
                 <div>
                     {authToken ? (
                         <div className="relative">
-                            <Smile onClick={toggleMenu} />
+                            <AvatarUser
+                                name={infos?.username ?? null}
+                                onClick={toggleMenu}
+                            />
                             {menuOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl py-1 z-20">
                                     <Link
                                         to="/profile"
-                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        className="px-4 py-2 text-gray-700 hover:bg-gray-100 text-center"
                                     >
-                                        Mon Profil
+                                        Mon Profile
                                     </Link>
                                     <Button
                                         onClick={removeAuthToken}
-                                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        className="block text-left w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-base"
+                                        variant="ghost"
                                     >
                                         Déconnexion
                                     </Button>

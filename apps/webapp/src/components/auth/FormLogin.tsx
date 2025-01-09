@@ -19,18 +19,12 @@ export default function Login({
     onSubmit: (userLogin: UserLoginDTO) => void;
 }): JSX.Element {
     function onSubmitForm(values: z.infer<typeof formLoginSchema>): void {
-        //eslint-disable-next-line @typescript-eslint/no-unused-expressions
         onSubmit({
             email: values.email,
             password: values.password,
             role: UserRole.USER,
-        }),
-            console.log('je suis là dans onSubmitForm');
-        console.log('Form values:', values);
+        });
     }
-
-    console.log('all values', form.getValues());
-    // console.log('handleSubmit', handleSubmit);
     return (
         <Form {...form}>
             <form
