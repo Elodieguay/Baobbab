@@ -11,6 +11,7 @@ import guitare from '../../assets/images/guitare.jpg';
 import chorale from '../../assets/images/chorale.jpg';
 import boxeHome from '../../assets/images/boxeHome.jpg';
 import cuisine from '../../assets/images/cuisine.png';
+import { Button } from '@/components/ui/button';
 
 const Home = (): JSX.Element => {
     const [selectedCity, setSelectedCity] = useState<string>('');
@@ -69,7 +70,15 @@ const Home = (): JSX.Element => {
                         Trouve ton activité à proximité
                     </p>
                     <div className="w-full flex ">
-                        <SelectCityForm form={form} onSubmit={onSubmit} />
+                        <SelectCityForm form={form} onSubmit={onSubmit}>
+                            <Button
+                                type="submit"
+                                className="h-full bg-[#89a4a3] rounded-none text-base"
+                                variant="ghost"
+                            >
+                                Je me lance
+                            </Button>
+                        </SelectCityForm>
                     </div>
                 </div>
             </div>

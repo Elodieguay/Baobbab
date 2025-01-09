@@ -17,22 +17,24 @@ import {
     SelectItem,
 } from '../ui/select';
 import { useCity } from '@/context/City.context';
+import { useLocation } from 'react-router';
 
 const SelectCityForm = ({
     form,
     onSubmit,
+    children,
 }: {
     form: UseFormReturn<z.infer<typeof citySchema>>;
     onSubmit: (data: z.infer<typeof citySchema>) => void;
+    children: JSX.Element;
 }): JSX.Element => {
+    const location = useLocation();
     const { setCity } = useCity();
     const onSubmitForm = (values: z.infer<typeof citySchema>): void => {
         onSubmit({
             city: values.city,
         });
         setCity(values.city);
-
-        console.log('hello');
     };
     console.log('city', form.getValues('city'));
 
@@ -42,7 +44,7 @@ const SelectCityForm = ({
                 className="w-full flex items-center justify-center "
                 onSubmit={form.handleSubmit(onSubmitForm)}
             >
-                <div className="flex items-center bg-white border-none rounded-xl h-14 shadow-sm overflow-hidden w-full max-w-lg">
+                <div className="flex items-center bg-white border-none rounded-xl h-full overflow-hidden w-full max-w-lg">
                     <FormField
                         control={form.control}
                         name="city"
@@ -54,12 +56,22 @@ const SelectCityForm = ({
                                 >
                                     <FormControl>
                                         <SelectTrigger className="h-full rounded-none text-base border-none">
-                                            <SelectValue placeholder="Selectionne une ville" />
+                                            {location.pathname === '/' ? (
+                                                <SelectValue placeholder="Selectionne une ville" />
+                                            ) : (
+                                                <SelectValue placeholder="Changer de ville" />
+                                            )}
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
                                         <SelectItem value="Nantes">
                                             Nantes
+                                        </SelectItem>
+                                        <SelectItem value="Paris">
+                                            Paris
+                                        </SelectItem>
+                                        <SelectItem value="Capdenac-Gare">
+                                            Capdenac-Gare
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -67,12 +79,7 @@ const SelectCityForm = ({
                             </FormItem>
                         )}
                     />
-                    <Button
-                        type="submit"
-                        className="h-full bg-[#89a4a3] rounded-none text-base"
-                    >
-                        Je me lance
-                    </Button>
+                    {children}
                 </div>
             </form>
         </Form>
