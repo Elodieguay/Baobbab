@@ -44,10 +44,6 @@ export async function registerUser(
 export async function loginUser(
     loginUser: UserLoginDTO
 ): Promise<RegisterResponse> {
-    console.log('je suis dans loginUser');
-
-    console.log('loginUser', loginUser);
-
     const validationResult = registerSchema.safeParse(loginUser);
     console.log('validationResult', validationResult);
 

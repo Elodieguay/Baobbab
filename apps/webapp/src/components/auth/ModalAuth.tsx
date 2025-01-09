@@ -39,12 +39,15 @@ const Modal = (): JSX.Element => {
 
         registerMutate(userRegister, {
             onSuccess: (data: RegisterResponse) => {
-                console.log('je suis dans onSuccess', data);
                 console.log('data.token', data.access_token);
                 console.log('data.role', data.role);
 
+                const { email, username } = data;
                 if (setAuthToken) {
-                    setAuthToken(data.access_token, data.role);
+                    setAuthToken(data.access_token, data.role, {
+                        email,
+                        username,
+                    });
                     console.log('setAuthToken', setAuthToken);
                 } else {
                     console.error('setAuthToken is not defined');
@@ -62,7 +65,10 @@ const Modal = (): JSX.Element => {
                 console.log('data.role de login', data.role);
 
                 if (setAuthToken) {
-                    setAuthToken(data.access_token, data.role);
+                    setAuthToken(data.access_token, data.role, {
+                        email: data.email,
+                        username: data.username,
+                    });
                     console.log('setAuthToken de login', setAuthToken);
                 } else {
                     console.error('setAuthToken is not defined');
