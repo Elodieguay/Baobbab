@@ -1,5 +1,5 @@
-import z from "zod";
-import { Status, UserRole } from "./enum";
+import z from 'zod';
+import { Status, UserRole } from './enum';
 export declare const organisationFormSchema: z.ZodObject<{
     firstname: z.ZodString;
     lastname: z.ZodString;
@@ -17,13 +17,13 @@ export declare const organisationFormSchema: z.ZodObject<{
     password: z.ZodString;
     image: z.ZodString;
 }, "strip", z.ZodTypeAny, {
+    address: string;
     firstname: string;
     lastname: string;
     organisationName: string;
     siret: number;
     phoneNumber: string;
     email: string;
-    address: string;
     bio: string;
     password: string;
     image: string;
@@ -33,13 +33,13 @@ export declare const organisationFormSchema: z.ZodObject<{
     socialMediaTwitter?: string | undefined;
     socialMediaTikTok?: string | undefined;
 }, {
+    address: string;
     firstname: string;
     lastname: string;
     organisationName: string;
     siret: number;
     phoneNumber: string;
     email: string;
-    address: string;
     bio: string;
     password: string;
     image: string;

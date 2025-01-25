@@ -16,5 +16,4 @@ var Status;
     Status["DRAFT"] = "DRAFT";
     Status["CANCELLED"] = "CANCELLED";
 })(Status || (exports.Status = Status = {}));
-;
 //# sourceMappingURL=enum.js.map

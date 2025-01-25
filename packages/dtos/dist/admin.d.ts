@@ -1,4 +1,4 @@
-import { UserRole } from "./enum";
+import { UserRole } from './enum';
 export declare class SuperAdminDTO {
     role: UserRole;
     username: string;
