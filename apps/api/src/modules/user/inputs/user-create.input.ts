@@ -1,8 +1,8 @@
-import { UserRole } from '../../auth/types/enum.types';
+import { UserRole } from '@baobbab/dtos';
 
 export interface UserCreateInput {
   username: string;
   password: string;
   email: string;
-  role: UserRole;
+  role: UserRole.USER;
 }

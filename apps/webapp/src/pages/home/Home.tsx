@@ -8,13 +8,11 @@ import SelectCityForm from '@/components/form/SelectCityForm';
 import { UserRound } from 'lucide-react';
 import yogaHome from '../../assets/images/yogaHome.jpg';
 import guitare from '../../assets/images/guitare.jpg';
-import chorale from '../../assets/images/chorale.jpg';
-import boxeHome from '../../assets/images/boxeHome.jpg';
 import cuisine from '../../assets/images/cuisine.png';
 import { Button } from '@/components/ui/button';
 
 const Home = (): JSX.Element => {
-    const [selectedCity, setSelectedCity] = useState<string>('');
+    const [_, setSelectedCity] = useState<string>('');
     const navigate = useNavigate();
     const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
 
@@ -43,7 +41,7 @@ const Home = (): JSX.Element => {
         navigate(`/courses/${data.city}`);
     };
 
-    console.log('selectedCity', selectedCity);
+    // console.log('selectedCity', selectedCity);
 
     return (
         <div
@@ -66,14 +64,14 @@ const Home = (): JSX.Element => {
                     </p>
                 </div>
                 <div className="h-full flex flex-col items-center justify-center flex-grow gap-5 ">
-                    <p className="text-xl font-poppins text-white">
+                    <p className="text-xl font-poppins text-white font-semibold">
                         Trouve ton activité à proximité
                     </p>
-                    <div className="w-full flex ">
+                    <div className="w-full flex h-14">
                         <SelectCityForm form={form} onSubmit={onSubmit}>
                             <Button
                                 type="submit"
-                                className="h-full bg-[#89a4a3] rounded-none text-base"
+                                className="h-full bg-[#01a274] rounded-none text-white text-base"
                                 variant="ghost"
                             >
                                 Je me lance

@@ -102,6 +102,11 @@ export class AuthService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
+    // Logique spécifique à l'organisation (par exemple, vérifie le statut)
+    // if (organisation && organisation.status !== Status.ACTIVE) {
+    // throw new UnauthorizedException('Organisation not active');
+    // }
+
     // Si tout est valide, on renvoie l'utilisateur sans le password
     const { password: pass, ...result } = entity;
     return result;

@@ -1,14 +1,19 @@
 import Navbar from '@/components/navbar.tsx/Navbar';
 import { Outlet } from 'react-router';
+import TestCourseById from './TestCourseById';
 
 const Courses = (): JSX.Element => {
     //  const {city} = useParams()
     return (
-        <div>
-            <Navbar />
-
-            <Outlet />
-        </div>
+        <>
+            <div>
+                <Navbar />
+                <Outlet />
+            </div>
+            <div>
+                <TestCourseById />
+            </div>
+        </>
     );
 };
 

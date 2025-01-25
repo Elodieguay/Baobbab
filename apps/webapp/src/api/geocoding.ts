@@ -20,7 +20,7 @@ export async function geocodingAdresses(
             json: { address: searchParams.address, limit: searchParams.limit },
         })
         .json()) as GeocodingFeatureCollection[];
-    console.log('response api front', response);
+    // console.log('response api front', response);
 
     return response;
 }
@@ -28,7 +28,7 @@ export async function geocodingAdresses(
 export const getCoordinates = async (city: string): Promise<Point> => {
     const url = `https://api-adresse.data.gouv.fr/search/?q=${city}`;
     const response = (await ky.get(url).json()) as GeocodingFeatureCollection;
-    console.log('response in getCoordinates', response);
+    // console.log('response in getCoordinates', response);
 
     const coordinates = response.features[0].geometry.coordinates;
 

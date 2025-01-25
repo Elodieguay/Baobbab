@@ -24,6 +24,7 @@ import { z } from 'zod';
 import { useLoginMutation, useRegisterMutation } from '@/hooks/useAuthMutation';
 import { useAuth } from '@/context/Auth.context';
 import { UserRound } from 'lucide-react';
+import { Link } from 'react-router';
 
 export type FormSchemaType = z.infer<typeof formSchema>;
 
@@ -32,15 +33,15 @@ const Modal = (): JSX.Element => {
     const [isRegister, setIsRegister] = useState(false);
     const { mutate: registerMutate } = useRegisterMutation();
     const { mutate: loginMutate } = useLoginMutation();
-    console.log('loginMutate', loginMutate);
+    // console.log('loginMutate', loginMutate);
 
     const userRegisterDTO = (userRegister: UserRegisterDTO): void => {
-        console.log('je suis dans userRegisterDTO', userRegister);
+        // console.log('je suis dans userRegisterDTO', userRegister);
 
         registerMutate(userRegister, {
             onSuccess: (data: RegisterResponse) => {
-                console.log('data.token', data.access_token);
-                console.log('data.role', data.role);
+                // console.log('data.token', data.access_token);
+                // console.log('data.role', data.role);
 
                 const { email, username } = data;
                 if (setAuthToken) {
@@ -48,7 +49,7 @@ const Modal = (): JSX.Element => {
                         email,
                         username,
                     });
-                    console.log('setAuthToken', setAuthToken);
+                    // console.log('setAuthToken', setAuthToken);
                 } else {
                     console.error('setAuthToken is not defined');
                 }
@@ -56,8 +57,6 @@ const Modal = (): JSX.Element => {
         });
     };
     const userLoginDTO = (userLogin: UserLoginDTO): void => {
-        // console.log('je suis dans userLoginDTO', userLogin);
-
         loginMutate(userLogin, {
             onSuccess: (data: RegisterResponse) => {
                 console.log('je suis dans onSuccess de login', data);
@@ -69,15 +68,12 @@ const Modal = (): JSX.Element => {
                         email: data.email,
                         username: data.username,
                     });
-                    console.log('setAuthToken de login', setAuthToken);
                 } else {
                     console.error('setAuthToken is not defined');
                 }
             },
         });
     };
-
-    // console.log('userLoginDTO', userLoginDTO);
 
     const openRegister = (): void => {
         setIsRegister(true);
@@ -150,12 +146,14 @@ const Modal = (): JSX.Element => {
                         </Button>
                     )}
                     <span className="font-bold">
-                        <Button
-                            variant="outline"
-                            className="rounded-xl w-full bg-[#ffcd00] text-base"
-                        >
-                            Je suis une Organisation
-                        </Button>
+                        <Link to="/organisation">
+                            <Button
+                                variant="outline"
+                                className="rounded-xl w-full bg-[#ffcd00] text-base"
+                            >
+                                Je suis une Organisation
+                            </Button>
+                        </Link>
                     </span>
                 </DialogDescription>
             </DialogContent>

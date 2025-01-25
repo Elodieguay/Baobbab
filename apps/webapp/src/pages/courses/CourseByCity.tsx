@@ -1,12 +1,10 @@
 import Maplibre from '@/components/map/Maplibre';
-import { useParams } from 'react-router';
 import { coursesNantes } from '@/utils/coursesGeocoding';
 import { getCoordinates } from '@/api/geocoding';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import CardsCourses from '@/components/map/CardsCourses';
 import { useCity } from '@/context/City.context';
-import AvatarUser from '@/components/auth/AvatarUser';
 
 const CourseByCity = (): JSX.Element | null => {
     // const { city } = useParams<{ city: string }>();

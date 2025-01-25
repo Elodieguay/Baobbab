@@ -1,4 +1,3 @@
-import { Button } from '../ui/button';
 import {
     Form,
     FormControl,
@@ -36,7 +35,7 @@ const SelectCityForm = ({
         });
         setCity(values.city);
     };
-    console.log('city', form.getValues('city'));
+    // console.log('city', form.getValues('city'));
 
     return (
         <Form {...form}>
@@ -49,7 +48,7 @@ const SelectCityForm = ({
                         control={form.control}
                         name="city"
                         render={({ field }) => (
-                            <FormItem className="flex-grow">
+                            <FormItem className="flex-grow ">
                                 <Select
                                     onValueChange={field.onChange}
                                     defaultValue={field.value}
@@ -59,7 +58,10 @@ const SelectCityForm = ({
                                             {location.pathname === '/' ? (
                                                 <SelectValue placeholder="Selectionne une ville" />
                                             ) : (
-                                                <SelectValue placeholder="Changer de ville" />
+                                                <SelectValue
+                                                    placeholder="Changer de ville"
+                                                    className="text-center"
+                                                />
                                             )}
                                         </SelectTrigger>
                                     </FormControl>

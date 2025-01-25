@@ -3,7 +3,10 @@
 import tailwindScrollbar from 'tailwind-scrollbar';
 
 export default {
-    content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+    content: [
+        './index.html', './src/**/*.{js,ts,jsx,tsx}',
+        "./node_modules/@shadcn/ui/**/*.{js,ts,jsx,tsx}"
+    ],
     theme: {
         screen: {
           xs:'20rem',
@@ -20,6 +23,7 @@ export default {
             fontFamily: {
                 sketch: ['Cabin Sketch', 'sans-serif'],
                 poppins: ['Poppins', 'sans-serif'],
+                baloo: ['Baloo-2', 'sans-serif']
             },
         },
     },

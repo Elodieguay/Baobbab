@@ -1,13 +1,16 @@
+import { cn } from '@/utils/utils';
 import { Avatar, AvatarFallback } from '@radix-ui/react-avatar';
 
 export type AvatarUserProps = {
     name: string | null;
-    onClick: () => void;
+    onClick?: () => void;
+    className?: string;
 };
-const AvatarUser = ({ name, onClick }: AvatarUserProps): JSX.Element => {
-    // Quand un user se connecte, il faut que la premiere lettre de son nom apparaisse dans l'avatar
-    console.log('name', name);
-
+const AvatarUser = ({
+    name,
+    onClick,
+    className,
+}: AvatarUserProps): JSX.Element => {
     let nameAvatar = '';
     if (name) {
         nameAvatar = name.charAt(0).toUpperCase();
@@ -15,7 +18,10 @@ const AvatarUser = ({ name, onClick }: AvatarUserProps): JSX.Element => {
 
     return (
         <Avatar
-            className="border-2 rounded-full w-10 h-10 flex items-center justify-center"
+            className={cn(
+                'border-2 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer',
+                className
+            )}
             onClick={onClick}
         >
             <AvatarFallback>{nameAvatar}</AvatarFallback>

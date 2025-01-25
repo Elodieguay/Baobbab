@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { setPriority } from 'os';
-import { Categories } from 'src/entities/categories.entity';
+import { Categories } from '../../entities/categories.entity';
 import { CategoryDTO } from '@baobbab/dtos';
 import { EntityManager } from '@mikro-orm/core';
 import { logger } from '@mikro-orm/nestjs';
@@ -10,9 +9,6 @@ export class CategoriesService {
   constructor(private readonly em: EntityManager) {}
 
   async create(createCategory: CategoryDTO[]): Promise<Categories[]> {
-    console.log('je suis là');
-    logger.debug('je suis là');
-
     const categoryArray = [
       { title: 'Sport' },
       { title: 'Danse' },

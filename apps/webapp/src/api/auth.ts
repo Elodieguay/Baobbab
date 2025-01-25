@@ -1,4 +1,9 @@
-import { RegisterResponse, UserLoginDTO, UserRegisterDTO } from '@baobbab/dtos';
+import {
+    ProtectedRouteDTO,
+    RegisterResponse,
+    UserLoginDTO,
+    UserRegisterDTO,
+} from '@baobbab/dtos';
 import { config } from '../config';
 import ky from 'ky';
 import z from 'zod';
@@ -64,3 +69,21 @@ export async function loginUser(
         throw error;
     }
 }
+
+export const checkProtectedRoute = async ({
+    token,
+    role,
+}: ProtectedRouteDTO): Promise<ProtectedRouteDTO> => {
+    try {
+        const response = await ky.post('/auth/protected', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+
+        return await response.json();
+    } catch (error) {
+        throw new Error('User is not authenticated or token is invalid');
+    }
+};
