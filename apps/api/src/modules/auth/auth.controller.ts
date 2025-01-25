@@ -1,15 +1,25 @@
 import { AuthService } from './auth.service';
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { UserCreateInput } from '../user/inputs/user-create.input';
-import { AuthPayloadDto, LoginResponse } from './types/auth.types';
+import { AuthPayloadDto } from './types/auth.types';
 import { UserDTO, UserRegisterDTO } from '@baobbab/dtos/src/user.dto';
 import { LocalGuard } from './guards/local.guards';
 import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
-import { UserRole } from '@baobbab/dtos';
-import { log } from 'console';
-import { User } from 'src/entities/user.entity';
+import {
+  OrganisationRegisterDTO,
+  Status,
+  SuperAdminDTO,
+  UserRole,
+} from '@baobbab/dtos';
 
 @Controller('auth')
 export class AuthController {
@@ -20,10 +30,7 @@ export class AuthController {
   async register(
     @Body() createUserInput: UserRegisterDTO,
   ): Promise<UserRegisterDTO> {
-    console.log('ici');
     const user = await this.authService.register(createUserInput);
-    console.log('user du register du resolver', user);
-
     return {
       ...user,
       username: user.username || '',
@@ -39,18 +46,17 @@ export class AuthController {
   async login(
     @Body() authPayloadDto: AuthPayloadDto,
   ): Promise<Omit<UserDTO, 'password'> & { access_token: string }> {
-    console.log('authPayloadDto', authPayloadDto);
-
     const user = this.authService.login(authPayloadDto);
-    console.log('user du login du controller', user);
-    logger.debug('inside AuthController login', user);
     return user;
   }
 
   // Endpoint protégé : on verifie si l'utilisateur est authentifié // route auth/protected
   @Post('protected')
   @UseGuards(JwtAuthGuard)
-  async protectedEndpoint(): Promise<string> {
+  async protectedEndpoint(@Req() req: Request): Promise<string> {
+    if (!req.user) {
+      throw new UnauthorizedException('Utilisateur non authentifié');
+    }
     return 'Vous êtes authentifié !';
   }
 
@@ -61,5 +67,57 @@ export class AuthController {
 
     logger.debug('inside AuthController status', req.user);
     return req.user;
+  }
+
+  @Post('organisationRegister')
+  async organisationRegister(
+    @Body() createOrganisation: OrganisationRegisterDTO,
+  ): Promise<OrganisationRegisterDTO> {
+    const organisation =
+      await this.authService.organisationRegister(createOrganisation);
+    console.log('organisation in controller', organisation);
+
+    return {
+      ...organisation,
+      password: '',
+      status: Status.PENDING,
+      role: UserRole.ADMIN,
+    };
+  }
+
+  @Post('loginOrganisation')
+  @UseGuards(LocalGuard)
+  async loginOrganisation(
+    @Body() authPayloadDto: AuthPayloadDto,
+  ): Promise<
+    Omit<OrganisationRegisterDTO, 'password'> & { access_token: string }
+  > {
+    console.log('authPayloadDto', authPayloadDto);
+
+    const organisation = this.authService.organisationLogin(authPayloadDto);
+
+    return organisation;
+  }
+
+  @Post('superAdminRegister')
+  async superAdminRegister(
+    @Body() createSuperAdmin: SuperAdminDTO,
+  ): Promise<SuperAdminDTO> {
+    const superAdmin =
+      await this.authService.createSuperAdmin(createSuperAdmin);
+    return {
+      ...superAdmin,
+      password: '',
+      role: UserRole.SUPERADMIN,
+    };
+  }
+
+  @Post('loginSuperAdmin')
+  @UseGuards(LocalGuard)
+  async loginSuperAdmin(
+    @Body() authPayloadDto: AuthPayloadDto,
+  ): Promise<Omit<SuperAdminDTO, 'password'> & { access_token: string }> {
+    const superAdmin = this.authService.loginSuperAdmin(authPayloadDto);
+    return superAdmin;
   }
 }

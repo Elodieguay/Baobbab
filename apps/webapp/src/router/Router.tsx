@@ -8,6 +8,8 @@ import Profile from '../pages/profile/Profile';
 import ProtectedRoutes from './ProtectedRoutes';
 import CourseById from '@/pages/courses/CourseById';
 import CourseByCity from '@/pages/courses/CourseByCity';
+// import ModalAuth from '@/components/auth/ModalAuth';
+import Organisation from '@/pages/organisation/Organisation';
 
 const router = createBrowserRouter([
     // version v7
@@ -32,9 +34,14 @@ const router = createBrowserRouter([
     },
 
     // {
-    //   path: AppRoutes.Login.path,
-    //   element: <Login />,
+    //     path: AppRoutes.Login.path,
+    //     element: <ModalAuth />,
     // },
+
+    {
+        path: AppRoutes.Organisation.path,
+        element: <Organisation />,
+    },
     {
         element: <ProtectedRoutes />,
         children: [

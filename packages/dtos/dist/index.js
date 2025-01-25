@@ -18,4 +18,6 @@ __exportStar(require("./user.dto"), exports);
 __exportStar(require("./enum"), exports);
 __exportStar(require("./position"), exports);
 __exportStar(require("./courses"), exports);
+__exportStar(require("./organisation"), exports);
+__exportStar(require("./admin"), exports);
 //# sourceMappingURL=index.js.map

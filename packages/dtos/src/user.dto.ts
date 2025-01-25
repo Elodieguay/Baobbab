@@ -13,7 +13,7 @@ export interface RegisterResponse {
 export interface LoginResponse {
     username: string;
     email: string;
-    role: UserRole.USER;
+    role: UserRole;
     access_token: string;
 }
 
@@ -31,7 +31,7 @@ export interface UserCreateInput {
     username: string;
     password: string;
     email: string;
-    role: UserRole;
+    role: UserRole.USER;
 }
 
 export interface UserRegisterDTO {
@@ -45,13 +45,18 @@ export interface UserRegisterDTO {
 export interface UserLoginDTO {
     email: string;
     password: string;
-    role: UserRole.USER;
+    role: UserRole;
 }
 
-const passwordValidation = new RegExp(
+export interface ProtectedRouteDTO {
+    token: string;
+    role: UserRole;
+}
+
+export const passwordValidation = new RegExp(
     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
 );
-const phoneNumberValidation = new RegExp(/^((\+33|0)[6-7])\d{8}$/);
+export const phoneNumberValidation = new RegExp(/^((\+33|0)[6-7])\d{8}$/);
 
 export type FormSchemaType = z.infer<typeof formSchema>;
 export const formSchema = z.object({

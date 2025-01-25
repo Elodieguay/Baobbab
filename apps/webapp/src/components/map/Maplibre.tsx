@@ -155,7 +155,7 @@ const Maplibre = ({
         return <p>Chargement impossible</p>;
     }
 
-    console.log('hovercardId', hoveredCardId);
+    // console.log('hovercardId', hoveredCardId);
 
     return (
         <div

@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../entities/user.entity';
-import { randomUUID } from 'crypto';
-import { UserCreateInput } from './inputs/user-create.input';
 import { EntityManager } from '@mikro-orm/core';
 import { logger } from '@mikro-orm/nestjs';
 

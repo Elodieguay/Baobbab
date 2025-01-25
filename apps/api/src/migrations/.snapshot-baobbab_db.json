@@ -56,8 +56,59 @@
           "default": "gen_random_uuid()",
           "mappedType": "uuid"
         },
-        "name": {
-          "name": "name",
+        "role": {
+          "name": "role",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'ADMIN'",
+          "enumItems": [
+            "ADMIN",
+            "USER",
+            "SUPERADMIN"
+          ],
+          "mappedType": "enum"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'PENDING'",
+          "enumItems": [
+            "PENDING",
+            "APPROVED",
+            "REJECTED",
+            "ARCHIVED",
+            "DRAFT",
+            "CANCELLED"
+          ],
+          "mappedType": "enum"
+        },
+        "firstname": {
+          "name": "firstname",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "lastname": {
+          "name": "lastname",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "organisation_name": {
+          "name": "organisation_name",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -110,6 +161,80 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "bio": {
+          "name": "bio",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "web_site": {
+          "name": "web_site",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "social_media_instagram": {
+          "name": "social_media_instagram",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "social_media_face_book": {
+          "name": "social_media_face_book",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "social_media_twitter": {
+          "name": "social_media_twitter",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "organisation",
@@ -117,10 +242,10 @@
       "indexes": [
         {
           "columnNames": [
-            "name"
+            "organisation_name"
           ],
           "composite": false,
-          "keyName": "organisation_name_unique",
+          "keyName": "organisation_organisation_name_unique",
           "constraint": true,
           "primary": false,
           "unique": true
@@ -179,23 +304,14 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "start_date": {
-          "name": "start_date",
-          "type": "text",
+        "days": {
+          "name": "days",
+          "type": "text[]",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "end_date": {
-          "name": "end_date",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
+          "nullable": false,
+          "mappedType": "array"
         },
         "duration": {
           "name": "duration",
@@ -204,15 +320,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "text"
-        },
-        "days": {
-          "name": "days",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
           "mappedType": "text"
         },
         "price": {
@@ -224,8 +331,8 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "place": {
-          "name": "place",
+        "address": {
+          "name": "address",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -316,6 +423,99 @@
           "default": "gen_random_uuid()",
           "mappedType": "uuid"
         },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'SUPERADMIN'",
+          "enumItems": [
+            "ADMIN",
+            "USER",
+            "SUPERADMIN"
+          ],
+          "mappedType": "enum"
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "super_admin",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "username"
+          ],
+          "composite": false,
+          "keyName": "super_admin_username_unique",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "super_admin_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "mappedType": "uuid"
+        },
         "username": {
           "name": "username",
           "type": "text",
@@ -353,7 +553,8 @@
           "default": "'USER'",
           "enumItems": [
             "ADMIN",
-            "USER"
+            "USER",
+            "SUPERADMIN"
           ],
           "mappedType": "enum"
         },

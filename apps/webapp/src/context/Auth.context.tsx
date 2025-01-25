@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { UserRole } from '../router/enumRoute';
-import { userInfo } from 'os';
 
 export type UserInformation = {
     email: string | null;

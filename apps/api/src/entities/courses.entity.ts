@@ -17,23 +17,17 @@ export class Courses {
   @Property({ type: 'text', nullable: true })
   image: string;
 
-  @Property({ type: 'text', nullable: true })
-  startDate: Date | null = null;
-
-  @Property({ type: 'text' })
-  endDate: Date | null = null;
+  @Property({ type: 'array' })
+  days: string[];
 
   @Property({ type: 'text' })
   duration: number;
 
   @Property({ type: 'text', nullable: true })
-  days: string | null = null;
-
-  @Property({ type: 'text', nullable: true })
   price: number | null = null;
 
   @Property({ type: 'text', nullable: true })
-  place: string | null = null;
+  address: string | null = null;
 
   @Property({ type: 'json', nullable: true })
   position: Point | null = null;

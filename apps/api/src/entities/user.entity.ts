@@ -1,4 +1,4 @@
-import { UserRole } from '../modules/auth/types/enum.types';
+import { UserRole } from '@baobbab/dtos';
 import { Entity, Enum, PrimaryKey, Property } from '@mikro-orm/core';
 
 @Entity()

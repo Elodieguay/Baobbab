@@ -5,11 +5,11 @@ import { Outlet, useLocation } from 'react-router';
 import { Navigate } from 'react-router';
 
 const ProtectedRoutes = (): JSX.Element => {
-    console.log('AppRoutes:', AppRoutes);
+    // console.log('AppRoutes:', AppRoutes);
     const location = useLocation();
 
     const { authToken, role } = useAuth();
-    console.log('authToken:', authToken, 'role:', role);
+    // console.log('authToken:', authToken, 'role:', role);
 
     const findCurrentRoute = (
         pathname: string
@@ -25,7 +25,7 @@ const ProtectedRoutes = (): JSX.Element => {
         });
     };
     const currentRoute = findCurrentRoute(location.pathname);
-    console.log('currentRoute:', currentRoute);
+    // console.log('currentRoute:', currentRoute);
 
     // Redirection si l'utilisateur n'est pas authentifié
     if (
@@ -49,7 +49,7 @@ const ProtectedRoutes = (): JSX.Element => {
         return <Navigate to={navigateTo} />;
     }
 
-    // Getsion de la route admin
+    // Gestion de la route admin
     if (
         currentRoute?.accessMode === RouteAccessMode.Authenticated &&
         currentRoute.path === AppRoutes.Dashboard.path &&

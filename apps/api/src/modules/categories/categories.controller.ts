@@ -10,7 +10,7 @@ import {
 import { CategoriesService } from './categories.service';
 import { CategoryDTO } from '@baobbab/dtos';
 import { logger } from '@mikro-orm/nestjs';
-import { Categories } from 'src/entities/categories.entity';
+import { Categories } from '../../entities/categories.entity';
 
 @Controller('categories')
 export class CategoriesController {

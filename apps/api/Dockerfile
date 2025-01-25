@@ -1,5 +1,5 @@
-# Étape 1 : OnUtilise une image Node officielle
-FROM node:22.7
+# Utiliser une image Node officielle
+FROM node:22.7-alpine
 
 # Installer pnpm globalement
 RUN npm install -g pnpm
@@ -8,59 +8,31 @@ RUN npm install -g pnpm
 ENV PNPM_HOME=/pnpm-global
 ENV PATH=$PNPM_HOME/bin:$PATH
 
-# On définie le répertoire de travail
-WORKDIR /apps/api
+# Définir le répertoire de travail à la racine du projet
+WORKDIR /apps
 
-# Copier les fichiers package*.json de la racine (ceux qui sont nécessaires à pnpm pour gérer les dépendances globales du projet)
+# Copier les fichiers package*.json, pnpm-lock.yaml et pnpm-workspace.yaml (pour le monorepo) 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Vérifier la structure après la copie
-RUN ls -la /apps/api
-
-# Installer les dépendances globales
-RUN pnpm store prune
+# Installer les dépendances globales et locales
 RUN pnpm install --frozen-lockfile
 
-# Copier le fichier package.json de l'API dans son propre répertoire de travail
-COPY apps/api/package.json ./ 
-COPY apps/api/tsconfig.json ./
+# Copier le code de l'API dans son propre répertoire
+COPY apps/api/package.json ./apps/api/package.json
+COPY apps/api/tsconfig.json ./apps/api/tsconfig.json
 
-
-# Vérifier la structure après les installations
-RUN ls -la /apps/api
-
-# Installer les dépendances Nestjs/cli
-RUN npm add -g @nestjs/cli
-
-
-# On copie le reste des fichiers du projet NestJS
+# Copier tout le reste du code, y compris les packages et autres parties du projet
 COPY apps/api ./apps/api
 COPY packages ./packages
 
-# Assurez-vous que package.json est bien présent dans /apps/api après la copie
-RUN ls -la /apps/api 
-
-# Vérifier si le fichier package.json est dans le bon répertoire
-RUN ls -la /apps/api/package.json
-
-# Vérifier si le fichier package.json est dans le bon répertoire
-RUN ls -la /apps/api/tsconfig.json
-
-
+# Installer les dépendances locales pour l'API (en cas de nouvelles dépendances)
 RUN pnpm install
 
-# Passer à l'environnement de travail de l'API
-WORKDIR /apps/api
+# Build l'application pour la production (si nécessaire)
+RUN pnpm build
 
-# Vérification que le package.json est bien là
-RUN ls -la /apps/api
-
-RUN pnpm install
-
-# On Build l'application pour la production
-RUN pnpm build 
 # Exposer le port de l'API NestJS
 EXPOSE 4000
 
 # Démarrer l'application
-CMD ["pnpm", "start"]
+CMD ["pnpm", "--filter", "./apps/api", "dev"]

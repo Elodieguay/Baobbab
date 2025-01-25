@@ -11,7 +11,7 @@ export interface RegisterResponse {
 export interface LoginResponse {
     username: string;
     email: string;
-    role: UserRole.USER;
+    role: UserRole;
     access_token: string;
 }
 export interface UserDTO {
@@ -27,7 +27,7 @@ export interface UserCreateInput {
     username: string;
     password: string;
     email: string;
-    role: UserRole;
+    role: UserRole.USER;
 }
 export interface UserRegisterDTO {
     username: string;
@@ -39,8 +39,14 @@ export interface UserRegisterDTO {
 export interface UserLoginDTO {
     email: string;
     password: string;
-    role: UserRole.USER;
+    role: UserRole;
 }
+export interface ProtectedRouteDTO {
+    token: string;
+    role: UserRole;
+}
+export declare const passwordValidation: RegExp;
+export declare const phoneNumberValidation: RegExp;
 export type FormSchemaType = z.infer<typeof formSchema>;
 export declare const formSchema: z.ZodObject<{
     username: z.ZodOptional<z.ZodString>;

@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -37,10 +36,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       const decoded = this.jwtService.verify(token, {
         secret: process.env.JWT_SECRET,
       });
-      console.log('decoded:', decoded);
 
       request.user = decoded;
-      console.log('request.user:', request.user);
 
       return true;
     } catch (error) {

@@ -6,6 +6,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ModalProvider, useModal } from './context/Modal.context';
 import ModalAuth from './components/auth/ModalAuth';
 import { CityProvider } from './context/City.context';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n/config';
 
 const AppContent = (): JSX.Element => {
     const { isModalOpen } = useModal();
@@ -21,16 +23,18 @@ const AppContent = (): JSX.Element => {
 function App(): JSX.Element {
     const queryClient = new QueryClient();
     return (
-        <AuthProvider>
-            <QueryClientProvider client={queryClient}>
-                <ModalProvider>
-                    <CityProvider>
-                        <AppContent />
-                    </CityProvider>
-                </ModalProvider>
-                <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
-        </AuthProvider>
+        <I18nextProvider i18n={i18n}>
+            <AuthProvider>
+                <QueryClientProvider client={queryClient}>
+                    <ModalProvider>
+                        <CityProvider>
+                            <AppContent />
+                        </CityProvider>
+                    </ModalProvider>
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
+            </AuthProvider>
+        </I18nextProvider>
     );
 }
 
