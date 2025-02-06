@@ -1,4 +1,5 @@
 import z from 'zod';
+import { Point } from './position';
 export interface CategoryDTO {
     title: string;
 }
@@ -28,16 +29,22 @@ export declare const courseFormSchema: z.ZodObject<{
     hours: string;
     days: string[];
     tags: string[];
-    reminder?: string | undefined;
+    reminder: string | null;
 }>;
 export interface CoursesDTO {
-    name: string;
+    title: string;
     address: string;
-    details: string;
-    days: string;
-    hours: string[];
-    reminder: string;
-    tags: CategoryDTO;
+    city: string | null;
+    description: string;
+    duration: number;
+    days: string[];
+    hours: string;
+    price: number;
+    reminder: string | null;
+    category: CategoryDTO;
+    image: string;
+    position: Point;
+    organisationId: string;
 }
 export interface CourseRegisterDTO {
     name: string;

@@ -1,5 +1,5 @@
+import { UserRole } from '@baobbab/dtos';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { UserRole } from '../router/enumRoute';
 
 export type UserInformation = {
     email: string | null;

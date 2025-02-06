@@ -6,7 +6,9 @@ import {
   Post,
   Req,
   UnauthorizedException,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthPayloadDto } from './types/auth.types';
@@ -15,11 +17,13 @@ import { LocalGuard } from './guards/local.guards';
 import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
 import {
+  OrganisationLoginDTO,
   OrganisationRegisterDTO,
   Status,
   SuperAdminDTO,
   UserRole,
 } from '@baobbab/dtos';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -85,18 +89,22 @@ export class AuthController {
     };
   }
 
-  @Post('loginOrganisation')
+  @Post('organisationLogin')
   @UseGuards(LocalGuard)
   async loginOrganisation(
     @Body() authPayloadDto: AuthPayloadDto,
   ): Promise<
-    Omit<OrganisationRegisterDTO, 'password'> & { access_token: string }
+    Omit<OrganisationLoginDTO, 'password'> & { access_token: string }
   > {
     console.log('authPayloadDto', authPayloadDto);
 
-    const organisation = this.authService.organisationLogin(authPayloadDto);
+    const organisation =
+      await this.authService.organisationLogin(authPayloadDto);
 
-    return organisation;
+    return {
+      ...organisation,
+      role: UserRole.ADMIN,
+    };
   }
 
   @Post('superAdminRegister')

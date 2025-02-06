@@ -1,11 +1,13 @@
 import z from 'zod';
 import { Status, UserRole } from './enum';
+export declare const MAX_FILE_SIZE: number;
+export declare const ACCEPTED_IMAGE_TYPES: string[];
 export declare const organisationFormSchema: z.ZodObject<{
     firstname: z.ZodString;
     lastname: z.ZodString;
     organisationName: z.ZodString;
     siret: z.ZodNumber;
-    phoneNumber: z.ZodString;
+    phone: z.ZodString;
     email: z.ZodString;
     address: z.ZodString;
     bio: z.ZodString;
@@ -15,41 +17,70 @@ export declare const organisationFormSchema: z.ZodObject<{
     socialMediaTwitter: z.ZodOptional<z.ZodString>;
     socialMediaTikTok: z.ZodOptional<z.ZodString>;
     password: z.ZodString;
-    image: z.ZodString;
+    image: z.ZodEffects<z.ZodEffects<z.ZodType<File, z.ZodTypeDef, File>, File, File>, File, File>;
 }, "strip", z.ZodTypeAny, {
-    address: string;
     firstname: string;
     lastname: string;
     organisationName: string;
     siret: number;
-    phoneNumber: string;
+    phone: string;
     email: string;
+    address: string;
     bio: string;
     password: string;
-    image: string;
+    image: File;
     website?: string | undefined;
     socialMediaInstagram?: string | undefined;
     socialMediaFaceBook?: string | undefined;
     socialMediaTwitter?: string | undefined;
     socialMediaTikTok?: string | undefined;
 }, {
-    address: string;
     firstname: string;
     lastname: string;
     organisationName: string;
     siret: number;
-    phoneNumber: string;
+    phone: string;
     email: string;
+    address: string;
     bio: string;
     password: string;
-    image: string;
+    image: File;
     website?: string | undefined;
     socialMediaInstagram?: string | undefined;
     socialMediaFaceBook?: string | undefined;
     socialMediaTwitter?: string | undefined;
     socialMediaTikTok?: string | undefined;
 }>;
+export declare const organisationRegisterFormSchema: z.ZodObject<{
+    siret: z.ZodNumber;
+    organisationName: z.ZodString;
+    email: z.ZodString;
+    password: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    organisationName: string;
+    siret: number;
+    email: string;
+    password: string;
+}, {
+    organisationName: string;
+    siret: number;
+    email: string;
+    password: string;
+}>;
 export interface OrganisationRegisterDTO {
+    status: Status;
+    role: UserRole.ADMIN;
+    siret: number;
+    organisationName: string;
+    email: string;
+    password: string;
+}
+export interface OrganisationLoginDTO {
+    email: string;
+    password: string;
+    role: UserRole.ADMIN;
+}
+export interface OrganisationInfosDTO {
     status: Status;
     role: UserRole;
     siret: number;
@@ -66,7 +97,7 @@ export interface OrganisationRegisterDTO {
     socialMediaFaceBook?: string;
     socialMediaTwitter?: string;
     socialMediaTikTok?: string;
-    image: string;
+    image: string | File;
     created_at?: Date;
     updated_at?: Date;
 }

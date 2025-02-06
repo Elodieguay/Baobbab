@@ -6,13 +6,13 @@ import { useAuth } from '@/context/Auth.context';
 import { Link, useNavigate } from 'react-router';
 import { Button } from '../ui/button';
 import { useCity } from '@/context/City.context';
-import SelectCityForm from '../form/SelectCityForm';
 import { useForm } from 'react-hook-form';
 import { citySchema } from '@/utils/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import AvatarUser from '../auth/AvatarUser';
 import { Trans, useTranslation } from 'react-i18next';
+import SelectCityForm from '../form/courses/SelectCityForm';
 
 const Navbar = (): JSX.Element => {
     const navigate = useNavigate();

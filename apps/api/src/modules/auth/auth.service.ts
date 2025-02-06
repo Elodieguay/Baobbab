@@ -14,6 +14,7 @@ import {
 } from '@baobbab/dtos';
 import { Organisation } from 'src/entities/organisation.entity';
 import { SuperAdmin } from 'src/entities/superAdmin.entity';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class AuthService {
@@ -22,6 +23,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly em: EntityManager,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   async register(
@@ -132,9 +134,7 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
-
     const haschPassword = await bcrypt.hash(createOrganisation.password, 10);
-
     const organisation = this.em.create(Organisation, {
       ...createOrganisation,
       password: haschPassword,

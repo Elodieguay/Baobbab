@@ -11,32 +11,30 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
-    .sketchy { 
-        padding: 4rem 8rem; 
-        display: inline-block; 
-        border: 1px solid #515151; 
-        /* font-size: 1.5rem;  */
-        border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%; 
-        /* text-transform: uppercase;  */
-        /* letter-spacing: 0.3ch;  */
-        background: #ffffff; 
-        position: relative; 
-    } 
     
-    .sketchy::before { 
-        content: ''; 
-        border: 1px solid #353535; 
-        display: block; 
-        width: 100%; 
-        height: 100%; 
-        position: absolute; 
-        top: 50%; 
-        left: 50%; 
-        transform: translate3d(-50%, -50%, 0) scale(1.015) rotate(0.5deg); 
-        border-radius: 1% 1% 2% 4% / 2% 6% 5% 4%; 
-    }
     h1, h2, h3, h4, h5, h6, p {
         @apply text-gray-700 
     }
+    :root {
+        --sidebar-background: hsl(0, 0%, 98%);
+        --sidebar-foreground: hsl(240, 5%, 26.1%);
+        --sidebar-primary: hsl(240, 5.9%, 10%);
+        --sidebar-primary-foreground: hsl(0, 0%, 98%);
+        --sidebar-accent: hsl(240, 4.8%, 95.9%);
+        --sidebar-accent-foreground: hsl(240, 5.9%, 10%);
+        --sidebar-border: hsl(220, 13%, 91%);
+        --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
+      }
+  /* .dark { 
+        --sidebar-background: 240 5.9% 10%; 
+        --sidebar-foreground: 240 4.8% 95.9%; 
+        --sidebar-primary: 224.3 76.3% 48%; 
+        --sidebar-primary-foreground: 0 0% 100%; 
+        --sidebar-accent: 240 3.7% 15.9%; 
+        --sidebar-accent-foreground: 240 4.8% 95.9%; 
+        --sidebar-border: 240 3.7% 15.9%; 
+        --sidebar-ring: 217.2 91.2% 59.8%;
+  
+    } */
   
 }

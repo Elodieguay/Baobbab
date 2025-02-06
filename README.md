@@ -82,20 +82,35 @@ Baobbab is specifically designed for small towns that do not yet have visualizat
 
 ## 🛠 Getting Started
 <br>
-<p>
-Clone down this repository.</p>
+<p>Clone down this repository.</p>
 ` git clone git@github.com:Elodieguay/baobbab.git `
 
 <div id="prerequisites">
 
 ### Prerequisites:
-<p>
-You will need `node` and `pnpm` installed globally on your machine.
+<p>You will need `node`, `pnpm`and `Docker` installed on your machine.</p>
 </div>
 
 <div id="installation">
 
 ### Installation:
+
+1 - Create .env file, one in the root, one in the Api and one in the Webapp, according to .env-example.
+
+2 - Install dependencies 
+`pnpm install`
+
+### Start the Application:
+
+1 - Build and start yhe Docker containers
+`docker-compose up --build`
+
+2 - Launch the DTO's in the package folder with pnpm dev
+
+3 - Launch the Api with pnpm dev
+
+4 - Launch the Webapp with pnpm dev
+
 
 
 ----

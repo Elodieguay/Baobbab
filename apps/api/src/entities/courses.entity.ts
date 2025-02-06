@@ -11,8 +11,8 @@ export class Courses {
   @Property({ type: 'text' })
   title!: string;
 
-  @Property({ type: 'text', nullable: true })
-  description: string | null = null;
+  @Property({ type: 'text' })
+  description: string;
 
   @Property({ type: 'text', nullable: true })
   image: string;
@@ -23,14 +23,23 @@ export class Courses {
   @Property({ type: 'text' })
   duration: number;
 
-  @Property({ type: 'text', nullable: true })
-  price: number | null = null;
+  @Property({ type: 'text' })
+  hours: string;
+
+  @Property({ type: 'text' })
+  price: number;
+
+  @Property({ type: 'text' })
+  address: string;
 
   @Property({ type: 'text', nullable: true })
-  address: string | null = null;
+  city: string | null = null;
 
-  @Property({ type: 'json', nullable: true })
-  position: Point | null = null;
+  @Property({ type: 'text', nullable: true })
+  reminder: string | null = null;
+
+  @Property({ type: 'json' })
+  position: Point;
 
   @ManyToOne(() => Categories)
   category: Categories;

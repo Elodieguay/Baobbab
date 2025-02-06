@@ -8,6 +8,7 @@ import ModalAuth from './components/auth/ModalAuth';
 import { CityProvider } from './context/City.context';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/config';
+import { SidebarProvider } from './components/ui/sidebar';
 
 const AppContent = (): JSX.Element => {
     const { isModalOpen } = useModal();
@@ -26,11 +27,13 @@ function App(): JSX.Element {
         <I18nextProvider i18n={i18n}>
             <AuthProvider>
                 <QueryClientProvider client={queryClient}>
+                    {/* <SidebarProvider> */}
                     <ModalProvider>
                         <CityProvider>
                             <AppContent />
                         </CityProvider>
                     </ModalProvider>
+                    {/* </SidebarProvider> */}
                     <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>
             </AuthProvider>

@@ -5,7 +5,7 @@ export interface RegisterResponse {
     username: string;
     email: string;
     password: string;
-    role: UserRole.USER;
+    role: UserRole;
     created_at: Date;
     access_token: string;
 }

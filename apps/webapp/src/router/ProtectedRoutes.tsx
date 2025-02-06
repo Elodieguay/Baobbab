@@ -1,6 +1,6 @@
+import { UserRole } from '@baobbab/dtos';
 import { useAuth } from '../context/Auth.context';
 import AppRoutes, { RouteAccessMode, RouteNames } from './AppRoutes';
-import { UserRole } from './enumRoute';
 import { Outlet, useLocation } from 'react-router';
 import { Navigate } from 'react-router';
 
