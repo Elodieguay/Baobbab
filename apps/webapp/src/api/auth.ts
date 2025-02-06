@@ -1,8 +1,12 @@
 import {
+    OrganisationLoginDTO,
+    OrganisationRegisterDTO,
     ProtectedRouteDTO,
     RegisterResponse,
+    Status,
     UserLoginDTO,
     UserRegisterDTO,
+    UserRole,
 } from '@baobbab/dtos';
 import { config } from '../config';
 import ky from 'ky';
@@ -13,6 +17,15 @@ const registerSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8),
     role: z.enum(['USER']),
+});
+
+const registerOrganisationSchema = z.object({
+    siret: z.number().min(14),
+    organisationName: z.string().min(2),
+    email: z.string().email(),
+    password: z.string().min(8),
+    role: z.nativeEnum(UserRole),
+    status: z.nativeEnum(Status),
 });
 
 // cette fonction permet d'enregistrer un utilisateur
@@ -87,3 +100,53 @@ export const checkProtectedRoute = async ({
         throw new Error('User is not authenticated or token is invalid');
     }
 };
+
+export async function registerOrganisation(
+    createOrganisation: OrganisationRegisterDTO
+): Promise<OrganisationRegisterDTO> {
+    console.log('createOrganisation', createOrganisation);
+
+    const validationResult =
+        registerOrganisationSchema.safeParse(createOrganisation);
+    if (!validationResult.success) {
+        console.error('Validation failed:', validationResult.error);
+        throw new Error('Validation error: invalid input data');
+    }
+    console.log('validation', validationResult);
+
+    try {
+        const url = `${config.apiUrl}/auth/organisationRegister`;
+        const response = (await ky
+            .post(url, { json: createOrganisation })
+            .json()) as OrganisationRegisterDTO;
+        console.log('response', response);
+
+        return response;
+    } catch (error) {
+        console.error('error registering organisation', error);
+        throw error;
+    }
+}
+
+export async function loginOrganisation(
+    loginOrganisation: OrganisationLoginDTO
+): Promise<OrganisationLoginDTO> {
+    const validationResult = registerSchema.safeParse(loginOrganisation);
+    console.log('validationResult', validationResult);
+
+    if (!validationResult.success) {
+        console.error('Validation failed:', validationResult.error);
+        throw new Error('Validation error: invalid input data');
+    }
+
+    try {
+        const url = `${config.apiUrl}/auth/organisationLogin`;
+        const response = (await ky
+            .post(url, { json: loginUser })
+            .json()) as OrganisationLoginDTO;
+        return response;
+    } catch (error) {
+        console.error('error logging in user', error);
+        throw error;
+    }
+}

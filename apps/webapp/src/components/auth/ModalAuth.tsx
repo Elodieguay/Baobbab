@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Login from './FormLogin';
+import Login from '../form/auth/FormLogin';
 import { Button } from '../ui/button';
 import {
     Dialog,
@@ -9,7 +9,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '../ui/dialog';
-import Register from './FormRegister';
+import Register from '../form/auth/FormRegister';
 import {
     formSchema,
     RegisterResponse,
@@ -33,7 +33,6 @@ const Modal = (): JSX.Element => {
     const [isRegister, setIsRegister] = useState(false);
     const { mutate: registerMutate } = useRegisterMutation();
     const { mutate: loginMutate } = useLoginMutation();
-    // console.log('loginMutate', loginMutate);
 
     const userRegisterDTO = (userRegister: UserRegisterDTO): void => {
         // console.log('je suis dans userRegisterDTO', userRegister);

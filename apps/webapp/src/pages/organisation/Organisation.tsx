@@ -1,67 +1,90 @@
-import { Button } from '@/components/ui/button';
-import danseHomebis from '@/assets/images/danseHomebis.jpg';
 import Navbar from '@/components/navbar.tsx/Navbar';
+import OrganisationFormRegister from '@/components/form/auth/OrganisationFormRegister';
+import { useForm } from 'react-hook-form';
+import {
+    organisationFormSchema,
+    OrganisationRegisterDTO,
+    organisationRegisterFormSchema,
+    Status,
+    UserRole,
+} from '@baobbab/dtos';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+// import { HeartHandshake, SmilePlus, Sparkles } from 'lucide-react';
+// import bubble from '@/assets/bubble.png';
+// import TestImageFile from '@/components/form/TestImageFile';
+import { useOrganisationRegister } from '@/hooks/useAuthMutation';
 
 const Organisation = (): JSX.Element => {
+    const { mutate: organisationRegister, isPending } =
+        useOrganisationRegister();
+
+    const form = useForm<z.infer<typeof organisationRegisterFormSchema>>({
+        resolver: zodResolver(organisationRegisterFormSchema),
+        mode: 'onChange',
+        defaultValues: {
+            organisationName: '',
+            siret: 0,
+            email: '',
+            password: '',
+        },
+    });
+
+    const onSubmitForm = (
+        values: z.infer<typeof organisationRegisterFormSchema>
+    ): void => {
+        console.log(values);
+        console.log('je suis là');
+
+        organisationRegister({
+            ...values,
+            role: UserRole.ADMIN,
+            status: Status.PENDING,
+        });
+    };
+
     return (
-        <>
+        <div className="w-full h-full">
             <Navbar />
-            <main className="h-full flex flex-col items-center ">
-                <section className="flex justify-center items-center gap-6 px-10">
-                    <div className="w-1/2 flex flex-col justify-center gap-4">
-                        <h1 className="text-3xl font-semibold  ">
-                            Devenez l'ambassadeur de l'artisanat
+            <div className="flex h-screen  items-center gap-4">
+                <div className="flex flex-col w-1/2 items-center gap-4">
+                    <div className="flex flex-col gap-4 text-lg items-center">
+                        <h1 className="text-center">
+                            Faites rayonner votre passion auprès d’une
+                            communauté en quête de nouvelles expériences !
                         </h1>
-                        <p>
-                            Notre collectif d'artisans représente les multiples
-                            visages qui font l'artisanat d'aujourd'hui. Chaque
-                            jour, ces artisans mettent en lumière leur
-                            savoir-faire avec le grand public lors d'ateliers
-                            immersifs."
+                        <p className="text-xl font-semibold">
+                            Créer votre compte
                         </p>
-                        <Button
-                            variant="default"
-                            className="w-1/2 h-11 rounded-2xl bg-[#01a274]"
-                        >
-                            Rejoins nous
-                        </Button>
                     </div>
-                    <div className="w-1/2 flex justify-center items-center overflow-hidden aspect-[4/3]">
-                        <img
-                            src={danseHomebis}
-                            className="h-full w-full object-contain"
+                    <div className="w-3/4 p-6 rounded-md ">
+                        <OrganisationFormRegister
+                            form={form}
+                            onSubmit={onSubmitForm}
                         />
                     </div>
-                </section>
-                <section className="w-full flex h-44 bg-[#cb8501] justify-between items-center">
-                    <div className="w-1/3 px-20 text-base text-white">
-                        <h1>Un revenu complémentaire</h1>
-                        <p>
-                            Les ateliers apportent un revenu d'environ 1000
-                            euros par mois aux artisans
+                </div>
+                <div className="w-1/2 h-full bg-registerOrga bg-cover flex flex-col  justify-center items-center ">
+                    {/* <div className="h-full font-semibold space-y-4 justify-around font-poppins mb-6  ">
+                        <p className="flex gap-4 text-sm">
+                            <Sparkles className="w-10 h-10 text-[#be3565]" />
+                            Gagnez en visibilité auprès de ceux qui cherchent à
+                            s’épanouir près de chez eux.
                         </p>
-                    </div>
-                    {/* <span className="border-x-2"></span> */}
-                    <div className="w-1/3 px-20 ">
-                        <h1 className="text-base text-white">
-                            Un revenu complémentaire
-                        </h1>
-                        <p className="text-base text-white">
-                            Les ateliers apportent un revenu d'environ 1000
-                            euros par mois aux artisans
+                        <p className="flex gap-4 text-sm">
+                            <SmilePlus className="w-10 h-10 text-[#be3565]" />
+                            Attirez de nouveaux adhérents en rendant vos cours
+                            accessibles en quelques clics.
                         </p>
-                    </div>
-                    {/* <span className="border-x-2"></span> */}
-                    <div className="w-1/3 px-20 text-base text-white">
-                        <h1>Un revenu complémentaire</h1>
-                        <p>
-                            Les ateliers apportent un revenu d'environ 1000
-                            euros par mois aux artisans
+                        <p className="flex gap-4 text-sm">
+                            <HeartHandshake className="w-10 h-10 text-[#be3565]" />{' '}
+                            Faites partie d’un réseau engagé qui dynamise la vie
+                            locale et favorise le partage.
                         </p>
-                    </div>
-                </section>
-            </main>
-        </>
+                    </div> */}
+                </div>
+            </div>
+        </div>
     );
 };
 

@@ -43,8 +43,11 @@ export class Courses {
   })
   schedule = new Collection<Schedule>(this);
 
-  @Property({ type: 'json', nullable: true })
-  position: Point | null = null;
+  @Property({ type: 'text', nullable: true })
+  reminder: string | null = null;
+
+  @Property({ type: 'json' })
+  position: Point;
 
   @ManyToOne(() => Categories)
   category: Categories;

@@ -2,12 +2,12 @@
 
 import { useMemo, useState } from 'react';
 import { Command as CommandPrimitive } from 'cmdk'
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from './ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '../ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { cn } from '@/utils/utils';
 import { PopoverAnchor } from '@radix-ui/react-popover';
 import { Check } from 'lucide-react';
-import { Input } from './ui/input';
+import { Input } from '../ui/input';
 
 interface Props<T extends string> {
     selectedValue: T;

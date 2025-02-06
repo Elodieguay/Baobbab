@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
-import SelectCityForm from '@/components/form/SelectCityForm';
+import SelectCityForm from '@/components/form/courses/SelectCityForm';
 import { UserRound } from 'lucide-react';
 import yogaHome from '../../assets/images/yogaHome.jpg';
 import guitare from '../../assets/images/guitare.jpg';

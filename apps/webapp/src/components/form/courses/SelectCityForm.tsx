@@ -1,10 +1,3 @@
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormMessage,
-} from '../ui/form';
 import { citySchema } from '@/utils/schema';
 import { UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
@@ -14,9 +7,16 @@ import {
     SelectValue,
     SelectContent,
     SelectItem,
-} from '../ui/select';
+} from '@/components/ui/select';
 import { useCity } from '@/context/City.context';
 import { useLocation } from 'react-router';
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
+} from '@/components/ui/form';
 
 const SelectCityForm = ({
     form,

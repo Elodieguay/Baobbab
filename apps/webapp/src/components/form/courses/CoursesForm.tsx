@@ -1,25 +1,23 @@
-import {
-    Select,
-    SelectTrigger,
-    SelectValue,
-    SelectContent,
-    SelectItem,
-} from '@radix-ui/react-select';
-import { Form } from 'react-router';
-import { FormField, FormItem, FormControl, FormMessage } from '../ui/form';
 import { UseFormReturn } from 'react-hook-form';
 // import { coursesSchema } from "@/utils/schema";
 import { z } from 'zod';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
-import MultiSelect from './Multiselect';
+
 import { courseFormSchema, CourseRegisterDTO } from '@baobbab/dtos';
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import MultiSelect from '@/components/form/Multiselect';
 
 const CoursesForm = ({
     organisationId,
     form,
     onSubmit,
-    children,
 }: {
     organisationId: string;
     form: UseFormReturn<z.infer<typeof courseFormSchema>>;
@@ -27,7 +25,6 @@ const CoursesForm = ({
         organisationId: string;
         courseRegister: CourseRegisterDTO;
     }) => void;
-    children: JSX.Element;
 }): JSX.Element => {
     const onSubmitForm = (values: z.infer<typeof courseFormSchema>): void => {
         onSubmit({
@@ -187,8 +184,8 @@ const CoursesForm = ({
                                     <Input
                                         {...field}
                                         type="file"
-                                        placeholder="name"
                                         value={field.value ?? ''}
+                                        accept='image/*'
                                     />
                                 </FormControl>
                                 <FormMessage />
