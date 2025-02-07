@@ -1,0 +1,13 @@
+{   
+    "public" : {
+        "Home" : {
+            "logo": "baobbab",
+            "connect": "connection",
+            "baseline": "Trouve ton activité à proximité",
+            "select": "Selectionne une ville"
+        },
+        "navbar" : {
+            "logo": "bao<span>b</span>bab"
+        }
+    }   
+}

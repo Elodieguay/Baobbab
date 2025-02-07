@@ -8,10 +8,12 @@ import { OrmModule } from './modules/orm/orm.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import authConfig from './modules/auth/auth.config';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+import { CoursesModule } from './modules/courses/courses.module';
 
 @Module({
-  imports: [ 
-
+  imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [ormConfig],
@@ -19,14 +21,11 @@ import authConfig from './modules/auth/auth.config';
     MikroOrmModule,
     OrmModule,
     UserModule,
-    AuthModule
+    AuthModule,
+    CategoriesModule,
+    CoursesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  constructor() {
-    // Log pour vérifier si les configurations sont correctement chargées
-    console.log('AuthConfig:', authConfig);
-  }
-}
+export class AppModule {}
