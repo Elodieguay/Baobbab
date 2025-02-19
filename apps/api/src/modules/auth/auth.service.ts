@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user/user.service';
@@ -26,6 +26,7 @@ export class AuthService {
     private readonly cloudinaryService: CloudinaryService,
   ) {}
 
+  private readonly logger = new Logger(AuthService.name);
   async register(
     createUserInput: UserCreateInput,
   ): Promise<Omit<User, 'password'> & { access_token: string }> {
@@ -74,18 +75,17 @@ export class AuthService {
 
     const entity = user || organisation || superAdmin;
     if (!entity) {
+      this.logger.error('Invalid credentials', HttpStatus.UNAUTHORIZED);
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
     const haschPassword = await bcrypt.hash(password, 10);
-    console.log('haschPassword', haschPassword);
 
     // Comparaison du mot de passe hasché avec celui envoyé
     const passwordValid = await bcrypt.compare(password, entity.password);
-    console.log('passwordValid:', passwordValid);
 
     if (!passwordValid) {
-      console.log('password incorrect');
+      this.logger.error('Invalid credentials', HttpStatus.UNAUTHORIZED);
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 

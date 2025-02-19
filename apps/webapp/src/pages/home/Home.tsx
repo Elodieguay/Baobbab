@@ -10,11 +10,15 @@ import yogaHome from '../../assets/images/yogaHome.jpg';
 import guitare from '../../assets/images/guitare.jpg';
 import cuisine from '../../assets/images/cuisine.png';
 import { Button } from '@/components/ui/button';
+import { Trans, useTranslation } from 'react-i18next';
 
 const Home = (): JSX.Element => {
     const [_, setSelectedCity] = useState<string>('');
     const navigate = useNavigate();
     const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
+    const { t } = useTranslation('common', {
+        keyPrefix: 'Home',
+    });
 
     const form = useForm<z.infer<typeof citySchema>>({
         resolver: zodResolver(citySchema),
@@ -23,25 +27,21 @@ const Home = (): JSX.Element => {
             city: '',
         },
     });
-    const images = [yogaHome, guitare, cuisine];
+    const images = [yogaHome, guitare];
 
-    // Changer l'image automatiquement toutes les 5 secondes
     useEffect(() => {
         const intervalId = setInterval(() => {
             setCurrentBackgroundIndex(
                 (prevIndex) => (prevIndex + 1) % images.length
             );
         }, 8000);
-
-        // Nettoyer l'intervalle lorsqu'on quitte le composant
         return () => clearInterval(intervalId);
     }, []);
+
     const onSubmit = (data: z.infer<typeof citySchema>): void => {
         setSelectedCity(data.city);
         navigate(`/courses/${data.city}`);
     };
-
-    // console.log('selectedCity', selectedCity);
 
     return (
         <div
@@ -56,16 +56,21 @@ const Home = (): JSX.Element => {
             <div className="flex flex-col h-full bg-black bg-opacity-50">
                 <div className="flex items-center justify-between font-semibold px-8 py-4 ">
                     <h1 className="text-3xl font-semibold text-white font-poppins">
-                        Baobbab
+                        <Trans
+                            i18nKey="Home.logo"
+                            components={{
+                                span: <span className="text-[#01a274]" />,
+                            }}
+                        />
                     </h1>
                     <p className="flex flex-col items-center text-white">
                         <UserRound />
-                        connection
+                        {t('connect')}
                     </p>
                 </div>
                 <div className="h-full flex flex-col items-center justify-center flex-grow gap-5 ">
                     <p className="text-xl font-poppins text-white font-semibold">
-                        Trouve ton activité à proximité
+                        {t('baseline')}
                     </p>
                     <div className="w-full flex h-14">
                         <SelectCityForm form={form} onSubmit={onSubmit}>
@@ -74,7 +79,7 @@ const Home = (): JSX.Element => {
                                 className="h-full bg-[#01a274] rounded-none text-white text-base"
                                 variant="ghost"
                             >
-                                Je me lance
+                                {t('button')}
                             </Button>
                         </SelectCityForm>
                     </div>

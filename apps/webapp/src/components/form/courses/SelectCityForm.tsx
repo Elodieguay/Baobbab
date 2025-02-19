@@ -17,6 +17,7 @@ import {
     FormItem,
     FormMessage,
 } from '@/components/ui/form';
+import { useTranslation } from 'react-i18next';
 
 const SelectCityForm = ({
     form,
@@ -28,6 +29,9 @@ const SelectCityForm = ({
     children: JSX.Element;
 }): JSX.Element => {
     const location = useLocation();
+    const { t } = useTranslation('common', {
+        keyPrefix: 'Home',
+    });
     const { setCity } = useCity();
     const onSubmitForm = (values: z.infer<typeof citySchema>): void => {
         onSubmit({
@@ -67,13 +71,19 @@ const SelectCityForm = ({
                                     </FormControl>
                                     <SelectContent>
                                         <SelectItem value="Nantes">
-                                            Nantes
+                                            {t('selectCityNantes')}
                                         </SelectItem>
-                                        <SelectItem value="Paris">
-                                            Paris
+                                        <SelectItem
+                                            value="Paris"
+                                            className=" pointer-events-none bg-slate-100"
+                                        >
+                                            {t('selectCityParis')}
                                         </SelectItem>
-                                        <SelectItem value="Capdenac-Gare">
-                                            Capdenac-Gare
+                                        <SelectItem
+                                            value="Capdenac-Gare"
+                                            className=" pointer-events-none bg-slate-100"
+                                        >
+                                            {t('selectCityCapdenac')}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>

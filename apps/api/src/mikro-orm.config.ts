@@ -17,6 +17,10 @@ const mikroOrmConfig = defineConfig({
     allOrNothing: true,
     disableForeignKeys: true,
   },
+  seeder: {
+    path: './dist/seeders',
+    pathTs: './src/seeders',
+  },
 });
 
 export default mikroOrmConfig;

@@ -1,4 +1,3 @@
-import { config } from '@/config';
 import { GeocodingFeatureCollection, Point } from '@baobbab/dtos';
 import ky from 'ky';
 
@@ -9,18 +8,21 @@ interface GetAddressesDTO {
 
 export async function geocodingAdresses(
     params: GetAddressesDTO
-): Promise<GeocodingFeatureCollection[] | null> {
-    const searchParams = {
-        address: params.address,
-        limit: params.limit,
-    };
-    const url = `${config.apiUrl}/geocoding?address=${searchParams.address}&limit=${searchParams.limit}`;
-    const response = (await ky
-        .get(url, {
-            json: { address: searchParams.address, limit: searchParams.limit },
-        })
-        .json()) as GeocodingFeatureCollection[];
-    // console.log('response api front', response);
+): Promise<GeocodingFeatureCollection | null> {
+    console.log('je suis içi');
+
+    const searchParams = new URLSearchParams({
+        q: params.address,
+        limit: params.limit.toString(),
+    });
+
+    console.log(searchParams);
+
+    const url = `https://api-adresse.data.gouv.fr/search/?${searchParams.toString()}&lat=42.218371&lon=-1.553621`;
+    console.log('url Api:', url);
+    const response = await ky.get(url).json<GeocodingFeatureCollection>();
+
+    console.log('response api front', response);
 
     return response;
 }

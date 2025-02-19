@@ -19,26 +19,12 @@ export const organisationFormSchema = z.object({
     lastname: z.string().min(2, {
         message: 'Le nom doit contenir au moins 2 caractères.',
     }),
-    organisationName: z.string().min(2, {
-        message: 'Le nom doit contenir au moins 2 caractères.',
-    }),
-    siret: z.number().min(10, {
-        message: ' Le siret n/est pas valide',
-    }),
     phone: z.string().regex(phoneNumberValidation, {
         message: 'le numéro doit contenir au moins 10 chiffres.',
-    }),
-    email: z.string().email({
-        message: "L'adresse email n'est pas valide.",
     }),
     address: z.string().min(10, {
         message: "l'adresse doit être valide",
     }),
-    // ville: z
-    //     .string()
-    //     .min(2, {
-    //         message: "La ville doit être valide"
-    //     }),
     bio: z.string().min(10, {
         message: 'La description doit comporter au moins 10 caractères',
     }),
@@ -59,31 +45,20 @@ export const organisationFormSchema = z.object({
         .string()
         .url({ message: "L'url n'est pas valide" })
         .optional(),
-    password: z
-        .string()
-        .min(8, {
-            message: 'Le mot de passe doit contenir au moins 8 caractères.',
-        })
-        .regex(passwordValidation, {
-            message:
-                'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.',
-        }),
-    image: z
-        .custom<File>((file) => file instanceof File, {
-            message: "L'image doit être un fichier valide",
-        })
-        .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
-            message:
-                'Format invalide. Choisissez une image en JPEG, PNG ou WebP.',
-        })
-        .refine((file) => file.size <= MAX_FILE_SIZE, {
-            message: 'La taille maximale autorisée est de 2 Mo.',
-        }),
+    // image: z
+    //     .custom<File>((file) => file instanceof File, {
+    //         message: "L'image doit être un fichier valide",
+    //     })
+    //     .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+    //         message:
+    //             'Format invalide. Choisissez une image en JPEG, PNG ou WebP.',
+    //     })
+    //     .refine((file) => file.size <= MAX_FILE_SIZE, {
+    //         message: 'La taille maximale autorisée est de 2 Mo.',
+    //     }),
 });
 
 export const organisationRegisterFormSchema = z.object({
-    // status: z.nativeEnum(Status),
-    // role: z.nativeEnum(UserRole),
     siret: z.number().min(14, {
         message: 'Le siret doit contenir au moijns 14 caractères',
     }),
@@ -104,9 +79,24 @@ export const organisationRegisterFormSchema = z.object({
         }),
 });
 
+export const organisationLoginFormSchema = z.object({
+    email: z.string().email({
+        message: 'l/email n/est pas valide',
+    }),
+    password: z
+        .string()
+        .min(8, {
+            message: 'Le mot de passe doit contenir au moins 8 caractères.',
+        })
+        .regex(passwordValidation, {
+            message:
+                'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.',
+        }),
+});
+
 export interface OrganisationRegisterDTO {
     status: Status;
-    role: UserRole.ADMIN;
+    role: UserRole;
     siret: number;
     organisationName: string;
     email: string;
@@ -119,24 +109,26 @@ export interface OrganisationLoginDTO {
     role: UserRole.ADMIN;
 }
 
+export interface OrganisationAuthResponse {
+    id: string;
+    organisationName: string;
+    email: string;
+    role: UserRole.ADMIN;
+    access_token: string;
+}
+
 export interface OrganisationInfosDTO {
-    status: Status;
-    role: UserRole;
-    siret: number;
     firstname: string;
     lastname: string;
-    organisationName: string;
     phone: string;
     address: string;
-    email: string;
-    password: string;
     bio: string;
     website?: string;
     socialMediaInstagram?: string;
     socialMediaFaceBook?: string;
     socialMediaTwitter?: string;
     socialMediaTikTok?: string;
-    image: string | File;
-    created_at?: Date;
-    updated_at?: Date;
+    image?: string | File;
+    createdAt?: Date;
+    updatedAt?: Date;
 }

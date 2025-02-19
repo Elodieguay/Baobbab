@@ -42,12 +42,8 @@ const Modal = (): JSX.Element => {
                 // console.log('data.token', data.access_token);
                 // console.log('data.role', data.role);
 
-                const { email, username } = data;
                 if (setAuthToken) {
-                    setAuthToken(data.access_token, data.role, {
-                        email,
-                        username,
-                    });
+                    setAuthToken(data.access_token, data.role);
                     // console.log('setAuthToken', setAuthToken);
                 } else {
                     console.error('setAuthToken is not defined');
@@ -63,10 +59,7 @@ const Modal = (): JSX.Element => {
                 console.log('data.role de login', data.role);
 
                 if (setAuthToken) {
-                    setAuthToken(data.access_token, data.role, {
-                        email: data.email,
-                        username: data.username,
-                    });
+                    setAuthToken(data.access_token, data.role);
                 } else {
                     console.error('setAuthToken is not defined');
                 }

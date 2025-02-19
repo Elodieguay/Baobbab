@@ -1,20 +1,16 @@
 import Maplibre from '@/components/map/Maplibre';
-import { coursesNantes } from '@/utils/coursesGeocoding';
 import { getCoordinates } from '@/api/geocoding';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import CardsCourses from '@/components/map/CardsCourses';
 import { useCity } from '@/context/City.context';
+import { useGetCourses } from '@/hooks/useGetCourses';
+import log from 'loglevel';
+import { CoursesDTOGeojson } from '@baobbab/dtos';
 
 const CourseByCity = (): JSX.Element | null => {
-    // const { city } = useParams<{ city: string }>();
-
-    const { city } = useCity();
-    if (!city) {
-        return null;
-    }
-    console.log('city', city);
-    console.log('coucou');
+    log.debug('composant rendu');
+    const { city = '' } = useCity();
 
     const {
         data: coordinates,
@@ -22,30 +18,58 @@ const CourseByCity = (): JSX.Element | null => {
         error,
     } = useQuery({
         queryKey: ['coordinates', city],
-        queryFn: () => getCoordinates(city),
+        queryFn: () => getCoordinates(city ?? null),
         enabled: !!city,
     });
 
-    console.log('coordinates dans coursebycity', coordinates);
+    const {
+        data: coursesNantes,
+        isLoading: isLoadingCourses,
+        error: errorCourses,
+    } = useGetCourses(coordinates);
+    const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+    const courses = useMemo(
+        () => (coursesNantes as CoursesDTOGeojson) ?? [],
+        [coursesNantes]
+    );
 
-    const [hoveredCardId, setHoveredCardId] = useState<number | null>(null);
+    log.info('coursestitre ici:', courses);
+
+    if (!city) {
+        return null;
+    }
+    if (!Array.isArray(courses)) {
+        return null;
+    }
+
+    if (isLoadingCourses) {
+        return <p>Chargement des cours...</p>;
+    }
+
+    if (errorCourses) {
+        return <p>Erreur lors du chargement des cours.</p>;
+    }
 
     return (
-        <div className="flex w-full h-full mt-4 fixed ">
-            <div className="w-1/2 grid grid-cols items-center justify-center px-9 gap-4 overflow-y-scroll scrollbar-none ">
-                {coursesNantes.map((item) => (
-                    <CardsCourses
-                        item={item}
-                        setHoveredCardId={setHoveredCardId}
-                    />
-                ))}
+        <div className="flex w-full h-screen mt-4  ">
+            <div className="w-1/2 h-full overflow-y-auto px-9 ">
+                <div className="grid grid-cols-1 gap-4">
+                    {courses.map((item) => (
+                        <CardsCourses
+                            city={city}
+                            key={item.id}
+                            item={item}
+                            setHoveredCardId={setHoveredCardId}
+                        />
+                    ))}
+                </div>
             </div>
-            <div className="w-1/2 sticky ">
+            <div className="w-1/2 sticky h-screen top-0 overflow-hidden">
                 <Maplibre
                     loadCoordinates={coordinates ?? null}
                     isLoading={isLoading}
                     error={error}
-                    data={coursesNantes}
+                    courseData={courses}
                     hoveredCardId={hoveredCardId}
                 />
             </div>

@@ -1,30 +1,39 @@
 import { Separator } from '@/components/ui/separator'; // Shadcn separator
 import { Badge } from '@/components/ui/badge'; // Shadcn badge
 import { Button } from '@/components/ui/button';
-import escalade from '@/assets/images/escalade.jpg';
 import TableDashboard from '@/components/tables/TableDashboard';
 import { courses } from '@/utils/utils';
 import elo from '@/assets/images/elo.png';
 import { Instagram, Quote } from 'lucide-react';
+import { useGetCourseById } from '@/hooks/useGetCourses';
+import { useParams } from 'react-router';
 const CourseById = (): JSX.Element => {
     const team = {
         avatars: elo,
         details:
             'Lara se consacre à créer un espace inclusif où chacun, quel que soit son niveau ou son âge, peut explorer la danse comme un moyen d’expression et de bien-être. Entre cours, ateliers thématiques, et organisation de spectacles, elle met tout en œuvre pour faire vivre la culture de la danse et fédérer une communauté autour de cette passion commune.',
     };
+
+    const { id } = useParams();
+    if (!id) {
+        return <div>Course not found</div>;
+    }
+
+    const { data: coursesInfos } = useGetCourseById(id);
+
     return (
         <div className="flex flex-col w-full h-full bg-neutral-50 items-center gap-5">
             <section className="flex w-full h-[30rem]">
                 <figure className="w-2/3 h-full overflow-hidden rounded-r-md">
                     <img
-                        src={escalade}
+                        src={coursesInfos?.image}
                         alt="Activity Image"
                         className="object-cover w-full h-full "
                     />
                 </figure>
                 <div className=" w-1/3 flex flex-col items-center justify-center gap-20">
                     <h1 className="text-gray-800 text-3xl lg:text-5xl font-bold text-center">
-                        Maedup : Nœuds coréens
+                        {coursesInfos?.title}
                     </h1>
                     <div className="flex flex-wrap gap-2">
                         <Badge variant="outline">Art</Badge>
@@ -61,14 +70,8 @@ const CourseById = (): JSX.Element => {
                         </div>
                     </aside>
                     <div className="lg:w-3/4 gap-28 space-y-6">
-                        {/* <h2 className="text-2xl font-semibold text-neutral-800">
-                            Description
-                        </h2> */}
                         <p className="text-lg text-[#45295a] leading-relaxed font-semibold">
-                            Découvrez l'art des nœuds traditionnels coréens dans
-                            un cadre convivial. Ce cours est idéal pour les
-                            amateurs de DIY ou les curieux souhaitant apprendre
-                            une technique ancestrale.
+                            {coursesInfos?.description}
                         </p>
                         <Separator className="my-4" />
                         <h2 className="text-2xl font-semibold text-neutral-800">
@@ -86,12 +89,6 @@ const CourseById = (): JSX.Element => {
                             </li>
                             <li></li>
                         </ul>
-                        {/* <Button
-                            variant="default"
-                            className="bg-[#01a274] text-white"
-                        >
-                            Réserver maintenant
-                        </Button> */}
                     </div>
                 </div>
             </div>

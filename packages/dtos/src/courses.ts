@@ -67,3 +67,23 @@ export interface CourseRegisterDTO {
     reminder?: string;
     tags: string[];
 }
+
+export interface CoursesDTOGeojson {
+    id: string;
+    title: string;
+    address: string;
+    city: string | null;
+    description: string;
+    duration: number;
+    days: string[];
+    hours: string;
+    price: number;
+    reminder: string | null;
+    category: CategoryDTO;
+    image: string;
+    position: {
+        type: 'Point';
+        coordinates: [number, number];
+    };
+    organisationId: string;
+}

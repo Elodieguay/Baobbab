@@ -1,26 +1,23 @@
 import { CoursesDTO } from '@baobbab/dtos';
 import { EntityManager, wrap } from '@mikro-orm/core';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Courses } from 'src/entities/courses.entity';
 import { Organisation } from 'src/entities/organisation.entity';
 // import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class CoursesService {
-  constructor(
-    private readonly em: EntityManager,
-    // private readonly cloudinaryService: CloudinaryService
-  ) {}
+  constructor(private readonly em: EntityManager) {}
+  private readonly logger = new Logger(CoursesService.name);
 
   async create(createCourse: CoursesDTO): Promise<Courses> {
-    // // il faut lier l'url de cloudinary avec la création de course.image pour le mettre dans la base de
-    // const imageUrl =  await this.cloudinaryService.uploadImage(file)
     const course = new Courses();
     const organisation = await this.em.findOne(Organisation, {
       id: createCourse.organisationId,
     });
 
     if (!organisation) {
+      this.logger.error('Organisation not found');
       throw new NotFoundException('Organisation not found');
     }
 
@@ -44,8 +41,12 @@ export class CoursesService {
     return this.em.find(Courses, {});
   }
 
-  async findById(id: string): Promise<Courses | null> {
-    return this.em.findOne(Courses, { id });
+  async findById(id: string): Promise<Courses> {
+    const course = await this.em.findOne(Courses, { id });
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+    return course;
   }
 
   async update(id: string, updateData: Partial<CoursesDTO>): Promise<Courses> {

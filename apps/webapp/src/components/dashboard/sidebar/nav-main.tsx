@@ -51,12 +51,14 @@ export function NavMain({
                                     tooltip={item.title}
                                     onClick={() => onItemClick(item)}
                                 >
-                                    {item.icon && <item.icon />}
-                                    <span>{item.title}</span>
-                                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                                    {item.icon && <item.icon size={40} />}
+                                    <span className="text-md">
+                                        {item.title}
+                                    </span>
+                                    {/* <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" /> */}
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
-                            <CollapsibleContent>
+                            {/* <CollapsibleContent>
                                 <SidebarMenuSub>
                                     {item.items?.map((subItem) => (
                                         <SidebarMenuSubItem key={subItem.title}>
@@ -68,7 +70,7 @@ export function NavMain({
                                         </SidebarMenuSubItem>
                                     ))}
                                 </SidebarMenuSub>
-                            </CollapsibleContent>
+                            </CollapsibleContent> */}
                         </SidebarMenuItem>
                     </Collapsible>
                 ))}

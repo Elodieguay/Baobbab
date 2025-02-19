@@ -1,67 +1,78 @@
 import { Heart } from 'lucide-react';
 import { Button } from '../ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '../ui/card';
+import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import React from 'react';
-import { coursesNantesProps } from '@/utils/coursesGeocoding';
+import { CoursesDTOGeojson } from '@baobbab/dtos';
+import log from 'loglevel';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 export interface CardsCoursesProps {
-    item: coursesNantesProps;
-    setHoveredCardId: React.Dispatch<React.SetStateAction<number | null>>;
+    item: CoursesDTOGeojson;
+    setHoveredCardId: React.Dispatch<React.SetStateAction<string | null>>;
+    city: string;
 }
 const CardsCourses = ({
     item,
     setHoveredCardId,
+    city,
 }: CardsCoursesProps): JSX.Element => {
+    log.debug('id of card in CardsCourses:', item.id);
+    const { t } = useTranslation('common', {
+        keyPrefix: 'Courses.cardsCourses',
+    });
+    const navigate = useNavigate();
     return (
         <Card
             key={item.id}
-            className="w-full h-44 shadow-sm border rounded-md overflow-hidden flex border-none relative"
+            className="w-full h-64 shadow-sm border rounded-md overflow-hidden flex border-none relative"
             onMouseEnter={() => setHoveredCardId(item.id)}
             onMouseLeave={() => setHoveredCardId(null)}
         >
-            <div className="relative w-1/3 h-full ">
+            <div className="relative w-1/3 h-full">
                 <img
-                    src={`https://fakeimg.pl/300x150?text=${encodeURIComponent(item.name)}`}
-                    alt={item.name}
+                    src={item.image}
+                    alt={item.title}
                     className="w-full h-full object-cover"
                 />
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="absolute bottom-2 right-2  transition-transform transform hover:scale-110  "
+                    className="absolute bottom-2 right-2 transition-transform transform hover:scale-110"
                     onClick={() =>
-                        console.log(`${item.name} ajouté aux favoris`)
+                        console.log(`${item.title} ajouté aux favoris`)
                     }
                 >
                     <Heart size={25} className="text-white" />
                 </Button>
             </div>
-            <div className="flex flex-col justify-around text-gray-600">
+            <div className="flex flex-col justify-between p-4 w-2/3">
                 <CardHeader>
-                    <CardTitle className="text-lg font-semibold ">
-                        {item.name}
+                    <CardTitle className="text-lg font-semibold">
+                        {item.title}
                     </CardTitle>
-                    <CardDescription className="text-sm ">
-                        Coordonnées : {item.lng}, {item.lat}
+                    <CardDescription className="text-sm text-gray-500">
+                        {item.description.length > 100
+                            ? `${item.description.slice(0, 100)}...`
+                            : item.description}
                     </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <div className="flex flex-col mt-2">
                     <p className="text-gray-600 text-sm">
-                        Jours d'ouverture : Lundi - Vendredi
+                        <strong>Durée :</strong> {item.duration} minutes
                     </p>
-                </CardContent>
-                {/* <div className="p-4">
-                            <Button className=" text-sm px-4 py-2 rounded-md hover:bg-[#dfa438]">
-                                Voir plus
-                            </Button>
-
-                        </div> */}
+                    <p className="text-gray-600 text-sm">
+                        <strong>Jours :</strong> {item.days.join(', ')}
+                    </p>
+                </div>
+                <div className="mt-2">
+                    <Button
+                        className="text-sm px-4 py-2 rounded-md hover:bg-[#dfa438]"
+                        onClick={() => navigate(`/courses/${city}/${item.id}`)}
+                    >
+                        {t('button')}
+                    </Button>
+                </div>
             </div>
         </Card>
     );

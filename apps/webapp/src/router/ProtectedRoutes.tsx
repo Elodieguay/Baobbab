@@ -5,11 +5,9 @@ import { Outlet, useLocation } from 'react-router';
 import { Navigate } from 'react-router';
 
 const ProtectedRoutes = (): JSX.Element => {
-    // console.log('AppRoutes:', AppRoutes);
     const location = useLocation();
 
     const { authToken, role } = useAuth();
-    // console.log('authToken:', authToken, 'role:', role);
 
     const findCurrentRoute = (
         pathname: string
@@ -18,14 +16,10 @@ const ProtectedRoutes = (): JSX.Element => {
             if (route.path?.toLowerCase() === pathname.toLowerCase()) {
                 return true;
             }
-            console.log(
-                `Path mismatch: pathname=${pathname}, routePath=${route.path}`
-            );
             return false;
         });
     };
     const currentRoute = findCurrentRoute(location.pathname);
-    // console.log('currentRoute:', currentRoute);
 
     // Redirection si l'utilisateur n'est pas authentifié
     if (

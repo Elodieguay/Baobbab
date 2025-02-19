@@ -29,18 +29,18 @@ export declare const courseFormSchema: z.ZodObject<{
     hours: string;
     days: string[];
     tags: string[];
-    reminder: string | null;
+    reminder?: string | undefined;
 }>;
 export interface CoursesDTO {
     title: string;
     address: string;
-    city: string | null;
+    city?: string;
     description: string;
     duration: number;
     days: string[];
     hours: string;
     price: number;
-    reminder: string | null;
+    reminder?: string;
     category: CategoryDTO;
     image: string;
     position: Point;
@@ -54,4 +54,23 @@ export interface CourseRegisterDTO {
     hours: string;
     reminder?: string;
     tags: string[];
+}
+export interface CoursesDTOGeojson {
+    id: string;
+    title: string;
+    address: string;
+    city: string | null;
+    description: string;
+    duration: number;
+    days: string[];
+    hours: string;
+    price: number;
+    reminder: string | null;
+    category: CategoryDTO;
+    image: string;
+    position: {
+        type: 'Point';
+        coordinates: [number, number];
+    };
+    organisationId: string;
 }

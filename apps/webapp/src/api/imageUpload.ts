@@ -1,7 +1,4 @@
-import {
-    imageFormSchema,
-    imageUploadDTOSchema,
-} from '@/components/form/TestImageFile';
+import { imageUploadDTOSchema } from '@/components/form/input/TestImageFile';
 import { config } from '@/config';
 import ky from 'ky';
 
