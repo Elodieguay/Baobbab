@@ -8,7 +8,12 @@ import ModalAuth from './components/auth/ModalAuth';
 import { CityProvider } from './context/City.context';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/config';
-import { SidebarProvider } from './components/ui/sidebar';
+import { configureLogs } from '@/utils/logConfig/logCongif';
+import '@/utils/logConfig/sentryConfig';
+import { Toaster } from './components/ui/toaster';
+
+//Initialise la configure des logs
+configureLogs();
 
 const AppContent = (): JSX.Element => {
     const { isModalOpen } = useModal();
@@ -27,13 +32,12 @@ function App(): JSX.Element {
         <I18nextProvider i18n={i18n}>
             <AuthProvider>
                 <QueryClientProvider client={queryClient}>
-                    {/* <SidebarProvider> */}
                     <ModalProvider>
                         <CityProvider>
                             <AppContent />
                         </CityProvider>
                     </ModalProvider>
-                    {/* </SidebarProvider> */}
+                    <Toaster />
                     <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>
             </AuthProvider>

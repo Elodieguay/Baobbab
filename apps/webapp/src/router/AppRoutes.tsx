@@ -82,7 +82,7 @@ const AppRoutes: { [key in RouteNames]: AppRoute } = {
         // }
     },
     Dashboard: {
-        path: '/dashboard',
+        path: '/dashboard/:id',
         accessMode: RouteAccessMode.Authenticated,
     },
     Profile: {

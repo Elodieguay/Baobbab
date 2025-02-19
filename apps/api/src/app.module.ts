@@ -11,6 +11,7 @@ import authConfig from './modules/auth/auth.config';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { CoursesModule } from './modules/courses/courses.module';
+import { OrganisationModule } from './modules/organisation/organisation.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { CoursesModule } from './modules/courses/courses.module';
     AuthModule,
     CategoriesModule,
     CoursesModule,
+    OrganisationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

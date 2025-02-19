@@ -1,7 +1,8 @@
 import { useGeocodingAddress } from '@/hooks/useGeocodingAddress';
-import { GetAddressesDTO } from '@baobbab/dtos';
+import { GeocodingFeature, GetAddressesDTO } from '@baobbab/dtos';
 import { useState } from 'react';
 import AutoComplete from './AutoComplete';
+import log from 'loglevel';
 
 export function AddressSearch(): JSX.Element {
     // valeur de recherche
@@ -13,15 +14,17 @@ export function AddressSearch(): JSX.Element {
     const searchDTO: GetAddressesDTO = { address: searchValue || '', limit: 5 };
     // Appeler le hook pour récupérer les données de recherche sur l'api
     const { data, isLoading, error } = useGeocodingAddress(searchDTO);
-
+    log.info('data:', data);
     // Transformer les données en format attendu par AutoComplete
+
     const items =
-        data?.flatMap((featureCollection) =>
-            featureCollection.features.map((feature) => ({
-                value: feature.properties.city,
-                label: feature.properties.city,
-            }))
-        ) ?? [];
+        data?.features.map((feature: GeocodingFeature) => ({
+            value: feature.properties.name, // Nom simple
+            label: feature.properties.label, // Label complet avec adresse
+        })) ?? [];
+
+    console.log('items:', items);
+    log.info('searchValue:', searchValue);
 
     return (
         <div>

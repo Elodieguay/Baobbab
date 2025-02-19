@@ -102,13 +102,13 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "web_site": {
-          "name": "web_site",
+        "website": {
+          "name": "website",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "social_media_instagram": {
@@ -117,7 +117,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "social_media_face_book": {
@@ -126,7 +126,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "social_media_twitter": {
@@ -135,7 +135,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "image": {
@@ -144,7 +144,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "created_at": {

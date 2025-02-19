@@ -27,17 +27,11 @@ const router = createBrowserRouter([
                 element: <CourseByCity />,
             },
             {
-                path: ':id',
+                path: ':city/:id',
                 element: <CourseById />,
             },
         ],
     },
-
-    // {
-    //     path: AppRoutes.Login.path,
-    //     element: <ModalAuth />,
-    // },
-
     {
         path: AppRoutes.Organisation.path,
         element: <Organisation />,

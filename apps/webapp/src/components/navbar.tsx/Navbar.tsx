@@ -21,8 +21,9 @@ const Navbar = (): JSX.Element => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [_, setSelectedCity] = useState<string>('');
     const { t } = useTranslation('common', {
-        keyPrefix: 'public.navbar',
+        keyPrefix: 'Navbar',
     });
+
     const toggleMenu = (): void => {
         event?.stopPropagation();
         setMenuOpen((prev) => !prev);
@@ -58,7 +59,7 @@ const Navbar = (): JSX.Element => {
             <div className="w-full h-16 flex items-center justify-between border-b px-8">
                 <h1 className="text-3xl font-semibold font-poppins">
                     <Trans
-                        i18nKey="public.navbar.logo"
+                        i18nKey="Navbar.logo"
                         components={{
                             span: <span className="text-[#01a274]" />,
                         }}

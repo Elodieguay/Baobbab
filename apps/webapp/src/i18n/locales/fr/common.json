@@ -1,13 +1,30 @@
 {   
-    "public" : {
-        "Home" : {
-            "logo": "baobbab",
-            "connect": "connection",
-            "baseline": "Trouve ton activité à proximité",
-            "select": "Selectionne une ville"
-        },
-        "navbar" : {
-            "logo": "bao<span>b</span>bab"
+    "Home" : {
+        "logo": "bao<span>b</span>bab",
+        "connect": "connection",
+        "baseline": "Trouve ton activité à proximité",
+        "select": "Selectionne une ville",
+        "button":"Je me lance",
+        "selectCityNantes":"Nantes",
+        "selectCityParis":"Paris (bientôt)",
+        "selectCityCapdenac":"Capdenac-Gare (bientôt)"
+    },
+    "Navbar" : {
+        "logo": "bao<span>b</span>bab"
+    },
+    "Organisation":{
+        "page":{
+            "register": "Créer un compte",
+            "registerContent":"Faites rayonner votre passion auprès d’une communauté en quête de nouvelles expériences !",
+            "login": "S'enregistrer"
+
         }
-    }   
+    },
+    "Courses":{
+        "cardsCourses":{
+            "button": "Voir plus"
+        }
+    }
+
+      
 }

@@ -13,7 +13,7 @@ export default {
     		xs: '20rem',
     		md: '48rem',
     		lg: '90rem',
-    		xl: '120rem'
+    		xl: '180rem'
     	},
     	extend: {
     		backgroundImage: {

@@ -48,6 +48,8 @@ export default [
             'no-console': 'off',
             'no-warning-comments': 'off',
             '@typescript-eslint/consistent-type-imports': 'off',
+            '@typescript-eslint/no-explicit-any':'warn'
+
         },
     },
     // Frontend
@@ -75,6 +77,7 @@ export default [
         rules: {
             'react-refresh/only-export-components': 'warn',
             '@typescript-eslint/explicit-function-return-type':'off', 
+            '@typescript-eslint/no-explicit-any':'warn'
         },
     },
     // Backend

@@ -1,13 +1,13 @@
 /* eslint-disable */
 
 import { useMemo, useState } from 'react';
-import { Command as CommandPrimitive } from 'cmdk'
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '../ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { CommandEmpty, CommandGroup, CommandItem, CommandList, Command as CommandPrimitive } from 'cmdk'
 import { cn } from '@/utils/utils';
-import { PopoverAnchor } from '@radix-ui/react-popover';
+import { PopoverAnchor, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
 import { Check } from 'lucide-react';
-import { Input } from '../ui/input';
+import { Popover } from '@/components/ui/popover';
+import { Command } from '@/components/ui/command';
+import { Input } from '@/components/ui/input';
 
 interface Props<T extends string> {
     selectedValue: T;

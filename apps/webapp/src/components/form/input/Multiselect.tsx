@@ -21,10 +21,13 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ options, field }) => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-between">
+                <Button
+                    variant="outline"
+                    className="w-full justify-between font-normal text-md"
+                >
                     {field.value?.length > 0
                         ? `${field.value.length} sélectionné(s)`
-                        : 'Choisissez des options'}
+                        : 'Jours de la semaine'}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-56">

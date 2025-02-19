@@ -1,17 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Values, z } from 'zod';
+
+import { ImageUploadDTO, ImageUploadResponse } from '@/api/imageUpload';
+import { useUploadMutation } from '@/hooks/useUploadMutation';
 import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormMessage,
-} from '../ui/form';
-import { Input } from '../ui/input';
-import { ImageUploadDTO, ImageUploadResponse } from '@/api/imageUpload';
-import { useUploadMutation } from '@/hooks/useUploadMutation';
-import { Button } from '../ui/button';
+} from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -58,7 +59,7 @@ export const imageUploadDTOSchema = z.object({
     maxValue: z.number().optional(),
 });
 
-const TestImageFile = (): void => {
+const TestImageFile = (): JSX.Element => {
     const { mutate: uploadImage, isPending } = useUploadMutation();
 
     const form = useForm<z.infer<typeof imageFormSchema>>({
@@ -87,9 +88,7 @@ const TestImageFile = (): void => {
     //     }
     // }
 
-    function onSubmitForm(
-        values: z.infer<typeof imageFormSchema>
-    ): ImageUploadDTO {
+    function onSubmitForm(values: z.infer<typeof imageFormSchema>): void {
         console.log('Form values:', values);
         console.log('Image file:', values.image);
         console.log('Image type:', values.image?.type);

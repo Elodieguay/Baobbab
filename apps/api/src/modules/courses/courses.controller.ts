@@ -10,7 +10,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { CoursesService } from './courses.service';
-import { CoursesDTO } from '@baobbab/dtos';
+import { CoursesDTO, CoursesDTOGeojson } from '@baobbab/dtos';
 import { entityToDto } from './courses.entityToDto';
 
 @Controller('courses')
@@ -29,15 +29,33 @@ export class CoursesController {
 
   // Récupérer tous les cours
   @Get()
-  async findAll(): Promise<CoursesDTO> {
-    return this.coursesService.findAll();
+  async findAll(): Promise<CoursesDTOGeojson[]> {
+    const courses = await this.coursesService.findAll();
+    return courses.map((course) => ({
+      ...course,
+      id: course.id,
+      position: {
+        type: 'Point',
+        coordinates: [course.position.lng, course.position.lat],
+      },
+      organisationId: course.organisation.id,
+    }));
   }
 
-  // // Récupérer un cours par ID
-  // @Get(':id')
-  // async findById(@Param('id') id: string) {
-  //   return this.coursesService.findById(id);
-  // }
+  // Récupérer un cours par ID
+  @Get(':id')
+  async findById(@Param('id') id: string): Promise<CoursesDTOGeojson> {
+    const course = await this.coursesService.findById(id);
+    return {
+      ...course,
+      id: course.id,
+      position: {
+        type: 'Point',
+        coordinates: [course.position.lng, course.position.lat],
+      },
+      organisationId: course.organisation.id,
+    };
+  }
 
   //  // Mettre à jour un cours
   //  @Patch(':id')
