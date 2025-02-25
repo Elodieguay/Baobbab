@@ -1,8 +1,8 @@
 import CoursesForm from '@/components/form/courses/CoursesForm';
-import { courseFormSchema } from '@baobbab/dtos';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+// import { courseFormSchema } from '@baobbab/dtos';
+// import { zodResolver } from '@hookform/resolvers/zod';
+// import { useForm } from 'react-hook-form';
+// import { z } from 'zod';
 import { DashSubName } from './OrganisationSidebar';
 import OrganisationInfosForm from '../form/organisation/OrganisationInfosForm';
 
@@ -13,13 +13,13 @@ export const ContentDisplay = ({
     organisationId: string;
     activeItem: DashSubName | null;
 }): JSX.Element => {
-    const form = useForm<z.infer<typeof courseFormSchema>>({
-        resolver: zodResolver(courseFormSchema),
-        mode: 'onChange',
-        defaultValues: {},
-    });
+    // const form = useForm<z.infer<typeof courseFormSchema>>({
+    //     resolver: zodResolver(courseFormSchema),
+    //     mode: 'onChange',
+    //     defaultValues: {},
+    // });
 
-    const handleSubmit = (): void => {};
+    // const handleSubmit = (): void => {};
     const contentMap: Record<string, JSX.Element> = {
         [DashSubName.CREATE]: (
             <div className="w-1/2 h-full ">
@@ -48,7 +48,6 @@ export const ContentDisplay = ({
         [DashSubName.ACCOUNT_PHOTO]: <div>les photos</div>,
         [DashSubName.ACCOUNT_BIO]: <div>la bio</div>,
     };
-    console.log(activeItem);
 
     return (
         <div className="h-full w-full ">

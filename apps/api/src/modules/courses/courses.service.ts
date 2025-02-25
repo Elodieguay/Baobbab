@@ -41,6 +41,17 @@ export class CoursesService {
     return this.em.find(Courses, {});
   }
 
+  async findCoursesByCategory(categoryId?: string): Promise<Courses[]> {
+    this.logger.debug('category dans Api back', categoryId);
+    if (!categoryId) {
+      return this.findAll();
+    }
+    const coursesCategory = await this.em.find(Courses, {
+      category: { id: categoryId },
+    });
+    return coursesCategory;
+  }
+
   async findById(id: string): Promise<Courses> {
     const course = await this.em.findOne(Courses, { id });
     if (!course) {
@@ -49,21 +60,21 @@ export class CoursesService {
     return course;
   }
 
-  async update(id: string, updateData: Partial<CoursesDTO>): Promise<Courses> {
-    const course = await this.findById(id);
-    if (!course) {
-      throw new NotFoundException('Course not found');
-    }
-    this.em.assign(course, updateData);
-    await this.em.persistAndFlush(course);
-    return course;
-  }
+  // async update(id: string, updateData: Partial<CoursesDTO>): Promise<Courses> {
+  //   const course = await this.findById(id);
+  //   if (!course) {
+  //     throw new NotFoundException('Course not found');
+  //   }
+  //   this.em.assign(course, updateData);
+  //   await this.em.persistAndFlush(course);
+  //   return course;
+  // }
 
-  async delete(id: string): Promise<void> {
-    const course = await this.findById(id);
-    if (!course) {
-      throw new NotFoundException('Course not found');
-    }
-    await this.em.removeAndFlush(course);
-  }
+  // async delete(id: string): Promise<void> {
+  //   const course = await this.findById(id);
+  //   if (!course) {
+  //     throw new NotFoundException('Course not found');
+  //   }
+  //   await this.em.removeAndFlush(course);
+  // }
 }

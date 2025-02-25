@@ -28,7 +28,7 @@ const TableProfile = (): JSX.Element => {
     ];
 
     return (
-        <Table className="w-full table-auto border-collapse ">
+        <Table className="w-full table-auto border-collapse overflow-y-auto ">
             <TableHeader>
                 <TableRow>
                     <TableHead className="border px-4 py-2 text-left">

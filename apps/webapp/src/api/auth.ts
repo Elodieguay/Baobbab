@@ -8,6 +8,7 @@ import {
     UserLoginDTO,
     UserRegisterDTO,
     UserRole,
+    LoginResponse,
 } from '@baobbab/dtos';
 import { config } from '../config';
 import ky from 'ky';
@@ -40,10 +41,7 @@ export const loginOrganisationSchema = z.object({
 export async function registerUser(
     createUser: UserRegisterDTO
 ): Promise<RegisterResponse> {
-    console.log('createUser', createUser);
-
     const validationResult = registerSchema.safeParse(createUser);
-    console.log('validationResult', validationResult);
 
     if (!validationResult.success) {
         console.error('Validation failed:', validationResult.error);
@@ -52,15 +50,15 @@ export async function registerUser(
 
     try {
         const url = `${config.apiUrl}/auth/register`;
-        console.log('url', url);
 
         const response = (await ky
             .post(url, { json: createUser })
             .json()) as RegisterResponse;
-        console.log('response', response);
+        log.debug('response User Register:', response);
+
         return response;
     } catch (error) {
-        console.error('error registering user', error);
+        log.error('error registering user', error);
         throw error;
     }
 }
@@ -68,12 +66,11 @@ export async function registerUser(
 // la fonction permet de connecter un utilisateur
 export async function loginUser(
     loginUser: UserLoginDTO
-): Promise<RegisterResponse> {
+): Promise<UserLoginDTO> {
     const validationResult = registerSchema.safeParse(loginUser);
-    console.log('validationResult', validationResult);
 
     if (!validationResult.success) {
-        console.error('Validation failed:', validationResult.error);
+        log.error('Validation failed:', validationResult.error);
         throw new Error('Validation error: invalid input data');
     }
 
@@ -81,18 +78,19 @@ export async function loginUser(
         const url = `${config.apiUrl}/auth/login`;
         const response = (await ky
             .post(url, { json: loginUser })
-            .json()) as RegisterResponse;
-        console.log('ApiResponseLogin', response);
+            .json()) as LoginResponse;
+        log.debug('response User login:', response);
+
         return response;
     } catch (error) {
-        console.error('error logging in user', error);
+        log.error('error logging in user', error);
         throw error;
     }
 }
 
 export const checkProtectedRoute = async ({
     token,
-    role,
+    // role,
 }: ProtectedRouteDTO): Promise<ProtectedRouteDTO> => {
     try {
         const response = await ky.post('/auth/protected', {
@@ -100,10 +98,11 @@ export const checkProtectedRoute = async ({
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(response);
 
         return await response.json();
     } catch (error) {
+        log.error('Check protested route failed:', error);
+
         throw new Error('User is not authenticated or token is invalid');
     }
 };
@@ -111,26 +110,22 @@ export const checkProtectedRoute = async ({
 export async function registerOrganisation(
     createOrganisation: OrganisationRegisterDTO
 ): Promise<OrganisationAuthResponse> {
-    console.log('createOrganisation', createOrganisation);
-
     const validationResult =
         registerOrganisationSchema.safeParse(createOrganisation);
     if (!validationResult.success) {
-        console.error('Validation failed:', validationResult.error);
+        log.error('Validation failed:', validationResult.error);
         throw new Error('Validation error: invalid input data');
     }
-    console.log('validation', validationResult);
 
     try {
         const url = `${config.apiUrl}/auth/organisationRegister`;
         const response = (await ky
             .post(url, { json: createOrganisation })
             .json()) as OrganisationAuthResponse;
-        console.log('response', response);
 
         return response;
     } catch (error) {
-        console.error('error registering organisation', error);
+        log.error('error registering organisation', error);
         throw error;
     }
 }
@@ -140,7 +135,6 @@ export async function loginOrganisation(
 ): Promise<OrganisationAuthResponse> {
     const validationResult =
         loginOrganisationSchema.safeParse(loginOrganisation);
-    console.log('validationResult', validationResult);
 
     if (!validationResult.success) {
         log.error('Validation failed:', validationResult.error);
@@ -154,7 +148,41 @@ export async function loginOrganisation(
             .json()) as OrganisationAuthResponse;
         return response;
     } catch (error) {
-        console.error('error logging in user', error);
+        log.error('error logging in user', error);
+        throw error;
+    }
+}
+
+export async function forgotPassword({
+    email,
+}: {
+    email: string;
+}): Promise<string> {
+    log.debug('email:', email);
+    try {
+        const url = `${config.apiUrl}/auth/forgotPassword`;
+        const response = await ky.post(url, { json: { email } }).json<string>();
+        log.debug(response);
+        return response;
+    } catch (error) {
+        log.error('error sending email', error);
+        throw error;
+    }
+}
+
+export async function resetPassword(
+    token: string,
+    password: string
+): Promise<string> {
+    log.debug('token,password', token, password);
+    try {
+        const url = `${config.apiUrl}/auth/resetPassword`;
+        const response = await ky
+            .post(url, { json: { token: token, newPassword: password } })
+            .json<string>();
+        return response;
+    } catch (error) {
+        log.error('error resetting password', error);
         throw error;
     }
 }

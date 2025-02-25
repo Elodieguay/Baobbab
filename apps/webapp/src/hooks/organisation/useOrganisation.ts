@@ -2,16 +2,12 @@ import {
     getOrganisationById,
     updateOrganisationInfos,
 } from '@/api/organisation';
-import {
-    CourseRegisterDTO,
-    OrganisationAuthResponse,
-    OrganisationInfosDTO,
-} from '@baobbab/dtos';
+import { OrganisationInfosDTO } from '@baobbab/dtos';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useToast } from './use-toast';
+import { useToast } from '../use-toast';
 import log from 'loglevel';
 
-export const useOrganisationById = (organisationId: string): any => {
+export const useOrganisationById = (organisationId: string) => {
     return useQuery({
         queryKey: ['organisationId', organisationId],
         queryFn: () => getOrganisationById(organisationId),
@@ -19,7 +15,7 @@ export const useOrganisationById = (organisationId: string): any => {
     });
 };
 
-export const useUpdateOrganisationInfos = (organisationId: string): any => {
+export const useUpdateOrganisationInfos = (organisationId: string) => {
     const { toast } = useToast();
     return useMutation({
         mutationFn: ({
@@ -31,12 +27,10 @@ export const useUpdateOrganisationInfos = (organisationId: string): any => {
         onSuccess: (data) => {
             log.info('Les modifications sont enregistrées:', data);
 
-            console.log('Avant le toast ✅');
             toast({
                 title: 'Les modifications sont enregistrées',
                 variant: 'default',
             });
-            console.log('Après le toast ✅');
         },
         onError: (error) => {
             log.error('Les modifications ont échouées:', error);

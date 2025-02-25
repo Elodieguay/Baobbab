@@ -13,7 +13,7 @@ const mikroOrmConfig = defineConfig({
   clientUrl: process.env.DATABASE_URL,
   debug: true,
   migrations: {
-    path: './dist/migrations',
+    path: './dist/src/migrations',
     pathTs: './src/migrations',
     allOrNothing: true,
     disableForeignKeys: true,

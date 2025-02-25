@@ -1,4 +1,4 @@
-import { useGeocodingAddress } from '@/hooks/useGeocodingAddress';
+import { useGeocodingAddress } from '@/hooks/form/useGeocodingAddress';
 import { GeocodingFeature, GetAddressesDTO } from '@baobbab/dtos';
 import { useState } from 'react';
 import AutoComplete from './AutoComplete';

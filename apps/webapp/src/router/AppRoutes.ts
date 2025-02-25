@@ -5,6 +5,7 @@ export enum RouteNames {
     Login = 'Login',
     Register = 'Register',
     Organisation = 'Organisation',
+    Error404 = 'Error404',
 
     // action de validation de l'inscription
     ForgottenPassword = 'ForgottenPassword',
@@ -58,11 +59,11 @@ const AppRoutes: { [key in RouteNames]: AppRoute } = {
         accessMode: RouteAccessMode.UnAuthenticated,
     },
     ForgottenPassword: {
-        path: '/forgotten-password',
+        path: '/forgotPassword',
         accessMode: RouteAccessMode.UnAuthenticated,
     },
     ResetPassword: {
-        path: '/reset-password',
+        path: '/resetPassword/:token',
         accessMode: RouteAccessMode.UnAuthenticated,
     },
     ChangePassword: {
@@ -74,7 +75,7 @@ const AppRoutes: { [key in RouteNames]: AppRoute } = {
         accessMode: RouteAccessMode.UnAuthenticated,
     },
     Booking: {
-        path: '/booking',
+        path: '/booking/:id',
         accessMode: RouteAccessMode.Authenticated,
         // redirects: {
         //   authenticated: RouteNames.CourseById,
@@ -88,6 +89,10 @@ const AppRoutes: { [key in RouteNames]: AppRoute } = {
     Profile: {
         path: '/profile',
         accessMode: RouteAccessMode.Authenticated,
+    },
+    Error404: {
+        path: '*',
+        accessMode: RouteAccessMode.Public,
     },
 };
 

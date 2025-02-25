@@ -1,146 +1,102 @@
-import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import {
     NavigationMenu,
-    NavigationMenuContent,
     NavigationMenuItem,
-    NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger,
-    navigationMenuTriggerStyle,
 } from '../ui/navigation-menu';
-import React from 'react';
-import { cn } from '@/utils/utils';
+import log from 'loglevel';
+import { CategoryDTO } from '@baobbab/dtos';
 
-const ListItem = React.forwardRef<
-    React.ElementRef<'a'>,
-    React.ComponentPropsWithoutRef<'a'>
->(({ className, title, children, ...props }, ref) => {
-    return (
-        <li>
-            <NavigationMenuLink asChild>
-                {/* <a
-                    ref={ref}
-                    className={cn(
-                        'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
-                        className
-                    )}
-                    {...props}
-                >
-                    <div className="text-sm font-medium leading-none">
-                        {title}
-                    </div>
-                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        {children}
-                    </p>
-                </a> */}
-            </NavigationMenuLink>
-        </li>
-    );
-});
-ListItem.displayName = 'ListItem';
+type NavbarMenuProps = {
+    setSelectedCategory: (category: string) => void;
+    categoryList: CategoryDTO[];
+};
+const NavbarMenu = ({
+    setSelectedCategory,
+    categoryList,
+}: NavbarMenuProps): JSX.Element => {
+    const { t } = useTranslation('common', {
+        keyPrefix: 'SubNavbar',
+    });
 
-const NavbarMenu = (): JSX.Element => {
-    const components: { title: string; href: string; description: string }[] = [
-        {
-            title: 'Alert Dialog',
-            href: '/docs/primitives/alert-dialog',
-            description:
-                'A modal dialog that interrupts the user with important content and expects a response.',
-        },
-        {
-            title: 'Hover Card',
-            href: '/docs/primitives/hover-card',
-            description:
-                'For sighted users to preview content available behind a link.',
-        },
-        {
-            title: 'Progress',
-            href: '/docs/primitives/progress',
-            description:
-                'Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.',
-        },
-        {
-            title: 'Scroll-area',
-            href: '/docs/primitives/scroll-area',
-            description: 'Visually or semantically separates content.',
-        },
-        {
-            title: 'Tabs',
-            href: '/docs/primitives/tabs',
-            description:
-                'A set of layered sections of content—known as tab panels—that are displayed one at a time.',
-        },
-        {
-            title: 'Tooltip',
-            href: '/docs/primitives/tooltip',
-            description:
-                'A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.',
-        },
-    ];
+    log.debug('categoryList', categoryList);
+
+    // Fonction pour trouver l'id de la catégorie correspondant au titre
+    const getCategoryIdFromTitle = (title: string): string | null => {
+        const category = categoryList?.find((cat) => cat.title === title);
+
+        log.debug('category', category);
+        return category ? category.id : null;
+    };
+
+    const handleCategoryClick = (categoryTitle: string) => {
+        log.debug('categoryTitle', categoryTitle);
+        const categoryId = getCategoryIdFromTitle(categoryTitle);
+        log.debug('categoryId', categoryId);
+        if (categoryId) {
+            setSelectedCategory(categoryId);
+        }
+    };
 
     return (
         <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className="gap-6">
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger className="bg-none">
-                        Arts & Culture
+                    <NavigationMenuTrigger
+                        className="bg-none rounded-3xl border "
+                        onClick={() => handleCategoryClick(t('culture'))}
+                    >
+                        {t('culture')}
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                            {components.map((component) => (
-                                <ListItem
-                                    key={component.title}
-                                    title={component.title}
-                                    // href={component.href}
-                                >
-                                    {component.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>
-                        Sports & Danses
+                    <NavigationMenuTrigger
+                        className="bg-none rounded-3xl border"
+                        onClick={() => handleCategoryClick(t('sport'))}
+                    >
+                        {t('sport')}
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                            {components.map((component) => (
-                                <ListItem
-                                    key={component.title}
-                                    title={component.title}
-                                    href={component.href}
-                                >
-                                    {component.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>Bénévolat</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                            {components.map((component) => (
-                                <ListItem
-                                    key={component.title}
-                                    title={component.title}
-                                    href={component.href}
-                                >
-                                    {component.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
+                    <NavigationMenuTrigger
+                        className="bg-none rounded-3xl border"
+                        onClick={() => handleCategoryClick(t('dance'))}
+                    >
+                        {t('dance')}
+                    </NavigationMenuTrigger>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link to="/docs">
-                        {/* <NavigationMenuLink
-                            className={navigationMenuTriggerStyle()}
-                        >
-                            Evènements
-                        </NavigationMenuLink> */}
-                    </Link>
+                    <NavigationMenuTrigger
+                        className="bg-none rounded-3xl border"
+                        onClick={() => handleCategoryClick(t('health'))}
+                    >
+                        {t('health')}
+                    </NavigationMenuTrigger>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <NavigationMenuTrigger
+                        className="bg-none rounded-3xl border"
+                        onClick={() => handleCategoryClick(t('life'))}
+                    >
+                        {t('life')}
+                    </NavigationMenuTrigger>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <NavigationMenuTrigger
+                        className="bg-none rounded-3xl border"
+                        onClick={() => handleCategoryClick(t('environment'))}
+                    >
+                        {t('environment')}
+                    </NavigationMenuTrigger>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <NavigationMenuTrigger
+                        className="bg-none rounded-3xl border"
+                        onClick={() => handleCategoryClick(t('event'))}
+                    >
+                        {t('event')}
+                    </NavigationMenuTrigger>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>

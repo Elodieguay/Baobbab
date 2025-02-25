@@ -12,7 +12,6 @@ import { configureLogs } from '@/utils/logConfig/logCongif';
 import '@/utils/logConfig/sentryConfig';
 import { Toaster } from './components/ui/toaster';
 
-//Initialise la configure des logs
 configureLogs();
 
 const AppContent = (): JSX.Element => {
@@ -34,6 +33,7 @@ function App(): JSX.Element {
                 <QueryClientProvider client={queryClient}>
                     <ModalProvider>
                         <CityProvider>
+                            {/* <Navbar/> */}
                             <AppContent />
                         </CityProvider>
                     </ModalProvider>

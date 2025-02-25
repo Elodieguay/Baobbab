@@ -46,7 +46,6 @@ export interface UserRegisterDTO {
 export interface UserLoginDTO {
     email: string;
     password: string;
-    role: UserRole;
 }
 export interface ProtectedRouteDTO {
     token: string;

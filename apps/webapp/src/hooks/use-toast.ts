@@ -172,7 +172,7 @@ function toast({ ...props }: Toast): {
         update,
     };
 }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function useToast(): any {
     const [state, setState] = React.useState<State>(memoryState);
 

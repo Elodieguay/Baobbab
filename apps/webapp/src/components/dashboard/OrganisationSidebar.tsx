@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/sidebar';
 import { useState } from 'react';
 import { ContentDisplay } from '@/components/dashboard/ContentDisplay';
-import { useOrganisationById } from '@/hooks/useOrganisation';
+import { useOrganisationById } from '@/hooks/organisation/useOrganisation';
 import { useAuth } from '@/context/Auth.context';
 import { Button } from '../ui/button';
 import { useNavigate } from 'react-router';
@@ -33,7 +33,7 @@ export enum DashSubName {
     ACCOUNT_BIO = 'Biographie',
 }
 
-export const data = {
+const data = {
     navMain: [
         {
             title: DashSubName.CREATE,
@@ -83,11 +83,7 @@ export function OrganisationSidebar({
         throw new Error(" Vous n'avez pas accès à cette page");
     }
 
-    const {
-        data: organisation,
-        isLoading,
-        isError,
-    } = useOrganisationById(organisationId);
+    const { data: organisation } = useOrganisationById(organisationId);
 
     const handleLogout = (): void => {
         if (removeAuthToken) {

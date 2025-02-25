@@ -33,19 +33,11 @@ export default [
             parser: tsParser,
         },
         rules: {
-            '@typescript-eslint/interface-name-prefix': 'off',
-            '@typescript-eslint/explicit-function-return-type': [
-                "error",
-                {
-                    "allowExpressions": true, 
-                    "allowTypedFunctionExpressions": true, 
-                    "allowHigherOrderFunctions": true
-                }
-            ],
+      
             '@typescript-eslint/no-unused-vars': 'off',
             'prettier/prettier': 'error',
             'no-unused-vars': 'off',
-            'no-console': 'off',
+            'no-console': 'warn',
             'no-warning-comments': 'off',
             '@typescript-eslint/consistent-type-imports': 'off',
             '@typescript-eslint/no-explicit-any':'warn'
@@ -75,17 +67,53 @@ export default [
             },
         },
         rules: {
-            'react-refresh/only-export-components': 'warn',
-            '@typescript-eslint/explicit-function-return-type':'off', 
+            'react-refresh/only-export-components': "off",
+            '@typescript-eslint/explicit-function-return-type': [
+                'error',
+                {
+                    allowExpressions: true,
+                    allowTypedFunctionExpressions: true,
+                    allowHigherOrderFunctions: true,
+                },
+            ],    
+            'react/function-component-definition': [
+                'off',
+                {
+                    namedComponents: 'arrow-function',
+                    unnamedComponents: 'arrow-function',
+                },
+            ],  
+            // 'react-hooks/rules-of-hooks': 'error',
+            // 'react-hooks/exhaustive-deps': 'warn',      
             '@typescript-eslint/no-explicit-any':'warn'
         },
     },
     // Backend
     {
         files: ['apps/api/**/*.{js, jsx, ts, tsx}'],
+        rules: {
+            '@typescript-eslint/explicit-function-return-type': [
+                'error',
+                {
+                    allowExpressions: false, 
+                    allowTypedFunctionExpressions: false,
+                    allowHigherOrderFunctions: false,
+                },
+            ],
+        },
     },
     // DTOs
     {
         files: ['packages/dtos/**/*.{js, jsx, ts, tsx}'],
+        rules: {
+            '@typescript-eslint/explicit-function-return-type': [
+                'error',
+                {
+                    allowExpressions: false, 
+                    allowTypedFunctionExpressions: false,
+                    allowHigherOrderFunctions: false,
+                },
+            ],
+        },
     },
 ];

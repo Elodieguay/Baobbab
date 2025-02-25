@@ -25,6 +25,7 @@ export default function Login({
             role: UserRole.USER,
         });
     }
+
     return (
         <Form {...form}>
             <form
@@ -43,7 +44,7 @@ export default function Login({
                                     placeholder="email"
                                     value={field.value ?? ''}
                                 />
-                            </FormControl>
+                            </FormControl>{' '}
                             <FormMessage />
                         </FormItem>
                     )}
@@ -66,6 +67,7 @@ export default function Login({
                         </FormItem>
                     )}
                 />
+
                 <Button
                     type="submit"
                     className="w-full bg-[#0b927a] rounded-xl hover:bg-[#fdcf63]"
