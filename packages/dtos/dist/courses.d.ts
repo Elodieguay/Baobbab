@@ -22,16 +22,16 @@ export declare const courseFormSchema: z.ZodObject<{
     reminder: z.ZodOptional<z.ZodString>;
     tags: z.ZodEffects<z.ZodArray<z.ZodString, "many">, string[], string[]>;
 }, "strip", z.ZodTypeAny, {
-    address: string;
     name: string;
+    address: string;
     details: string;
     hours: string;
     days: string[];
     tags: string[];
     reminder?: string | undefined;
 }, {
-    address: string;
     name: string;
+    address: string;
     details: string;
     hours: string;
     days: string[];
