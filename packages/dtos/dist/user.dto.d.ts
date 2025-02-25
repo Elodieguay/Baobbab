@@ -13,7 +13,7 @@ export interface RegisterResponse {
 export interface LoginResponse {
     id: string;
     username: string;
-    password: "";
+    password: '';
     email: string;
     role: UserRole;
     access_token: string;
