@@ -2,6 +2,7 @@ import { UserDTO } from '@baobbab/dtos/src/user.dto';
 import { UserService } from './user.service';
 import { Body, Controller, Get } from '@nestjs/common';
 import { UserRole } from '@baobbab/dtos';
+import { logger } from '@mikro-orm/nestjs';
 
 @Controller('user')
 export class UserController {
@@ -10,11 +11,10 @@ export class UserController {
   //Récuperer un utilisateur par son nom d'utilisateur
 
   @Get('user')
-  async getUserByUsername(
-    @Body('username') username: string,
-  ): Promise<UserDTO> {
-    const user = await this.userService.findOneUser(username);
+  async getUserById(@Body('id') id: string): Promise<UserDTO> {
+    const user = await this.userService.findOneUserById(id);
     if (!user) {
+      logger.error(`User with ${id} not found`);
       throw new Error('User not found');
     }
     return {

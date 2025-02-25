@@ -1,5 +1,6 @@
 import { AuthService } from './auth.service';
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -17,13 +18,17 @@ import { LocalGuard } from './guards/local.guards';
 import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
 import {
+  LoginResponse,
   OrganisationLoginDTO,
   OrganisationRegisterDTO,
+  RegisterResponse,
   Status,
   SuperAdminDTO,
+  UserLoginDTO,
   UserRole,
 } from '@baobbab/dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { EntityType } from '@baobbab/dtos';
 
 @Controller('auth')
 export class AuthController {
@@ -33,13 +38,13 @@ export class AuthController {
   @Post('register')
   async register(
     @Body() createUserInput: UserRegisterDTO,
-  ): Promise<UserRegisterDTO> {
+  ): Promise<Omit<RegisterResponse, 'password'>> {
     const user = await this.authService.register(createUserInput);
     return {
       ...user,
       username: user.username || '',
-      password: '',
       role: UserRole.USER,
+      entityType: EntityType.USER,
       created_at: user.createdAt,
     };
   }
@@ -49,9 +54,14 @@ export class AuthController {
   @UseGuards(LocalGuard)
   async login(
     @Body() authPayloadDto: AuthPayloadDto,
-  ): Promise<Omit<UserDTO, 'password'> & { access_token: string }> {
-    const user = this.authService.login(authPayloadDto);
-    return user;
+  ): Promise<Omit<LoginResponse, 'password'> & { access_token: string }> {
+    const user = await this.authService.login(authPayloadDto);
+    return {
+      ...user,
+      username: user.username || '',
+      entityType: EntityType.USER,
+      access_token: user.access_token,
+    };
   }
 
   // Endpoint protégé : on verifie si l'utilisateur est authentifié // route auth/protected
@@ -67,8 +77,6 @@ export class AuthController {
   @Get('status')
   @UseGuards(JwtAuthGuard)
   status(@Req() req: Request): unknown {
-    console.log('helloopp');
-
     logger.debug('inside AuthController status', req.user);
     return req.user;
   }
@@ -79,7 +87,6 @@ export class AuthController {
   ): Promise<OrganisationRegisterDTO> {
     const organisation =
       await this.authService.organisationRegister(createOrganisation);
-    console.log('organisation in controller', organisation);
 
     return {
       ...organisation,
@@ -96,8 +103,6 @@ export class AuthController {
   ): Promise<
     Omit<OrganisationLoginDTO, 'password'> & { access_token: string }
   > {
-    console.log('authPayloadDto', authPayloadDto);
-
     const organisation =
       await this.authService.organisationLogin(authPayloadDto);
 
@@ -127,5 +132,29 @@ export class AuthController {
   ): Promise<Omit<SuperAdminDTO, 'password'> & { access_token: string }> {
     const superAdmin = this.authService.loginSuperAdmin(authPayloadDto);
     return superAdmin;
+  }
+
+  // Route pour demander un email de réinitialisation de mot de passe
+  @Post('forgotPassword')
+  async forgotPassword(
+    @Body('email') email: string,
+  ): Promise<{ token: string }> {
+    const result = await this.authService.forgotPassword(email);
+    logger.debug('result forgotPassword:', result);
+    return result;
+  }
+
+  @Post('resetPassword')
+  async resetPassword(
+    @Body('token') token: string,
+    @Body('newPassword') newPassword: string,
+  ): Promise<{ message: string }> {
+    logger.debug('result resetpassword', token, newPassword);
+    if (!token || !newPassword) {
+      throw new BadRequestException('Token and new password are required');
+    }
+    const result = await this.authService.resetPassword(token, newPassword);
+    logger.debug('resltat du reset', result);
+    return { message: result };
   }
 }

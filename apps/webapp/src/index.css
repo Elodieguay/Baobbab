@@ -15,6 +15,16 @@
     h1, h2, h3, h4, h5, h6, p {
         @apply text-gray-700 
     }
+
+    h1{
+        @apply text-3xl font-bold
+    }
+    h2{
+        @apply text-2xl font-bold
+    }
+    h3{
+        @apply text-xl font-bold
+    }
     :root {
         --sidebar-background: hsl(0, 0%, 98%);
         --sidebar-foreground: hsl(240, 5%, 26.1%);
@@ -25,16 +35,6 @@
         --sidebar-border: hsl(220, 13%, 91%);
         --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
       }
-  /* .dark { 
-        --sidebar-background: 240 5.9% 10%; 
-        --sidebar-foreground: 240 4.8% 95.9%; 
-        --sidebar-primary: 224.3 76.3% 48%; 
-        --sidebar-primary-foreground: 0 0% 100%; 
-        --sidebar-accent: 240 3.7% 15.9%; 
-        --sidebar-accent-foreground: 240 4.8% 95.9%; 
-        --sidebar-border: 240 3.7% 15.9%; 
-        --sidebar-ring: 217.2 91.2% 59.8%;
-  
-    } */
+
   
 }

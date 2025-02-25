@@ -1,18 +1,25 @@
 import { z } from 'zod';
-import { UserRole } from './enum';
+import { EntityType, UserRole } from './enum';
 export interface RegisterResponse {
+    id: string;
     username: string;
     email: string;
     password: string;
     role: UserRole;
-    created_at: Date;
     access_token: string;
+    entityType: EntityType.USER;
+    created_at: Date;
 }
 export interface LoginResponse {
+    id: string;
     username: string;
+    password: "";
     email: string;
     role: UserRole;
     access_token: string;
+    entityType: EntityType.USER;
+    created_at?: Date;
+    updated_at?: Date;
 }
 export interface UserDTO {
     id: string;
@@ -33,13 +40,10 @@ export interface UserRegisterDTO {
     username: string;
     email: string;
     password: string;
-    role: UserRole.USER;
-    created_at: Date;
 }
 export interface UserLoginDTO {
     email: string;
     password: string;
-    role: UserRole;
 }
 export interface ProtectedRouteDTO {
     token: string;
@@ -69,5 +73,21 @@ export declare const formLoginSchema: z.ZodObject<{
     password: string;
 }, {
     email: string;
+    password: string;
+}>;
+export type forgottenPasswordSchemaType = z.infer<typeof forgottenPasswordSchema>;
+export declare const forgottenPasswordSchema: z.ZodObject<{
+    email: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    email: string;
+}, {
+    email: string;
+}>;
+export type resetPasswordSchemaType = z.infer<typeof resetPasswordSchema>;
+export declare const resetPasswordSchema: z.ZodObject<{
+    password: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    password: string;
+}, {
     password: string;
 }>;

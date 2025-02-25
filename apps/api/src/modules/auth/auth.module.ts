@@ -8,6 +8,7 @@ import * as dotenv from 'dotenv';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { EmailService } from '../email/email.service';
 dotenv.config();
 @Module({
   imports: [
@@ -26,6 +27,7 @@ dotenv.config();
     LocalStrategy,
     JwtStrategy,
     CloudinaryService,
+    EmailService,
   ],
   exports: [AuthService],
 })

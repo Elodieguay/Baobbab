@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Values, z } from 'zod';
+import { z } from 'zod';
 
-import { ImageUploadDTO, ImageUploadResponse } from '@/api/imageUpload';
-import { useUploadMutation } from '@/hooks/useUploadMutation';
+// import { ImageUploadDTO} from '@/api/imageUpload';
+// import { useUploadMutation } from '@/hooks/form/useUploadMutation';
 import {
     Form,
     FormControl,
@@ -11,7 +11,7 @@ import {
     FormItem,
     FormMessage,
 } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
+// import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
@@ -60,7 +60,7 @@ export const imageUploadDTOSchema = z.object({
 });
 
 const TestImageFile = (): JSX.Element => {
-    const { mutate: uploadImage, isPending } = useUploadMutation();
+    // const { mutate: uploadImage, isPending } = useUploadMutation();
 
     const form = useForm<z.infer<typeof imageFormSchema>>({
         resolver: zodResolver(imageFormSchema),
@@ -100,10 +100,10 @@ const TestImageFile = (): JSX.Element => {
         }
 
         // Crée l'objet ImageUploadDTO
-        const imageUploadData: ImageUploadDTO = {
-            data: values.image,
-            maxValue: values.image.size / 1024,
-        };
+        // const imageUploadData: ImageUploadDTO = {
+        //     data: values.image,
+        //     maxValue: values.image.size / 1024,
+        // };
 
         // if (file && file instanceof File) {
         //     const imageUploadData: ImageUploadDTO = {
@@ -112,7 +112,7 @@ const TestImageFile = (): JSX.Element => {
         //     };
 
         // Passe-le à la fonction `onSubmit`
-        uploadImage(imageUploadData);
+        // uploadImage(imageUploadData);
     }
 
     return (
@@ -155,20 +155,20 @@ const TestImageFile = (): JSX.Element => {
                                     }}
                                     name={field.name}
                                     onBlur={field.onBlur}
-                                    disabled={isPending}
+                                    // disabled={isPending}
                                 />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button
+                {/* <Button
                     type="submit"
                     className="w-full bg-[#0b927a] rounded-xl hover:bg-[#fdcf63]"
                     disabled={isPending}
                 >
                     {isPending ? 'Envoi en cours...' : "S'enregistrer"}
-                </Button>
+                </Button> */}
             </form>
         </Form>
     );

@@ -4,12 +4,14 @@ import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { formSchema, UserRegisterDTO, UserRole } from '@baobbab/dtos';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export default function Register({
     form,
@@ -49,6 +51,9 @@ export default function Register({
                                     placeholder="prénom"
                                 />
                             </FormControl>
+                            <FormDescription>
+                                Il doit contenir au moins 4 caractères.
+                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -66,6 +71,10 @@ export default function Register({
                                     value={field.value ?? ''}
                                 />
                             </FormControl>
+                            <FormDescription>
+                                Saisis l'adresse e-mail que tu souhaites
+                                utiliser sur baobbab.
+                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -84,10 +93,23 @@ export default function Register({
                                     value={field.value ?? ''}
                                 />
                             </FormControl>
+                            <FormDescription>
+                                Il doit contenir au moins 8 caractères, dont 1
+                                chiffre et 1 majuscule.
+                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
+
+                <div className="flex items-center gap-5">
+                    <Checkbox className="h-6 w-6 border-slate-700 data-[state=checked]:bg-[#0b927a] rounded-md" />
+                    <p>
+                        En t'inscrivant, tu confirmes que tu acceptes les Termes
+                        & Conditions, avoir lu la Politique de Confidentialité
+                        et avoir au moins 18 ans
+                    </p>
+                </div>
 
                 <Button
                     type="submit"

@@ -3,7 +3,7 @@ import { Button } from '../ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import React from 'react';
 import { CoursesDTOGeojson } from '@baobbab/dtos';
-import log from 'loglevel';
+// import log from 'loglevel';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
@@ -17,7 +17,7 @@ const CardsCourses = ({
     setHoveredCardId,
     city,
 }: CardsCoursesProps): JSX.Element => {
-    log.debug('id of card in CardsCourses:', item.id);
+    // log.debug('id of card in CardsCourses:', item.id);
     const { t } = useTranslation('common', {
         keyPrefix: 'Courses.cardsCourses',
     });
@@ -67,7 +67,7 @@ const CardsCourses = ({
                 </div>
                 <div className="mt-2">
                     <Button
-                        className="text-sm px-4 py-2 rounded-md hover:bg-[#dfa438]"
+                        className="text-sm px-4 py-2 rounded-xl hover:bg-[#dfa438]"
                         onClick={() => navigate(`/courses/${city}/${item.id}`)}
                     >
                         {t('button')}

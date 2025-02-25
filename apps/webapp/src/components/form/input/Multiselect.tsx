@@ -5,8 +5,6 @@ import {
 } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
-import { Controller } from 'react-hook-form';
 
 type MultiSelectProps = {
     options: { label: string; value: string }[]; // Liste des options
@@ -14,7 +12,7 @@ type MultiSelectProps = {
     field: {
         value: string[];
         onChange: (value: string[]) => void;
-    }; // Field from React Hook Form
+    };
 };
 
 const MultiSelect: React.FC<MultiSelectProps> = ({ options, field }) => {

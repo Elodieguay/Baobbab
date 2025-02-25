@@ -1,9 +1,17 @@
-/* eslint-disable */
-
 import { useMemo, useState } from 'react';
-import { CommandEmpty, CommandGroup, CommandItem, CommandList, Command as CommandPrimitive } from 'cmdk'
+import {
+    CommandEmpty,
+    CommandGroup,
+    CommandItem,
+    CommandList,
+    Command as CommandPrimitive,
+} from 'cmdk';
 import { cn } from '@/utils/utils';
-import { PopoverAnchor, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
+import {
+    PopoverAnchor,
+    PopoverContent,
+    PopoverTrigger,
+} from '@radix-ui/react-popover';
 import { Check } from 'lucide-react';
 import { Popover } from '@/components/ui/popover';
 import { Command } from '@/components/ui/command';
@@ -22,53 +30,52 @@ interface Props<T extends string> {
 }
 
 const AutoComplete = ({
-  selectedValue,
-  onSelectedValueChange,
-  searchValue,
-  onSearchValueChange,
-  items,
-  isLoading,
-  emptyMessage,
-  placeholder,
-  className,
+    selectedValue,
+    onSelectedValueChange,
+    searchValue,
+    onSearchValueChange,
+    items,
+    isLoading,
+    emptyMessage,
+    placeholder,
+    className,
 }: Props<string>) => {
+    const [open, setOpen] = useState(false);
+    const labels = useMemo(
+        (): Record<string, string> =>
+            items.reduce(
+                (acc, item): Record<string, string> => {
+                    acc[item.value] = item.label;
+                    return acc;
+                },
+                {} as Record<string, string>
+            ),
 
-  const [open, setOpen] = useState(false)
-  /* eslint-disable */
-  const labels = useMemo(
-    (): Record<string, string> =>
-      items.reduce((acc, item): Record<string, string> => {
-        acc[item.value] = item.label
-        return acc
-      }, {} as Record<string, string>),
+        [items]
+    );
 
-    [items],
+    const reset = () => {
+        onSelectedValueChange('' as typeof selectedValue);
+        onSearchValueChange('');
+    };
+    const onInputBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
+        if (
+            !e.relatedTarget?.hasAttribute('cmdk-list') &&
+            labels[selectedValue] !== searchValue
+        ) {
+            reset();
+        }
+    };
 
-  )
-
-  const reset = () => {
-    onSelectedValueChange('' as typeof selectedValue)
-    onSearchValueChange('')
-  }
-  const onInputBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
-    if (
-     !e.relatedTarget?.hasAttribute('cmdk-list') && labels[selectedValue] !== searchValue
-    ) {
-      reset()
-    }
-  }
-/* eslint-disable */
-
-  const onSelectItem = (inputValue: string):void => {
-    if (inputValue === selectedValue) {
-      reset()
-    }
-    else {
-      onSelectedValueChange(inputValue as typeof selectedValue)
-      onSearchValueChange(labels[inputValue] ?? '')
-    }
-    setOpen(false)
-  }
+    const onSelectItem = (inputValue: string): void => {
+        if (inputValue === selectedValue) {
+            reset();
+        } else {
+            onSelectedValueChange(inputValue as typeof selectedValue);
+            onSearchValueChange(labels[inputValue] ?? '');
+        }
+        setOpen(false);
+    };
 
     return (
         <div className="flex items-center ">

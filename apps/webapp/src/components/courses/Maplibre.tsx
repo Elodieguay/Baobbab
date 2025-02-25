@@ -1,9 +1,11 @@
 import maplibregl from 'maplibre-gl';
-import { useEffect, useMemo, useRef } from 'react';
 import PinCards from './PinCards';
-import { createRoot } from 'react-dom/client';
+import 'maplibre-gl/dist/maplibre-gl.css';
+
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import log from 'loglevel';
 import { CoursesDTOGeojson } from '@baobbab/dtos';
+import { createRoot } from 'react-dom/client';
 
 const Maplibre = ({
     isLoading,
@@ -18,43 +20,41 @@ const Maplibre = ({
     courseData: CoursesDTOGeojson[];
     hoveredCardId: string | null;
 }): JSX.Element => {
-    log.debug('hover:', hoveredCardId);
     const mapContainer = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<maplibregl.Map | null>(null);
-    // log.info('data', courseData);
-    // log.info(loadCoordinates);
 
-    const adjustPositions = (
-        courseData: CoursesDTOGeojson[]
-    ): CoursesDTOGeojson[] => {
-        const seenCoords = new Map();
+    const adjustPositions = useCallback(
+        (courseData: CoursesDTOGeojson[]): CoursesDTOGeojson[] => {
+            const seenCoords = new Map();
 
-        return courseData.map((course) => {
-            const coordsKey = course.position.coordinates.join(',');
+            return courseData.map((course) => {
+                const coordsKey = course.position.coordinates.join(',');
 
-            if (seenCoords.has(coordsKey)) {
-                // On a déjà vu ces coordonnées → On ajoute un petit décalage
-                const count = seenCoords.get(coordsKey);
-                const offset = count * 0.0001; // Décalage progressif
-                seenCoords.set(coordsKey, count + 1);
+                if (seenCoords.has(coordsKey)) {
+                    // On a déjà vu ces coordonnées → On ajoute un petit décalage
+                    const count = seenCoords.get(coordsKey);
+                    const offset = count * 0.0001; // Décalage progressif
+                    seenCoords.set(coordsKey, count + 1);
 
-                return {
-                    ...course,
-                    position: {
-                        ...course.position,
-                        coordinates: [
-                            course.position.coordinates[0] + offset, // Décalage en longitude
-                            course.position.coordinates[1] + offset, // Décalage en latitude
-                        ],
-                    },
-                };
-            } else {
-                // Première fois qu'on voit ces coordonnées
-                seenCoords.set(coordsKey, 1);
-                return course;
-            }
-        });
-    };
+                    return {
+                        ...course,
+                        position: {
+                            ...course.position,
+                            coordinates: [
+                                course.position.coordinates[0] + offset, // Décalage en longitude
+                                course.position.coordinates[1] + offset, // Décalage en latitude
+                            ],
+                        },
+                    };
+                } else {
+                    // Première fois qu'on voit ces coordonnées
+                    seenCoords.set(coordsKey, 1);
+                    return course;
+                }
+            });
+        },
+        []
+    );
 
     const validData = courseData?.filter((course) => {
         const coordinates = course.position?.coordinates;
@@ -63,7 +63,11 @@ const Maplibre = ({
         );
     });
 
-    const adjustedData = useMemo(() => adjustPositions(validData), [validData]);
+    // const adjustedData = useMemo(() => adjustPositions(validData), [validData]);
+    const adjustedData = useMemo(
+        () => adjustPositions(validData),
+        [validData, adjustPositions]
+    );
 
     // log.debug('validata:', validData);
 
@@ -78,7 +82,7 @@ const Maplibre = ({
         });
 
         map.on('load', () => {
-            log.info('Map loaded, adding points layer...');
+            // log.info('Map loaded, adding points layer...');
 
             map.addSource('points', {
                 type: 'geojson',
@@ -147,37 +151,51 @@ const Maplibre = ({
         });
 
         return () => {
-            map.remove();
+            mapRef.current?.remove();
+            mapRef.current = null;
         };
-    }, [courseData]);
+    }, [loadCoordinates]);
 
     useEffect(() => {
-        console.log(
-            'Feature IDs:',
-            adjustedData.map((course) => course.id)
-        );
         if (!mapRef.current) return;
 
+        const map = mapRef.current;
+
+        // Applique des mises à jour sur les sources existantes sans recréer la carte
+        (map.getSource('points') as maplibregl.GeoJSONSource)?.setData({
+            type: 'FeatureCollection',
+            features: adjustedData.map((course) => ({
+                type: 'Feature',
+                geometry: course.position,
+                properties: {
+                    id: course.id,
+                    title: course.title,
+                },
+            })),
+        });
+    }, [adjustedData]);
+
+    useEffect(() => {
+        if (!mapRef.current || !hoveredCardId) return;
+
+        const layer = mapRef.current.getLayer('points-layer');
+        if (!layer) return;
         // On vérifie si la couche existe avant de modifier son style
-        if (mapRef.current.getLayer('points-layer')) {
-            console.log(
-                'Layer exists:',
-                mapRef.current.getLayer('points-layer')
-            );
-            console.log('Updating color for hoveredCardId:', hoveredCardId);
-            mapRef.current.setPaintProperty('points-layer', 'circle-radius', [
-                'case',
-                ['==', ['get', 'id'], hoveredCardId],
-                10,
-                8,
-            ]);
-            mapRef.current.setPaintProperty('points-layer', 'circle-color', [
-                'case',
-                ['==', ['get', 'id'], hoveredCardId],
-                '#01a274',
-                '#e47890',
-            ]);
-        }
+        // if (mapRef.current.getLayer('points-layer')) {
+
+        mapRef.current.setPaintProperty('points-layer', 'circle-radius', [
+            'case',
+            ['==', ['get', 'id'], hoveredCardId],
+            10,
+            8,
+        ]);
+        mapRef.current.setPaintProperty('points-layer', 'circle-color', [
+            'case',
+            ['==', ['get', 'id'], hoveredCardId],
+            '#01a274',
+            '#e47890',
+        ]);
+        // }
     }, [hoveredCardId]);
 
     if (isLoading) {

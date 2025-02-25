@@ -2,6 +2,7 @@ import z from 'zod';
 import { Point } from './position';
 
 export interface CategoryDTO {
+    id: string;
     title: string;
 }
 

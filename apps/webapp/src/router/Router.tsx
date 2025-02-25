@@ -10,6 +10,8 @@ import CourseById from '@/pages/courses/CourseById';
 import CourseByCity from '@/pages/courses/CourseByCity';
 // import ModalAuth from '@/components/auth/ModalAuth';
 import Organisation from '@/pages/organisation/Organisation';
+import ForgottenPassword from '@/components/auth/ForgottenPassword';
+import ResetPassword from '@/components/auth/ResetPassword';
 
 const router = createBrowserRouter([
     // version v7
@@ -17,6 +19,14 @@ const router = createBrowserRouter([
     {
         path: AppRoutes.Home.path,
         element: <Home />,
+    },
+    {
+        path: AppRoutes.ForgottenPassword.path,
+        element: <ForgottenPassword />,
+    },
+    {
+        path: AppRoutes.ResetPassword.path,
+        element: <ResetPassword />,
     },
     {
         path: AppRoutes.Courses.path,
@@ -52,6 +62,10 @@ const router = createBrowserRouter([
                 element: <Profile />,
             },
         ],
+    },
+    {
+        path: AppRoutes.Error404.path,
+        element: <h1>404 - Page non trouvée</h1>,
     },
 ]);
 const Router = (): JSX.Element => {

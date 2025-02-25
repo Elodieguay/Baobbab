@@ -12,17 +12,17 @@ import { z } from 'zod';
 import {
     useOrganisationLogin,
     useOrganisationRegister,
-} from '@/hooks/useAuthMutation';
+} from '@/hooks/auth/useAuthMutation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
 import OrganisationFormLogin from '@/components/form/auth/OrganisationFormLogin';
+import Footer from '@/components/footer/Footer';
+import meditation from '@/assets/meditationProf.jpg';
 
 const Organisation = (): JSX.Element => {
-    const { mutate: organisationRegister, isPendingRegister } =
-        useOrganisationRegister();
+    const { mutate: organisationRegister } = useOrganisationRegister();
 
-    const { mutate: organisationLogin, isPendingLogin } =
-        useOrganisationLogin();
+    const { mutate: organisationLogin } = useOrganisationLogin();
     const { t } = useTranslation('common', {
         keyPrefix: 'Organisation.page',
     });
@@ -52,9 +52,6 @@ const Organisation = (): JSX.Element => {
     const onSubmitForm = (
         values: z.infer<typeof organisationRegisterFormSchema>
     ): void => {
-        console.log(values);
-        console.log('je suis là');
-
         organisationRegister({
             ...values,
             role: UserRole.ADMIN,
@@ -79,10 +76,12 @@ const Organisation = (): JSX.Element => {
     return (
         <div className="w-full h-full">
             <Navbar />
-            <div className="flex flex-col h-screen w-full items-center gap-4 p-4">
-                <h1 className="text-left">{t('registerContent')}</h1>
-                <div className="flex w-[90%]  min-h-screen xl:gap-8 ">
-                    <div className="flex w-1/2 justify-center items-center">
+            <div className="flex flex-col h-screen w-full items-center space-y-10 overflow-hidden">
+                <h2 className="text-center w-2/3 pt-5">
+                    {t('registerContent')}
+                </h2>
+                <div className="flex w-[90%]  min-h-screen xl:gap-8 justify-center ">
+                    <div className="flex w-1/2 h-5/6 justify-center items-center">
                         <Tabs defaultValue="register" className="w-4/5">
                             <TabsList className="grid w-full grid-cols-2 gap-2">
                                 <TabsTrigger value="register">
@@ -96,7 +95,7 @@ const Organisation = (): JSX.Element => {
                                 value="register"
                                 className="flex justify-center"
                             >
-                                <div className="w-2/3 p-6 rounded-md ">
+                                <div className="w-3/4 p-6 rounded-md ">
                                     <OrganisationFormRegister
                                         form={formRegister}
                                         onSubmit={onSubmitForm}
@@ -107,7 +106,7 @@ const Organisation = (): JSX.Element => {
                                 value="login"
                                 className="flex justify-center"
                             >
-                                <div className="w-2/3 p-6 rounded-md ">
+                                <div className="w-3/4 p-6 rounded-md ">
                                     <OrganisationFormLogin
                                         form={formLogin}
                                         onSubmit={onSubmitLoginForm}
@@ -116,9 +115,15 @@ const Organisation = (): JSX.Element => {
                             </TabsContent>
                         </Tabs>
                     </div>
-                    <div className="w-1/2 h-full bg-registerOrga bg-cover flex flex-col  justify-center items-center rounded-md "></div>
+                    <div className="w-1/2 h-5/6 justify-center items-center rounded-md overflow-hidden">
+                        <img
+                            src={meditation}
+                            className="h-full w-full object-cover rounded-t-md"
+                        />
+                    </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

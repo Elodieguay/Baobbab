@@ -10,12 +10,21 @@ import { logger } from '@mikro-orm/nestjs';
 export class UserService {
   constructor(private readonly em: EntityManager) {}
 
-  async findOneUser(username: string): Promise<User | null> {
-    return this.em.findOne(User, { username });
+  async findOneUserById(userId: string): Promise<User | null> {
+    return this.em.findOne(User, { id: userId });
+  }
+
+  async findOneUserByEmail(email: string): Promise<User | null> {
+    return this.em.findOne(User, { email });
   }
 
   async findAllUsers(): Promise<User[]> {
     logger.debug(this.em.find(User, {}));
     return this.em.find(User, {});
+  }
+
+  async updateUser(user: User): Promise<User> {
+    await this.em.persistAndFlush(user);
+    return user;
   }
 }

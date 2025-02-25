@@ -11,6 +11,16 @@
     },
     "Navbar" : {
         "logo": "bao<span>b</span>bab"
+
+    },
+    "SubNavbar":{
+        "culture":"Arts & Cultures",
+        "sport": "Sport",
+        "dance": "Danse",
+        "health":"Bien-être",
+        "life":"Vie & Solidarité",
+        "environment":"Environnement",
+        "event":"Evènements"
     },
     "Organisation":{
         "page":{
@@ -24,6 +34,34 @@
         "cardsCourses":{
             "button": "Voir plus"
         }
+    },
+    "Description":{
+        "title":" Avec Baobbab, tu vas vivre...",
+        "card":{
+            "firstCard":"Un super moment avec des pros passionnés juste à côté de chez toi. Prépare-toi pour une dose de bonne humeur et de créativité !",
+            "secondCard":"De belles rencontres qui, comme toi, ont envie d’apprendre, d’échanger et de s’amuser. Entre rires et découvertes, tu vas te créer des souvenirs qui font chaud au cœur !",
+            "thirdCard":"Une expérience qui te transforme. Tu vas découvrir une nouvelle facette de toi. Tu apprendras de nouvelles compétences, te surprendras, et peut-être même te redécouvriras. Une expérience enrichissante qui fait grandir et booste la confiance en soi !"    
+        }       
+        },
+    "CTA":{
+        "title":"Prêt à pousser les portes et à te lancer dans une aventure où apprentissage, rencontres et découvertes sont au rendez-vous ? 🌟",
+        "button": "Découvrir les activités"
+    },
+        
+    "Footer":{
+        "logo": "bao<span>b</span>bab",
+        "description":"Baobbab, votre boussole du partage, pour découvrir des cours près de chez vous, grandir ensemble, et tisser des liens durables au cœur de votre communauté.",
+        "aboutUs":"A propos de baobbab",
+        "findCourse":"Trouver un cours",
+        "organisation":"Vous êtes une assoociation",
+        "contact":"Contact",
+        "faq":"FAQ",
+        "legal":"Mentions légales",
+        "cgu":"CGU-CGV",
+        "newsletter":"Newsletter",
+        "newsletterContent":"Inscrivez-vous à notre newsletter pour recevoir les dernières actualités de BAOBAB",
+        "email":"Votre adresse email",
+        "button":"S'inscrire"
     }
 
       

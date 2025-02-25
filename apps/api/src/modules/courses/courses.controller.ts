@@ -8,10 +8,13 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  Query,
+  Req,
 } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CoursesDTO, CoursesDTOGeojson } from '@baobbab/dtos';
-import { entityToDto } from './courses.entityToDto';
+import { courseToDto, entityToDto } from './courses.entityToDto';
+import { logger } from '@mikro-orm/nestjs';
 
 @Controller('courses')
 export class CoursesController {
@@ -27,19 +30,34 @@ export class CoursesController {
     return entityToDto(course);
   }
 
-  // Récupérer tous les cours
+  // // Récupérer tous les cours
+  // @Get()
+  // async findAll(): Promise<CoursesDTOGeojson[]> {
+  //   const courses = await this.coursesService.findAll();
+  //   return courses.map((course) => ({
+  //     ...course,
+  //     id: course.id,
+  //     position: {
+  //       type: 'Point',
+  //       coordinates: [course.position.lng, course.position.lat],
+  //     },
+  //     organisationId: course.organisation.id,
+  //   }));
+  // }
+
   @Get()
-  async findAll(): Promise<CoursesDTOGeojson[]> {
-    const courses = await this.coursesService.findAll();
-    return courses.map((course) => ({
-      ...course,
-      id: course.id,
-      position: {
-        type: 'Point',
-        coordinates: [course.position.lng, course.position.lat],
-      },
-      organisationId: course.organisation.id,
-    }));
+  async findByCategory(
+    @Req() req: Request,
+    @Query('categoryId') categoryId?: string,
+  ): Promise<CoursesDTOGeojson[]> {
+    if (categoryId) {
+      const coursesCategory =
+        await this.coursesService.findCoursesByCategory(categoryId);
+      return courseToDto(coursesCategory);
+    } else {
+      const allCourses = await this.coursesService.findAll();
+      return courseToDto(allCourses);
+    }
   }
 
   // Récupérer un cours par ID

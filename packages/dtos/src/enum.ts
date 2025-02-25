@@ -12,3 +12,8 @@ export enum Status {
     DRAFT = 'DRAFT',
     CANCELLED = 'CANCELLED',
 }
+
+export enum EntityType {
+    USER = 'user',
+    ORGANISATION = 'organisation',
+}

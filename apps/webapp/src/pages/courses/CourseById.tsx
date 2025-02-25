@@ -5,21 +5,28 @@ import TableDashboard from '@/components/tables/TableDashboard';
 import { courses } from '@/utils/utils';
 import elo from '@/assets/images/elo.png';
 import { Instagram, Quote } from 'lucide-react';
-import { useGetCourseById } from '@/hooks/useGetCourses';
+import { useGetCourseById } from '@/hooks/courses/query';
 import { useParams } from 'react-router';
+import ModalBooking from '@/components/booking/ModalBooking';
+
 const CourseById = (): JSX.Element => {
+    const { id } = useParams();
+    // const navigate = useNavigate();
+
+    const { data: coursesInfos, isLoading } = useGetCourseById(id ?? '');
+
+    if (!id) {
+        return <div>Course not found</div>;
+    }
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
     const team = {
         avatars: elo,
         details:
             'Lara se consacre à créer un espace inclusif où chacun, quel que soit son niveau ou son âge, peut explorer la danse comme un moyen d’expression et de bien-être. Entre cours, ateliers thématiques, et organisation de spectacles, elle met tout en œuvre pour faire vivre la culture de la danse et fédérer une communauté autour de cette passion commune.',
     };
-
-    const { id } = useParams();
-    if (!id) {
-        return <div>Course not found</div>;
-    }
-
-    const { data: coursesInfos } = useGetCourseById(id);
 
     return (
         <div className="flex flex-col w-full h-full bg-neutral-50 items-center gap-5">
@@ -44,7 +51,7 @@ const CourseById = (): JSX.Element => {
                         variant="default"
                         className="bg-[#01a274] text-white text-base"
                     >
-                        Réserver un cours d'essai
+                        <ModalBooking data={coursesInfos} />
                     </Button>
                 </div>
             </section>

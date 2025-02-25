@@ -9,17 +9,17 @@ export default {
         // "./node_modules/@shadcn/ui/**/*.{js,ts,jsx,tsx}"
     ],
     theme: {
-    	screen: {
-    		xs: '20rem',
-    		md: '48rem',
-    		lg: '90rem',
-    		xl: '180rem'
+    	screens: {
+    		'xs': '20rem',
+    		'md': '48rem',
+    		'lg': '64rem',
+    		'xl': '95rem'
     	},
     	extend: {
     		backgroundImage: {
 				'home-svg': "url('/src/assets/baobbab_home.svg')",
     			'home-img': "url('/src/assets/images/escalade.jpg')",
-				'home-bao': "url('/src/assets/baobb.png')",
+				'home-bao': "url('/src/assets/baoDescription.png')",
 				'registerOrga':"url('/src/assets/meditationProf.jpg')"
     		},
     		fontFamily: {
