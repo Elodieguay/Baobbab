@@ -96,6 +96,7 @@ const CourseById = (): JSX.Element => {
                             </li>
                             <li></li>
                         </ul>
+                        <div>reservation</div>
                     </div>
                 </div>
             </div>

@@ -23,6 +23,7 @@ const Maplibre = ({
     const mapContainer = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<maplibregl.Map | null>(null);
 
+    log.debug('coursedata de maplibre', courseData);
     const adjustPositions = useCallback(
         (courseData: CoursesDTOGeojson[]): CoursesDTOGeojson[] => {
             const seenCoords = new Map();
@@ -127,10 +128,12 @@ const Maplibre = ({
                 if (pointCliked && pointCliked.geometry.type === 'Point') {
                     const coordinates = (pointCliked.geometry as GeoJSON.Point)
                         .coordinates as [number, number];
+                    const cardId = pointCliked.properties.id;
+                    log.info('pointCliked', cardId);
                     const container = document.createElement('div');
 
                     const root = createRoot(container);
-                    root.render(<PinCards />);
+                    root.render(<PinCards cardId={cardId} data={courseData} />);
                     new maplibregl.Popup()
                         .setDOMContent(container)
                         .setLngLat(coordinates)
