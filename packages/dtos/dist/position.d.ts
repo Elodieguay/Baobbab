@@ -3,8 +3,8 @@ export interface GetAddressesDTO {
     limit: number;
 }
 export interface Point {
-    latitude: number;
-    longitude: number;
+    lat: number;
+    lng: number;
 }
 export interface Geometry {
     type: Point;

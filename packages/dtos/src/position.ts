@@ -4,8 +4,8 @@ export interface GetAddressesDTO {
 }
 
 export interface Point {
-    latitude: number;
-    longitude: number;
+    lat: number;
+    lng: number;
 }
 
 export interface Geometry {
