@@ -63,11 +63,11 @@ const Maplibre = ({
         );
     });
 
-    // const adjustedData = useMemo(() => adjustPositions(validData), [validData]);
-    const adjustedData = useMemo(
-        () => adjustPositions(validData),
-        [validData, adjustPositions]
-    );
+    const adjustedData = useMemo(() => adjustPositions(validData), [validData]);
+    // const adjustedData = useMemo(
+    //     () => adjustPositions(validData),
+    //     [validData, adjustPositions]
+    // );
 
     // log.debug('validata:', validData);
 
