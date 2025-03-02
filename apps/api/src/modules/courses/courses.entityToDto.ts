@@ -3,16 +3,20 @@ import { Courses } from 'src/entities/courses.entity';
 
 export function entityToDto(courses: Courses): CoursesDTO {
   return {
+    id: courses.id,
     title: courses.title,
     description: courses.description,
     image: courses.image,
-    days: courses.days,
     duration: courses.duration,
-    hours: courses.hours,
     price: courses.price,
     address: courses.address,
     city: courses.city || undefined,
     reminder: courses.reminder || undefined,
+    schedule: courses.schedule.map((s) => ({
+      id: s.id,
+      day: s.day,
+      hours: s.hours,
+    })),
     position: courses.position,
     category: courses.category,
     organisationId: courses.organisation.id,
@@ -25,13 +29,16 @@ export function courseToDto(courses: Courses[]): CoursesDTOGeojson[] {
     title: course.title,
     description: course.description,
     image: course.image,
-    days: course.days,
     duration: course.duration,
-    hours: course.hours,
     price: course.price,
     address: course.address,
     city: course.city || null,
     reminder: course.reminder || null,
+    schedule: course.schedule.map((s) => ({
+      id: s.id,
+      day: s.day,
+      hours: s.hours,
+    })),
     position: {
       type: 'Point',
       coordinates: [course.position.lng, course.position.lat],

@@ -12,6 +12,16 @@ type NavbarMenuProps = {
     setSelectedCategory: (category: string) => void;
     categoryList: CategoryDTO[];
 };
+
+// Fonction pour trouver l'id de la catégorie correspondant au titre
+export const getCategoryIdFromTitle = (
+    categoryList: CategoryDTO[],
+    title: string
+): string | null => {
+    const category = categoryList?.find((cat) => cat.title === title);
+    return category ? category.id : null;
+};
+
 const NavbarMenu = ({
     setSelectedCategory,
     categoryList,
@@ -20,19 +30,17 @@ const NavbarMenu = ({
         keyPrefix: 'SubNavbar',
     });
 
-    log.debug('categoryList', categoryList);
+    // // Fonction pour trouver l'id de la catégorie correspondant au titre
+    // const getCategoryIdFromTitle = (title: string): string | null => {
+    //     const category = categoryList?.find((cat) => cat.title === title);
 
-    // Fonction pour trouver l'id de la catégorie correspondant au titre
-    const getCategoryIdFromTitle = (title: string): string | null => {
-        const category = categoryList?.find((cat) => cat.title === title);
-
-        log.debug('category', category);
-        return category ? category.id : null;
-    };
+    //     log.debug('category', category);
+    //     return category ? category.id : null;
+    // };
 
     const handleCategoryClick = (categoryTitle: string) => {
         log.debug('categoryTitle', categoryTitle);
-        const categoryId = getCategoryIdFromTitle(categoryTitle);
+        const categoryId = getCategoryIdFromTitle(categoryList, categoryTitle);
         log.debug('categoryId', categoryId);
         if (categoryId) {
             setSelectedCategory(categoryId);

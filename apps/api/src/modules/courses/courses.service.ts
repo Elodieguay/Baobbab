@@ -33,12 +33,12 @@ export class CoursesService {
     return this.em.findOneOrFail(
       Courses,
       { id: course.id },
-      { populate: ['organisation'] },
+      { populate: ['organisation', 'schedule'] },
     );
   }
 
   async findAll(): Promise<Courses[]> {
-    return this.em.find(Courses, {});
+    return this.em.find(Courses, {}, { populate: ['schedule'] });
   }
 
   async findCoursesByCategory(categoryId?: string): Promise<Courses[]> {
@@ -46,14 +46,29 @@ export class CoursesService {
     if (!categoryId) {
       return this.findAll();
     }
-    const coursesCategory = await this.em.find(Courses, {
-      category: { id: categoryId },
+    const coursesCategory = await this.em.find(
+      Courses,
+      {
+        category: { id: categoryId },
+      },
+      { populate: ['schedule'] },
+    );
+
+    // Vérification pour éviter les erreurs si schedule n'est pas chargé
+    coursesCategory.forEach((course) => {
+      if (!course.schedule.isInitialized()) {
+        this.logger.warn(`Schedules not initialized for course ${course.id}`);
+      }
     });
     return coursesCategory;
   }
 
   async findById(id: string): Promise<Courses> {
-    const course = await this.em.findOne(Courses, { id });
+    const course = await this.em.findOne(
+      Courses,
+      { id },
+      { populate: ['schedule'] },
+    );
     if (!course) {
       throw new NotFoundException('Course not found');
     }

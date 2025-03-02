@@ -1,7 +1,17 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
 import { Categories } from './categories.entity';
 import { Organisation } from './organisation.entity';
 import { Point } from '@baobbab/dtos';
+import { Schedule } from './schedule.entity';
+import { Booking } from './booking.entity';
 
 @Entity()
 export class Courses {
@@ -17,14 +27,8 @@ export class Courses {
   @Property({ type: 'text', nullable: true })
   image: string;
 
-  @Property({ type: 'array' })
-  days: string[];
-
   @Property({ type: 'text' })
   duration: number;
-
-  @Property({ type: 'text' })
-  hours: string;
 
   @Property({ type: 'text' })
   price: number;
@@ -41,9 +45,15 @@ export class Courses {
   @Property({ type: 'json' })
   position: Point;
 
+  @OneToMany(() => Schedule, (schedule) => schedule.courses)
+  schedule = new Collection<Schedule>(this);
+
   @ManyToOne(() => Categories)
   category: Categories;
 
   @ManyToOne(() => Organisation)
   organisation: Organisation;
+
+  @OneToMany(() => Booking, (booking) => booking.courses)
+  booking = new Collection<Booking>(this);
 }

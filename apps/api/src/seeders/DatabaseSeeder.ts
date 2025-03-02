@@ -8,6 +8,7 @@ import { Courses } from '../entities/courses.entity';
 import { Seeder } from '@mikro-orm/seeder';
 import { Categories } from '../entities/categories.entity';
 import { Point } from '@baobbab/dtos';
+import { Schedule } from '../entities/schedule.entity';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -68,6 +69,10 @@ export class DatabaseSeeder extends Seeder {
       } while (usedLocations.has(key));
 
       usedLocations.add(key); // Ajouter la position à l'ensemble des utilisées
+
+      // // Récupère maintenant les catégories pour les utiliser dans les cours
+      // const categories = await em.find(Categories, {});
+
       // Sélection d'une catégorie aléatoire
       const randomCategory =
         categories[Math.floor(Math.random() * categories.length)];
@@ -76,9 +81,7 @@ export class DatabaseSeeder extends Seeder {
         title: faker.commerce.productName(),
         description: faker.lorem.paragraph(),
         image: faker.image.url(),
-        days: ['Lundi', 'Mercredi', 'Vendredi'],
         duration: faker.number.int({ min: 30, max: 120 }),
-        hours: `${faker.number.int({ min: 9, max: 18 })}:00`,
         price: faker.number.int({ min: 10, max: 100 }),
         address: faker.location.streetAddress(),
         city: 'Nantes',
@@ -88,7 +91,26 @@ export class DatabaseSeeder extends Seeder {
         category: randomCategory, // Ajout de la catégorie
       });
 
-      em.persist([org, orgInfos, course]);
+      // Ajout des Schedules pour ce Course sans dates spécifiques
+      const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
+      const scheduleCount = faker.number.int({ min: 1, max: 5 }); // Créer entre 1 et 5 horaires pour chaque cours
+      const schedules: Schedule[] = [];
+
+      for (let j = 0; j < scheduleCount; j++) {
+        const day = daysOfWeek[Math.floor(Math.random() * daysOfWeek.length)];
+        const hour = `${faker.number.int({ min: 8, max: 18 })}:00`; // Horaire entre 8h00 et 18h00
+        const schedule = em.create(Schedule, {
+          courses: course,
+          day: day,
+          hours: hour,
+        });
+        schedules.push(schedule);
+      }
+
+      em.persist(org);
+      em.persist(orgInfos);
+      em.persist(course);
+      em.persist(schedules);
     }
   }
 }

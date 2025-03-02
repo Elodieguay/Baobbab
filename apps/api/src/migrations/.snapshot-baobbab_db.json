@@ -388,26 +388,8 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "days": {
-          "name": "days",
-          "type": "text[]",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "array"
-        },
         "duration": {
           "name": "duration",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "hours": {
-          "name": "hours",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -517,6 +499,171 @@
             "id"
           ],
           "referencedTableName": "public.organisation",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "mappedType": "uuid"
+        },
+        "day": {
+          "name": "day",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "hours": {
+          "name": "hours",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "courses_id": {
+          "name": "courses_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        }
+      },
+      "name": "schedule",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "schedule_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "schedule_courses_id_foreign": {
+          "constraintName": "schedule_courses_id_foreign",
+          "columnNames": [
+            "courses_id"
+          ],
+          "localTableName": "public.schedule",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.courses",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "mappedType": "uuid"
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "schedule_id": {
+          "name": "schedule_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "courses_id": {
+          "name": "courses_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "uuid"
+        }
+      },
+      "name": "booking",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "schedule_id"
+          ],
+          "composite": false,
+          "keyName": "booking_schedule_id_unique",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "booking_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "booking_schedule_id_foreign": {
+          "constraintName": "booking_schedule_id_foreign",
+          "columnNames": [
+            "schedule_id"
+          ],
+          "localTableName": "public.booking",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.schedule",
+          "updateRule": "cascade"
+        },
+        "booking_courses_id_foreign": {
+          "constraintName": "booking_courses_id_foreign",
+          "columnNames": [
+            "courses_id"
+          ],
+          "localTableName": "public.booking",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.courses",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       },

@@ -4,6 +4,11 @@ export interface CategoryDTO {
     id: string;
     title: string;
 }
+export interface ScheduleDTO {
+    id: string;
+    day: string;
+    hours: string;
+}
 export interface CityDTO {
     city: string;
 }
@@ -33,13 +38,13 @@ export declare const courseFormSchema: z.ZodObject<{
     reminder?: string | undefined;
 }>;
 export interface CoursesDTO {
+    id: string;
     title: string;
     address: string;
     city?: string;
     description: string;
     duration: number;
-    days: string[];
-    hours: string;
+    schedule: ScheduleDTO[];
     price: number;
     reminder?: string;
     category: CategoryDTO;
@@ -51,8 +56,7 @@ export interface CourseRegisterDTO {
     name: string;
     address: string;
     details: string;
-    days: string[];
-    hours: string;
+    schedule: ScheduleDTO;
     reminder?: string;
     tags: string[];
 }
@@ -63,8 +67,7 @@ export interface CoursesDTOGeojson {
     city: string | null;
     description: string;
     duration: number;
-    days: string[];
-    hours: string;
+    schedule: ScheduleDTO[];
     price: number;
     reminder: string | null;
     category: CategoryDTO;
