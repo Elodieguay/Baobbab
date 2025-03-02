@@ -72,6 +72,11 @@ export class CoursesController {
         coordinates: [course.position.lng, course.position.lat],
       },
       organisationId: course.organisation.id,
+      schedule: course.schedule.getItems().map((schedule) => ({
+        id: schedule.id,
+        hours: schedule.hours,
+        day: schedule.day,
+      })),
     };
   }
 

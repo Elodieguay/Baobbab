@@ -15,8 +15,6 @@ const PinCards = ({ cardId, data }: PinCardsProps): JSX.Element => {
               title: PinCardData.title,
               image: PinCardData.image,
               address: PinCardData.address,
-              day: PinCardData.days,
-              category: PinCardData.category,
           }
         : null;
 
@@ -29,7 +27,6 @@ const PinCards = ({ cardId, data }: PinCardsProps): JSX.Element => {
             </CardHeader>
             <CardContent className="text-base text-center flex flex-col">
                 <p>{result?.address}</p>
-                <p> {result?.day.join(',')}</p>
             </CardContent>
         </Card>
     );

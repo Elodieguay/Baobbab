@@ -1,4 +1,12 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
 import { Categories } from './categories.entity';
 import { Organisation } from './organisation.entity';
 import { Booking } from './booking.entity';

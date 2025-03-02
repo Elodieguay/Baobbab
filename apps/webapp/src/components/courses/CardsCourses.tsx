@@ -3,9 +3,9 @@ import { Button } from '../ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import React from 'react';
 import { CoursesDTOGeojson } from '@baobbab/dtos';
-// import log from 'loglevel';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
+import log from 'loglevel';
 
 export interface CardsCoursesProps {
     item: CoursesDTOGeojson;
@@ -17,11 +17,12 @@ const CardsCourses = ({
     setHoveredCardId,
     city,
 }: CardsCoursesProps): JSX.Element => {
-    // log.debug('id of card in CardsCourses:', item.id);
     const { t } = useTranslation('common', {
         keyPrefix: 'Courses.cardsCourses',
     });
     const navigate = useNavigate();
+    log.debug('schedule', item.schedule);
+
     return (
         <Card
             key={item.id}
@@ -39,33 +40,38 @@ const CardsCourses = ({
                     variant="ghost"
                     size="icon"
                     className="absolute bottom-2 right-2 transition-transform transform hover:scale-110"
-                    onClick={() =>
-                        console.log(`${item.title} ajouté aux favoris`)
-                    }
+                    onClick={() => log.info(`${item.title} ajouté aux favoris`)}
                 >
                     <Heart size={25} className="text-white" />
                 </Button>
             </div>
-            <div className="flex flex-col justify-between p-4 w-2/3">
-                <CardHeader>
+            <div className="flex flex-col justify-between p-4 w-2/3 ">
+                <CardHeader className="gap-4">
                     <CardTitle className="text-lg font-semibold">
                         {item.title}
                     </CardTitle>
-                    <CardDescription className="text-sm text-gray-500">
-                        {item.description.length > 100
-                            ? `${item.description.slice(0, 100)}...`
+                    <CardDescription className="text-sm text-gray-500 ">
+                        {item.description.length > 150
+                            ? `${item.description.slice(0, 50)}...`
                             : item.description}
+                        <p className="text-gray-600 text-sm mt-2">
+                            <strong>Durée :</strong> {item.duration} minutes
+                        </p>
                     </CardDescription>
                 </CardHeader>
                 <div className="flex flex-col mt-2">
-                    <p className="text-gray-600 text-sm">
-                        <strong>Durée :</strong> {item.duration} minutes
-                    </p>
-                    <p className="text-gray-600 text-sm">
-                        <strong>Jours :</strong> {item.days.join(', ')}
-                    </p>
+                    {/* <p className="text-gray-600 text-base">
+                        <ul>
+                            {item.schedule &&
+                                item.schedule.map((data) => (
+                                    <li>
+                                        {data.day} à {data.hours}
+                                    </li>
+                                ))}
+                        </ul>
+                    </p> */}
                 </div>
-                <div className="mt-2">
+                <div className="mt-2 p-2">
                     <Button
                         className="text-sm px-4 py-2 rounded-xl hover:bg-[#dfa438]"
                         onClick={() => navigate(`/courses/${city}/${item.id}`)}

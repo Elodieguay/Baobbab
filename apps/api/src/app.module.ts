@@ -12,6 +12,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { CoursesModule } from './modules/courses/courses.module';
 import { OrganisationModule } from './modules/organisation/organisation.module';
+import { BookingModule } from './modules/booking/booking.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { OrganisationModule } from './modules/organisation/organisation.module';
     CategoriesModule,
     CoursesModule,
     OrganisationModule,
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
