@@ -1,25 +1,66 @@
-import { createBookingCourse, getBookingCourse } from '@/api/booking';
+import {
+    createBookingCourse,
+    getOrganisationUserBooking,
+    getUserBooking,
+} from '@/api/booking';
 import { CreateABooking } from '@baobbab/dtos';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import log from 'loglevel';
 
-export const useCreateABooking = () => {
+export const useCreateABooking = (options?: {
+    onSuccess: (data: CreateABooking) => void;
+    onError: (error: Error) => void;
+}) => {
+    const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (createBooking: CreateABooking) =>
-            createBookingCourse(createBooking),
+        mutationFn: async ({
+            userId,
+            createBooking,
+        }: {
+            userId: string;
+            createBooking: CreateABooking;
+        }) => {
+            if (!userId) {
+                throw new Error('un id est requis');
+            }
+            return createBookingCourse(userId, createBooking);
+        },
         onSuccess: (data) => {
+            const userbooking = data;
+            queryClient.invalidateQueries({
+                queryKey: ['booking-userId'],
+            });
+            options?.onSuccess?.(userbooking);
             log.debug('Les modifications sont enregistrées:', data);
         },
         onError: (error) => {
             log.error('Les modifications ont échouées:', error);
+            options?.onError(error as Error);
         },
     });
 };
 
-export const useGetCourseById = () => {
+// export const useGetCourseById = () => {
+//     return useQuery({
+//         queryKey: ['booking'],
+//         queryFn: () => getBookingCourse(),
+//         staleTime: 5 * 60 * 1000,
+//     });
+// };
+
+export const useGetUserBooking = (userId: string) => {
     return useQuery({
         queryKey: ['booking'],
-        queryFn: () => getBookingCourse(),
-        staleTime: 5 * 60 * 1000,
+        queryFn: () => getUserBooking(userId),
+    });
+};
+
+export const useGetOrganisationUserBooking = (
+    organisationId: string,
+    token: string
+) => {
+    return useQuery({
+        queryKey: ['booking'],
+        queryFn: () => getOrganisationUserBooking(organisationId, token),
     });
 };

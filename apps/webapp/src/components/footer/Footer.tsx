@@ -7,7 +7,7 @@ const Footer = (): JSX.Element => {
         keyPrefix: 'Footer',
     });
     return (
-        <footer className="flex w-full justify-center bottom-0  bg-[#373737] py-8 px-8  ">
+        <footer className="flex w-full justify-center  bg-[#373737] py-8 px-8 bottom-0 ">
             <div className="flex w-3/4 justify-between ">
                 <div className="flex flex-col w-1/4 gap-5">
                     <h1 className="text-white text-3xl font-semibold">

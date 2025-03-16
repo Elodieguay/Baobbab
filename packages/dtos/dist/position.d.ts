@@ -3,12 +3,12 @@ export interface GetAddressesDTO {
     limit: number;
 }
 export interface Point {
-    lat: number;
     lng: number;
+    lat: number;
 }
 export interface Geometry {
-    type: Point;
-    coordinate: [number, number];
+    type: 'Point';
+    coordinates: [lng: number, lat: number];
 }
 export interface GeocodingProperties {
     label: string;

@@ -9,13 +9,11 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user/user.service';
 import { User } from '../../entities/user.entity';
-import { UserCreateInput } from '../user/inputs/user-create.input';
 import { EntityManager } from '@mikro-orm/core';
 import { AuthPayloadDto } from './types/auth.types';
 import * as bcrypt from 'bcrypt';
 import { logger } from '@mikro-orm/nestjs';
 import {
-  LoginResponse,
   OrganisationRegisterDTO,
   SuperAdminDTO,
   UserRegisterDTO,
@@ -37,7 +35,16 @@ export class AuthService {
     // private readonly cloudinaryService: CloudinaryService,
   ) {}
 
-  private readonly logger = new Logger(AuthService.name);
+  onModuleInit() {
+    if (this.jwtService) {
+      logger.log(
+        'JwtService Injected jwt moduleinit Auth:',
+        JSON.stringify(this.jwtService, null, 2),
+      );
+    } else {
+      logger.warn('auth JwtService is undefined during initialization!');
+    }
+  }
 
   async register(
     createUserInput: UserRegisterDTO,
@@ -58,6 +65,7 @@ export class AuthService {
       password: haschPassword,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      bookings: [],
     });
     // On l'enregistre dans la base de données
     await this.em.persistAndFlush(user);
@@ -87,7 +95,7 @@ export class AuthService {
 
     const entity = user || organisation || superAdmin;
     if (!entity) {
-      this.logger.error('Invalid credentials', HttpStatus.UNAUTHORIZED);
+      logger.error('Invalid credentials', HttpStatus.UNAUTHORIZED);
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
@@ -97,7 +105,7 @@ export class AuthService {
     const passwordValid = await bcrypt.compare(password, entity.password);
 
     if (!passwordValid) {
-      this.logger.error('Invalid credentials', HttpStatus.UNAUTHORIZED);
+      logger.error('Invalid credentials', HttpStatus.UNAUTHORIZED);
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
@@ -247,7 +255,7 @@ export class AuthService {
 
     // On envoyer un email avec le lien de réinitialisation du mot de passe (simulé ici)
     const resetLink = `https://ton-site.com/reset-password?token=${token}`;
-    this.logger.log(`Envoyer ce lien à l'utilisateur : ${resetLink}`);
+    logger.log(`Envoyer ce lien à l'utilisateur : ${resetLink}`);
 
     //On envoye l'email via Brevo
     // await this.emailService.sendResetPasswordEmail(email, resetLink);

@@ -12,13 +12,19 @@ import CourseByCity from '@/pages/courses/CourseByCity';
 import Organisation from '@/pages/organisation/Organisation';
 import ForgottenPassword from '@/components/auth/ForgottenPassword';
 import ResetPassword from '@/components/auth/ResetPassword';
+import Footer from '@/components/footer/Footer';
 
 const router = createBrowserRouter([
     // version v7
 
     {
         path: AppRoutes.Home.path,
-        element: <Home />,
+        element: (
+            <>
+                <Home />
+                <Footer />
+            </>
+        ),
     },
     {
         path: AppRoutes.ForgottenPassword.path,
@@ -30,7 +36,12 @@ const router = createBrowserRouter([
     },
     {
         path: AppRoutes.Courses.path,
-        element: <Courses />,
+        element: (
+            <>
+                <Courses />
+                <Footer />
+            </>
+        ),
         children: [
             {
                 path: ':city',
@@ -69,7 +80,11 @@ const router = createBrowserRouter([
     },
 ]);
 const Router = (): JSX.Element => {
-    return <RouterProvider router={router} />;
+    return (
+        <>
+            <RouterProvider router={router} />
+        </>
+    );
 };
 
 export default Router;

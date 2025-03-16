@@ -29,7 +29,7 @@ const NavbarCitySelection = () => {
     };
     return (
         <div className="w-full flex justify-around items-center rounded-3xl border-2 gap-2">
-            <div className="flex w-1/3 gap-3 pl-5">
+            <div className="flex w-1/3 gap-3 pl-5 p-2">
                 <Building2 className="text-[#be3565]" />
                 {city}
             </div>

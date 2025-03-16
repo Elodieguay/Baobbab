@@ -112,7 +112,7 @@ const CourseById = (): JSX.Element => {
                                 </DialogTitle>
                                 <DialogDescription className="space-y-4 flex flex-col  justify-center items-center"></DialogDescription>
                             </DialogHeader>
-                            <ModalBooking data={coursesInfos} />
+                            <ModalBooking courseData={coursesInfos} />
                         </DialogContent>
                     </Dialog>
                 </div>

@@ -9,7 +9,6 @@ import yogaHome from '../../assets/images/yogaHome.jpg';
 import guitare from '../../assets/images/guitare.jpg';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
-import Footer from '@/components/footer/Footer';
 import Description from './Description';
 import CTA from '@/components/home/CTA';
 import Navbar from '@/components/navbar.tsx/Navbar';
@@ -85,7 +84,6 @@ const Home = (): JSX.Element => {
                     <CTA />
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };

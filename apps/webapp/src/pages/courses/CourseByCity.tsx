@@ -3,16 +3,19 @@ import { getCoordinates } from '@/api/geocoding';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import CardsCourses from '@/components/courses/CardsCourses';
-import { useCity } from '@/context/City.context';
+// import { useCity } from '@/context/City.context';
 import { useGetCategory, useGetCourseByCategory } from '@/hooks/courses/query';
 import log from 'loglevel';
-import { CategoryDTO, CoursesDTOGeojson } from '@baobbab/dtos';
+import { CategoryDTO, CoursesDTOGeojson, Point } from '@baobbab/dtos';
 import NavbarMenu from '@/components/navbar.tsx/NavbarMenu';
 import NavbarCitySelection from '@/components/navbar.tsx/NavbarCitySelection';
+import { useParams } from 'react-router';
+import CourseSkeleton from '@/components/courses/CourseSkeleton';
 
 const CourseByCity = (): JSX.Element | null => {
     log.debug('composant rendu');
-    const { city = '' } = useCity();
+    // const { city = '' } = useCity();
+    const { city } = useParams<{ city: string }>();
     const [selectedCategory, setSelectedCategory] = useState<
         string | undefined
     >('');
@@ -22,9 +25,9 @@ const CourseByCity = (): JSX.Element | null => {
         data: coordinates,
         isLoading,
         error,
-    } = useQuery({
+    } = useQuery<Point>({
         queryKey: ['coordinates', city],
-        queryFn: () => getCoordinates(city ?? null),
+        queryFn: () => getCoordinates(city),
         enabled: !!city,
     });
 
@@ -49,6 +52,9 @@ const CourseByCity = (): JSX.Element | null => {
         }
     }, [category]);
 
+    if (!coordinates) {
+        return null;
+    }
     if (!city) {
         return null;
     }
@@ -57,7 +63,7 @@ const CourseByCity = (): JSX.Element | null => {
     }
 
     if (isLoadingCourses) {
-        return <p>Chargement des cours...</p>;
+        return <CourseSkeleton />;
     }
 
     if (errorCourses) {
@@ -66,15 +72,17 @@ const CourseByCity = (): JSX.Element | null => {
     log.debug('courses', courses);
     log.debug('category selectionnée', selectedCategory);
     return (
-        <div className=" w-full h-screen flex flex-col items-center gap-6 ">
-            <div className="w-1/3 flex justify-center items-center ">
-                <NavbarCitySelection />
-            </div>
-            <div className="h-14 w-full flex justify-center items-center object-center content-center border-b">
-                <NavbarMenu
-                    setSelectedCategory={setSelectedCategory}
-                    categoryList={categoryList}
-                />
+        <div className=" w-full min-h-screen flex flex-col  gap-6 border border-red-500">
+            <div className="w-full h-full flex flex-col  items-center justify-center border border-blue-500">
+                <div className="w-1/3 flex justify-center items-center border border-green-500 ">
+                    <NavbarCitySelection />
+                </div>
+                <div className="h-14 w-full flex justify-center items-center object-center content-center border-b">
+                    <NavbarMenu
+                        setSelectedCategory={setSelectedCategory}
+                        categoryList={categoryList}
+                    />
+                </div>
             </div>
             <div className="flex ">
                 <div className="w-1/2 h-full overflow-y-auto px-9 ">
@@ -91,7 +99,7 @@ const CourseByCity = (): JSX.Element | null => {
                 </div>
                 <div className="w-1/2 sticky h-screen top-0 overflow-hidden">
                     <Maplibre
-                        loadCoordinates={coordinates ?? null}
+                        loadCoordinates={coordinates}
                         isLoading={isLoading}
                         error={error}
                         courseData={courses}

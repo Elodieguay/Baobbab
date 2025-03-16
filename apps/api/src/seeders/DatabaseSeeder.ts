@@ -85,7 +85,10 @@ export class DatabaseSeeder extends Seeder {
         price: faker.number.int({ min: 10, max: 100 }),
         address: faker.location.streetAddress(),
         city: 'Nantes',
-        position: { lat, lng: lon } as Point,
+        position: {
+          lng: lon,
+          lat: lat,
+        },
         organisation: org,
         reminder: 'basket',
         category: randomCategory, // Ajout de la catégorie

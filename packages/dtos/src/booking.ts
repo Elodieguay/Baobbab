@@ -7,3 +7,12 @@ export interface CreateABooking {
         hours: string;
     };
 }
+
+export interface UserBooking {
+    id: string;
+    title: string;
+    schedule: {
+        day: string;
+        hours: string;
+    };
+}

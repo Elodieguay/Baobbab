@@ -1,4 +1,5 @@
 import {
+  Cascade,
   Collection,
   Entity,
   ManyToOne,
@@ -9,7 +10,7 @@ import {
 } from '@mikro-orm/core';
 import { Categories } from './categories.entity';
 import { Organisation } from './organisation.entity';
-import { Point } from '@baobbab/dtos';
+import { Geometry, Point } from '@baobbab/dtos';
 import { Schedule } from './schedule.entity';
 import { Booking } from './booking.entity';
 
@@ -45,7 +46,9 @@ export class Courses {
   @Property({ type: 'json' })
   position: Point;
 
-  @OneToMany(() => Schedule, (schedule) => schedule.courses)
+  @OneToMany(() => Schedule, (schedule) => schedule.courses, {
+    cascade: [Cascade.REMOVE],
+  })
   schedule = new Collection<Schedule>(this);
 
   @ManyToOne(() => Categories)
@@ -54,6 +57,9 @@ export class Courses {
   @ManyToOne(() => Organisation)
   organisation: Organisation;
 
-  @OneToMany(() => Booking, (booking) => booking.courses)
+  @OneToMany(() => Booking, (booking) => booking.courses, {
+    cascade: [Cascade.REMOVE],
+    nullable: true,
+  })
   booking = new Collection<Booking>(this);
 }

@@ -10,10 +10,16 @@ import {
   HttpStatus,
   Query,
   Req,
+  HttpException,
+  Logger,
 } from '@nestjs/common';
 import { CoursesService } from './courses.service';
-import { CoursesDTO, CoursesDTOGeojson } from '@baobbab/dtos';
-import { courseToDto, entityToDto } from './courses.entityToDto';
+import {
+  CoursesDTO,
+  CoursesDTOGeojson,
+  UpdateCoursesDTOGeojson,
+} from '@baobbab/dtos';
+import { courseToDto, singleCourseToDto } from './courses.entityToDto';
 import { logger } from '@mikro-orm/nestjs';
 
 @Controller('courses')
@@ -25,9 +31,9 @@ export class CoursesController {
   @HttpCode(HttpStatus.CREATED)
   async create(
     @Body() createCourseDto: CoursesDTO,
-  ): Promise<CoursesDTO | null> {
+  ): Promise<CoursesDTOGeojson | null> {
     const course = await this.coursesService.create(createCourseDto);
-    return entityToDto(course);
+    return singleCourseToDto(course);
   }
 
   // // Récupérer tous les cours
@@ -60,39 +66,31 @@ export class CoursesController {
     }
   }
 
-  // Récupérer un cours par ID
   @Get(':id')
   async findById(@Param('id') id: string): Promise<CoursesDTOGeojson> {
     const course = await this.coursesService.findById(id);
-    return {
-      ...course,
-      id: course.id,
-      position: {
-        type: 'Point',
-        coordinates: [course.position.lng, course.position.lat],
-      },
-      organisationId: course.organisation.id,
-      schedule: course.schedule.getItems().map((schedule) => ({
-        id: schedule.id,
-        hours: schedule.hours,
-        day: schedule.day,
-      })),
-    };
+    return singleCourseToDto(course);
   }
 
-  //  // Mettre à jour un cours
-  //  @Patch(':id')
-  //  async update(
-  //    @Param('id') id: string,
-  //    @Body() updateCourseDto: Partial<CoursesDTO>,
-  //  ) {
-  //    return this.coursesService.update(id, updateCourseDto);
-  //  }
+  @Patch(':courseId')
+  async update(
+    @Param('courseId') courseId: string,
+    @Body() updateCourse: UpdateCoursesDTOGeojson,
+  ) {
+    return this.coursesService.updateCourse(courseId, updateCourse);
+  }
 
-  //  // Supprimer un cours
-  //  @Delete(':id')
-  //  @HttpCode(HttpStatus.NO_CONTENT)
-  //  async delete(@Param('id') id: string) {
-  //    await this.coursesService.delete(id);
-  //  }
+  @Delete(':courseId')
+  async delete(@Param('courseId') courseId: string) {
+    try {
+      const course = await this.coursesService.deleteCourse(courseId);
+      return {
+        statusCode: 200,
+        message: 'Booking successfully deleted',
+        data: course,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 }

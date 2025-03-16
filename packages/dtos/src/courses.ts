@@ -1,5 +1,6 @@
 import z from 'zod';
 import { Point } from './position';
+import { CreateABooking } from './booking';
 
 export interface CategoryDTO {
     id: string;
@@ -53,16 +54,17 @@ export interface CoursesDTO {
     id: string;
     title: string;
     address: string;
-    city?: string;
+    city: string | null;
     description: string;
     duration: number;
     schedule: ScheduleDTO[];
     price: number;
-    reminder?: string;
+    reminder: string | null;
     category: CategoryDTO;
     image: string;
     position: Point;
     organisationId: string;
+    booking: CreateABooking[];
 }
 
 export interface CourseRegisterDTO {
@@ -91,4 +93,24 @@ export interface CoursesDTOGeojson {
         coordinates: [number, number];
     };
     organisationId: string;
+    booking: CreateABooking[];
+}
+export interface UpdateCoursesDTOGeojson {
+    id: string;
+    title: string;
+    address: string;
+    city: string | null;
+    description: string;
+    duration: number;
+    schedule: ScheduleDTO[];
+    price: number;
+    reminder: string | null;
+    category: CategoryDTO;
+    image: string;
+    position: {
+        type: 'Point';
+        coordinates: [number, number];
+    };
+    organisationId: string;
+    booking: CreateABooking[];
 }

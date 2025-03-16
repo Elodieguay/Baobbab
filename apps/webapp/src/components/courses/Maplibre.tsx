@@ -22,7 +22,7 @@ const Maplibre = ({
 }): JSX.Element => {
     const mapContainer = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<maplibregl.Map | null>(null);
-
+    log.debug('loadCordinates', loadCoordinates);
     log.debug('coursedata de maplibre', courseData);
     const adjustPositions = useCallback(
         (courseData: CoursesDTOGeojson[]): CoursesDTOGeojson[] => {

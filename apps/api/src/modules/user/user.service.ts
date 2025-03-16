@@ -3,9 +3,6 @@ import { User } from '../../entities/user.entity';
 import { EntityManager } from '@mikro-orm/core';
 import { logger } from '@mikro-orm/nestjs';
 
-// import { CreateUserInput } from './dto/create-user.input';
-// import { UpdateUserInput } from './dto/update-user.input';
-
 @Injectable()
 export class UserService {
   constructor(private readonly em: EntityManager) {}
