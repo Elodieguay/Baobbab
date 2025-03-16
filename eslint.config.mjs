@@ -38,6 +38,7 @@ export default [
             'prettier/prettier': 'error',
             'no-unused-vars': 'off',
             'no-console': 'warn',
+            'no-debugger': 'warn',
             'no-warning-comments': 'off',
             '@typescript-eslint/consistent-type-imports': 'off',
             '@typescript-eslint/no-explicit-any':'warn'
@@ -67,7 +68,18 @@ export default [
             },
         },
         rules: {
-            'react-refresh/only-export-components': "off",
+             // Règles React Hooks recommandées
+            ...reactHooks.configs.recommended.rules,
+            // Règles React Refresh
+            'react-refresh/only-export-components': [
+            'warn',
+            { allowConstantExport: true },
+            ],
+            // Shadcn 
+            '@typescript-eslint/no-unsafe-return': 'off', 
+            '@typescript-eslint/ban-ts-comment': 'off', 
+            '@typescript-eslint/no-explicit-any': 'warn', 
+            // typescript
             '@typescript-eslint/explicit-function-return-type': [
                 'error',
                 {
@@ -75,7 +87,9 @@ export default [
                     allowTypedFunctionExpressions: true,
                     allowHigherOrderFunctions: true,
                 },
-            ],    
+            ],  
+            // React
+            'react-refresh/only-export-components': "off",
             'react/function-component-definition': [
                 'off',
                 {
@@ -83,9 +97,10 @@ export default [
                     unnamedComponents: 'arrow-function',
                 },
             ],  
-            // 'react-hooks/rules-of-hooks': 'error',
-            // 'react-hooks/exhaustive-deps': 'warn',      
-            '@typescript-eslint/no-explicit-any':'warn'
+            'react-hooks/rules-of-hooks': 'error',
+            'react-hooks/exhaustive-deps': 'warn',      
+            '@typescript-eslint/no-explicit-any':'warn',
+            'no-unused-vars': 'warn'
         },
     },
     // Backend

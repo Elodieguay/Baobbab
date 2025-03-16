@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20250226201452 extends Migration {
+export class Migration20250303000156 extends Migration {
   override async up(): Promise<void> {
     this.addSql(
       `create table "categories" ("id" uuid not null default gen_random_uuid(), "title" text not null, constraint "categories_pkey" primary key ("id"));`,
@@ -25,7 +25,14 @@ export class Migration20250226201452 extends Migration {
     );
 
     this.addSql(
-      `create table "schedule" ("id" uuid not null, "day" text not null, "hours" text not null, "courses_id" uuid not null, constraint "schedule_pkey" primary key ("id"));`,
+      `create table "schedule" ("id" uuid not null default gen_random_uuid(), "day" text not null, "hours" text not null, "courses_id" uuid not null, constraint "schedule_pkey" primary key ("id"));`,
+    );
+
+    this.addSql(
+      `create table "booking" ("id" uuid not null default gen_random_uuid(), "title" text not null, "schedule_id" uuid null, "courses_id" uuid null, constraint "booking_pkey" primary key ("id"));`,
+    );
+    this.addSql(
+      `alter table "booking" add constraint "booking_schedule_id_unique" unique ("schedule_id");`,
     );
 
     this.addSql(
@@ -56,6 +63,13 @@ export class Migration20250226201452 extends Migration {
     this.addSql(
       `alter table "schedule" add constraint "schedule_courses_id_foreign" foreign key ("courses_id") references "courses" ("id") on update cascade;`,
     );
+
+    this.addSql(
+      `alter table "booking" add constraint "booking_schedule_id_foreign" foreign key ("schedule_id") references "schedule" ("id") on delete cascade;`,
+    );
+    this.addSql(
+      `alter table "booking" add constraint "booking_courses_id_foreign" foreign key ("courses_id") references "courses" ("id") on update cascade on delete set null;`,
+    );
   }
 
   override async down(): Promise<void> {
@@ -75,6 +89,14 @@ export class Migration20250226201452 extends Migration {
       `alter table "schedule" drop constraint "schedule_courses_id_foreign";`,
     );
 
+    this.addSql(
+      `alter table "booking" drop constraint "booking_courses_id_foreign";`,
+    );
+
+    this.addSql(
+      `alter table "booking" drop constraint "booking_schedule_id_foreign";`,
+    );
+
     this.addSql(`drop table if exists "categories" cascade;`);
 
     this.addSql(`drop table if exists "organisation_infos" cascade;`);
@@ -84,6 +106,8 @@ export class Migration20250226201452 extends Migration {
     this.addSql(`drop table if exists "courses" cascade;`);
 
     this.addSql(`drop table if exists "schedule" cascade;`);
+
+    this.addSql(`drop table if exists "booking" cascade;`);
 
     this.addSql(`drop table if exists "super_admin" cascade;`);
 

@@ -2,6 +2,9 @@ import Navbar from '@/components/navbar.tsx/Navbar';
 import TableProfile from '@/components/tables/TableProfile';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/Auth.context';
+import { useGetUserBooking } from '@/hooks/booking/query';
+import { useGetUser } from '@/hooks/user/query';
+import log from 'loglevel';
 import { CircleUser, Smartphone } from 'lucide-react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
@@ -9,7 +12,11 @@ import { useNavigate } from 'react-router';
 const Profile = (): JSX.Element => {
     const { authToken, removeAuthData, username } = useAuth();
     const navigate = useNavigate();
-
+    const { data } = useGetUser(authToken || '');
+    const userId = data?.id;
+    log.debug(data);
+    const { data: userBooking } = useGetUserBooking(userId || '');
+    log.debug('userbooking', userBooking);
     useEffect(() => {
         if (!authToken) {
             navigate('/login');
@@ -18,6 +25,9 @@ const Profile = (): JSX.Element => {
 
     if (!authToken) {
         return <div>Vous devez être connecté pour accéder à cette page</div>;
+    }
+    if (!data) {
+        return <div>Loading...</div>; // ou un message d'erreur si tu préfères
     }
 
     return (

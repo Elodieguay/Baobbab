@@ -15,15 +15,20 @@ import SelectBooking from './SelectBooking';
 import { Button } from '../ui/button';
 import { useCreateABooking } from '@/hooks/booking/query';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/context/Auth.context';
+import { useGetUser } from '@/hooks/user/query';
 
 type ModalBookingProps = {
-    data: CoursesDTOGeojson | undefined;
+    courseData: CoursesDTOGeojson | undefined;
 };
-const ModalBooking = ({ data }: ModalBookingProps): JSX.Element => {
-    // log.info(data);
+const ModalBooking = ({ courseData }: ModalBookingProps): JSX.Element => {
+    const { authToken } = useAuth();
+    const { data } = useGetUser(authToken || '');
+    log.debug(data);
+    const userId = data?.id;
+    log.debug(userId);
     const { toast } = useToast();
-
-    const { mutate: createABooking } = useCreateABooking();
+    const { mutateAsync: createBooking } = useCreateABooking();
     const bookingFormSchema = z.object({
         title: z.string(),
         day: z.string().nonempty(),
@@ -32,28 +37,30 @@ const ModalBooking = ({ data }: ModalBookingProps): JSX.Element => {
     const form = useForm<z.infer<typeof bookingFormSchema>>({
         resolver: zodResolver(bookingFormSchema),
         defaultValues: {
-            title: data?.title,
+            title: courseData?.title,
             day: '',
         },
     });
 
     const onSubmit = (values: z.infer<typeof bookingFormSchema>): void => {
+        if (!userId) {
+            toast({
+                title: 'Utilisateur non identifié',
+                variant: 'destructive',
+            });
+            return;
+        }
         const [day, hours] = values.day.split(',');
         const dayObject = { day, hours };
-
-        // if (!data || !data.schedule || !data.schedule.length) {
-        //     toast({
-        //         title: 'Erreur',
-        //         description: 'Les informations de schedule sont manquantes.',
-        //         variant: 'destructive',
-        //     });
-        // }
-        createABooking(
+        createBooking(
             {
-                title: values.title,
-                schedule: dayObject,
-                courseId: data?.id ?? '',
-                scheduleId: data?.schedule[0].id ?? '',
+                userId: userId,
+                createBooking: {
+                    title: values.title,
+                    schedule: dayObject,
+                    courseId: courseData?.id ?? '',
+                    scheduleId: courseData?.schedule[0].id ?? '',
+                },
             },
             {
                 onSuccess: () => {
@@ -75,7 +82,7 @@ const ModalBooking = ({ data }: ModalBookingProps): JSX.Element => {
     log.debug('value', form.getValues());
     return (
         <Form {...form}>
-            {data?.title}
+            {courseData?.title}
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="w-2/3 space-y-6"
@@ -88,7 +95,7 @@ const ModalBooking = ({ data }: ModalBookingProps): JSX.Element => {
                             <FormControl>
                                 <SelectBooking
                                     title="Jours"
-                                    data={data?.schedule}
+                                    data={courseData?.schedule}
                                     value={field.value}
                                     onChange={field.onChange}
                                 />

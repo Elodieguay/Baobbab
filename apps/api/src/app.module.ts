@@ -13,6 +13,7 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { CoursesModule } from './modules/courses/courses.module';
 import { OrganisationModule } from './modules/organisation/organisation.module';
 import { BookingModule } from './modules/booking/booking.module';
+import { ScheduleModule } from './modules/schedule/schedule.module';
 
 @Module({
   imports: [
@@ -22,12 +23,13 @@ import { BookingModule } from './modules/booking/booking.module';
     }),
     MikroOrmModule,
     OrmModule,
-    UserModule,
     AuthModule,
+    UserModule,
     CategoriesModule,
     CoursesModule,
     OrganisationModule,
     BookingModule,
+    ScheduleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

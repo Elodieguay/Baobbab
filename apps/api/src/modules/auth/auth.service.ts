@@ -13,11 +13,14 @@ import { EntityManager } from '@mikro-orm/core';
 import { AuthPayloadDto } from './types/auth.types';
 import * as bcrypt from 'bcryptjs';
 import { logger } from '@mikro-orm/nestjs';
-import { UserRegisterDTO, UserRole } from '@baobbab/dtos';
-
+import {
+  OrganisationRegisterDTO,
+  SuperAdminDTO,
+  UserRegisterDTO,
+  UserRole,
+} from '@baobbab/dtos';
 import { Organisation } from 'src/entities/organisation.entity';
 import { Status } from '@baobbab/dtos';
-import { OrganisationRegisterDTO } from '@baobbab/dtos';
 
 @Injectable()
 export class AuthService {
@@ -316,7 +319,7 @@ export class AuthService {
 
     // On envoyer un email avec le lien de réinitialisation du mot de passe (simulé ici)
     const resetLink = `https://ton-site.com/reset-password?token=${token}`;
-    this.logger.log(`Envoyer ce lien à l'utilisateur : ${resetLink}`);
+    logger.log(`Envoyer ce lien à l'utilisateur : ${resetLink}`);
 
     //On envoye l'email via Brevo
     // await this.emailService.sendResetPasswordEmail(email, resetLink);
