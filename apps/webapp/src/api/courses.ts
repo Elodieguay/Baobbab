@@ -47,6 +47,7 @@ export const getCourseById = async (
     try {
         const url = `${config.apiUrl}/courses/${courseId}`;
         const response = await ky.get(url).json<CoursesDTOGeojson>();
+        log.debug(response);
         return response;
     } catch (error) {
         log.error(`Error to get a course by his id`, error);

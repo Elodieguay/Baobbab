@@ -80,7 +80,7 @@ const OrganisationFormLogin = ({
                     type="submit"
                     className="w-1/2 bg-[#fdcf63] rounded-xl hover:bg-[#be3565]"
                 >
-                    S'enregistrer
+                    Se connecter
                 </Button>
             </form>
         </Form>

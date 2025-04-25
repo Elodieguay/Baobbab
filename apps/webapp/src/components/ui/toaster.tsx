@@ -8,6 +8,12 @@ import {
     ToastViewport,
 } from '@/components/ui/toast';
 
+type toastProps = {
+    id: string;
+    title: string;
+    description: string;
+    action: string;
+};
 export function Toaster(): JSX.Element {
     const { toasts } = useToast();
 
@@ -19,7 +25,7 @@ export function Toaster(): JSX.Element {
                 description,
                 action,
                 ...props
-            }) {
+            }: toastProps) {
                 return (
                     <Toast key={id} {...props}>
                         <div className="grid gap-1">
@@ -35,7 +41,7 @@ export function Toaster(): JSX.Element {
                     </Toast>
                 );
             })}
-            <ToastViewport />
+            <ToastViewport className="fixed bottom-4 right-4 flex flex-col gap-2" />
         </ToastProvider>
     );
 }

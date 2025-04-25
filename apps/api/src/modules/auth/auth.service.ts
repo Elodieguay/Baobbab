@@ -15,6 +15,7 @@ import * as bcrypt from 'bcrypt';
 import { logger } from '@mikro-orm/nestjs';
 import {
   OrganisationRegisterDTO,
+  Status,
   SuperAdminDTO,
   UserRegisterDTO,
   UserRole,
@@ -140,7 +141,10 @@ export class AuthService {
     createOrganisation: OrganisationRegisterDTO,
   ): Promise<Omit<Organisation, ' password'> & { access_token: string }> {
     const existingOrganisation = await this.em.findOne(Organisation, {
-      siret: createOrganisation.siret,
+      $or: [
+        { siret: createOrganisation.siret },
+        { organisationName: createOrganisation.organisationName },
+      ],
     });
 
     if (existingOrganisation) {
@@ -150,23 +154,28 @@ export class AuthService {
       );
     }
     const haschPassword = await bcrypt.hash(createOrganisation.password, 10);
+    logger.debug('password', haschPassword);
     const organisation = this.em.create(Organisation, {
       ...createOrganisation,
       password: haschPassword,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      role: UserRole.ADMIN,
+      status: Status.PENDING,
+      createdAt: new Date().toISOString(),
     });
 
     await this.em.persistAndFlush(organisation);
     const payload = { id: organisation.id, email: organisation.email };
-    const secret = this.configService.get('JWT-SECRET');
+    const secret = this.configService.get('JWT_SECRET');
+    logger.debug('secret', secret);
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
     });
+    logger.debug('token', access_token);
 
     return {
       ...organisation,
       access_token,
+      role: UserRole.ADMIN,
     };
   }
 

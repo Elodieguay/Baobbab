@@ -6,7 +6,7 @@ export interface RegisterResponse {
     username: string;
     email: string;
     password: string;
-    role: UserRole;
+    role: UserRole.USER;
     access_token: string;
     entityType: EntityType.USER;
     created_at: Date;
@@ -17,7 +17,7 @@ export interface LoginResponse {
     username: string;
     password: '';
     email: string;
-    role: UserRole;
+    role: UserRole.USER;
     access_token: string;
     entityType: EntityType.USER;
     created_at?: Date;
@@ -45,11 +45,13 @@ export interface UserRegisterDTO {
     username: string;
     email: string;
     password: string;
+    role: UserRole.USER;
 }
 
 export interface UserLoginDTO {
     email: string;
     password: string;
+    role: UserRole.USER;
 }
 
 export interface ProtectedRouteDTO {

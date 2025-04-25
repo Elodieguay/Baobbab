@@ -6,10 +6,12 @@ const CTA = () => {
         keyPrefix: 'CTA',
     });
     return (
-        <div className=" w-full h-full flex-grow flex justify-center bg-[#be3565]">
-            <div className="w-3/4 h-full flex justify-between items-center ">
-                <div className="w-1/2 ">
-                    <h2 className="text-white">{t('title')}</h2>
+        <div className=" h-[40dvh] flex rounded-[60px] justify-center ">
+            <div className="w-[95%] xl:w-[77%] h-full flex flex-col justify-center items-center text-center p-14 gap-8 bg-[#be3565] rounded-[60px]">
+                <div className="">
+                    <h2 className="text-white md:text-2xl md:leading-10 font-semibold">
+                        {t('title')}
+                    </h2>
                 </div>
                 <Button className="text-white bg-[#01a274] text-lg p-7 rounded-2xl">
                     {t('button')}

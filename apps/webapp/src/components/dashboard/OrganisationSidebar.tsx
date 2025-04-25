@@ -17,64 +17,37 @@ import { Button } from '../ui/button';
 import { useNavigate } from 'react-router';
 
 export enum DashName {
-    ACTIVITY = 'Activités',
-    EVENT = 'Evenements',
-    ACCOUNT = 'Mon compte',
-}
-
-export enum DashSubName {
+    ACCOUNT_INFO = 'Informations',
     CREATE = 'Créer une activité',
     PROGRESS = 'Activités en cours',
-    DELETE = 'Activités supprimées',
-    EVENT_CREATE = 'Créer un évènement',
-    EVENT_PROGRESS = 'Evènement en cours',
-    ACCOUNT_INFO = 'Informations',
-    ACCOUNT_PHOTO = 'Photo',
-    ACCOUNT_BIO = 'Biographie',
+    BOOKING = 'Activités réservées',
 }
 
-const data = {
-    navMain: [
-        {
-            title: DashSubName.CREATE,
-            url: '#',
-            isActive: true,
-        },
-        {
-            title: DashSubName.PROGRESS,
-            url: '#',
-        },
-        {
-            title: DashSubName.DELETE,
-            url: '#',
-        },
-        {
-            title: DashSubName.EVENT_CREATE,
-            url: '#',
-        },
-        {
-            title: DashSubName.EVENT_PROGRESS,
-            url: '#',
-        },
-        {
-            title: DashSubName.ACCOUNT_INFO,
-            url: '#',
-        },
-        {
-            title: DashSubName.ACCOUNT_PHOTO,
-            url: '#',
-        },
-        {
-            title: DashSubName.ACCOUNT_BIO,
-            url: '#',
-        },
-    ],
-};
+const organisationId = sessionStorage.getItem('organisationId');
+const navMainItems = [
+    {
+        title: DashName.ACCOUNT_INFO,
+        url: `/dashboard/${organisationId}/informations`,
+        isActive: true,
+    },
+    {
+        title: DashName.CREATE,
+        url: `/dashboard/${organisationId}/createCourse`,
+    },
+    {
+        title: DashName.PROGRESS,
+        url: `/dashboard/${organisationId}/allCourses`,
+    },
+    {
+        title: DashName.BOOKING,
+        url: `/dashboard/${organisationId}/usersBookingTable`,
+    },
+];
 
 export function OrganisationSidebar({
     ...props
 }: React.ComponentProps<typeof Sidebar>): JSX.Element {
-    const [activeItem, setActiveItem] = useState<DashSubName | null>();
+    const [activeItem, setActiveItem] = useState<DashName | null>();
     const organisationId = sessionStorage.getItem('organisationId');
     const { removeAuthToken } = useAuth();
     const navigate = useNavigate();
@@ -94,7 +67,7 @@ export function OrganisationSidebar({
     };
 
     return (
-        <div className="flex w-full">
+        <div className="flex w-full h-full">
             <Sidebar
                 collapsible="icon"
                 className="bg-[#0b927a] text-white font-semibold"
@@ -103,16 +76,16 @@ export function OrganisationSidebar({
                 <SidebarHeader>{organisation?.organisationName}</SidebarHeader>
                 <SidebarContent>
                     <NavMain
-                        items={data.navMain}
-                        onItemClick={(item) => {
-                            setActiveItem(item.title as DashSubName);
-                        }}
+                        items={navMainItems}
+                        onItemClick={(item) =>
+                            setActiveItem(item.title as DashName)
+                        }
                     />
                 </SidebarContent>
                 <SidebarFooter>
-                    {organisation?.email}
+                    <div className="text-sm mb-2">{organisation?.email}</div>
                     <Button
-                        className=" p-4 px-6 bg-[#01a274] text-white gap-2"
+                        className="p-4 px-6 bg-[#01a274] text-white gap-2"
                         variant={'ghost'}
                         onClick={handleLogout}
                     >
@@ -122,13 +95,8 @@ export function OrganisationSidebar({
                 </SidebarFooter>
                 <SidebarRail />
             </Sidebar>
-            <div className="p-4 border-2 w-full h-full ">
-                {activeItem && (
-                    <ContentDisplay
-                        activeItem={activeItem}
-                        organisationId={organisationId}
-                    />
-                )}
+            <div className="flex-1">
+                {activeItem && <ContentDisplay activeItem={activeItem} />}
             </div>
         </div>
     );

@@ -16,3 +16,20 @@ export interface UserBooking {
         hours: string;
     };
 }
+
+export interface BookingResponse {
+    id: string;
+    title: string;
+    schedule: {
+        day: string;
+        hours: string;
+    };
+    courses: {
+        id: string;
+        address: string;
+        city: string;
+        duration: string;
+        organisation: string;
+        reminder: string;
+    };
+}

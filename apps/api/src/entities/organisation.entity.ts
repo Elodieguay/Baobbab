@@ -16,7 +16,7 @@ export class Organisation {
   id!: string;
 
   @Enum({ items: () => UserRole, default: UserRole.ADMIN })
-  role!: UserRole;
+  role!: UserRole.ADMIN;
 
   @Enum({ items: () => Status, default: Status.PENDING })
   status!: Status;
@@ -24,8 +24,8 @@ export class Organisation {
   @Property({ type: 'text', unique: true })
   organisationName!: string;
 
-  @Property({ type: 'bigint' })
-  siret!: number;
+  @Property({ type: 'text', unique: true })
+  siret!: string;
 
   @Property({ type: 'text' })
   email!: string;

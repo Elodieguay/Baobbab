@@ -49,9 +49,10 @@ exports.organisationFormSchema = zod_1.default.object({
         .optional(),
 });
 exports.organisationRegisterFormSchema = zod_1.default.object({
-    siret: zod_1.default.number().min(14, {
-        message: 'Le siret doit contenir au moijns 14 caractères',
-    }),
+    siret: zod_1.default
+        .string()
+        .length(14, 'Le SIRET doit contenir exactement 14 chiffres')
+        .regex(/^\d+$/, 'Le SIRET doit contenir uniquement des chiffres'),
     organisationName: zod_1.default.string().min(2, {
         message: 'Le nom doit contenir au moins 2 caractères',
     }),

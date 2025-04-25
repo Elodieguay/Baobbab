@@ -44,18 +44,27 @@ export const useLoginMutation = (): UseMutationResult<
 };
 
 export const useOrganisationRegister = (): any => {
-    const { setAuthToken } = useAuth();
+    const { setAuthData } = useAuth();
     const navigate = useNavigate();
 
     return useMutation({
         mutationFn: registerOrganisation,
         onSuccess: (data: OrganisationAuthResponse) => {
-            log.debug(data.id);
-            if (setAuthToken && UserRole.ADMIN && data.id) {
+            log.debug('je suis là');
+            log.debug(data);
+            if (setAuthData) {
+                setAuthData(
+                    data.access_token,
+                    data.role,
+                    'organisation',
+                    data.organisationName,
+                    data.email
+                );
                 sessionStorage.setItem('organisationId', data.id);
                 navigate(`/dashboard/${data.id}`);
+            } else {
+                log.error('setAuthData is not defined');
             }
-            log.info('The creation of the organisation is successful:', data);
         },
         onError: (error) => {
             log.error('The creation is failed:', error);

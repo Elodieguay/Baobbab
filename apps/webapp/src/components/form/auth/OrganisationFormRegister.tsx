@@ -12,9 +12,8 @@ import { z } from 'zod';
 import {
     OrganisationRegisterDTO,
     organisationRegisterFormSchema,
-    Status,
-    UserRole,
 } from '@baobbab/dtos';
+import log from 'loglevel';
 
 const OrganisationFormRegister = ({
     form,
@@ -26,21 +25,14 @@ const OrganisationFormRegister = ({
     function onSubmitForm(
         values: z.infer<typeof organisationRegisterFormSchema>
     ): void {
-        console.log('je suis là');
-
         onSubmit({
-            status: Status.PENDING,
-            role: UserRole.ADMIN,
-            siret: values.siret,
             organisationName: values.organisationName,
+            siret: values.siret,
             email: values.email,
             password: values.password,
         });
-        console.warn(values);
-        console.log('onSubmit', onSubmit);
+        log.warn(values);
     }
-    console.log('all values:', form.getValues());
-    console.log('Form Errors:', form.formState.errors);
 
     return (
         <Form {...form}>
@@ -75,14 +67,10 @@ const OrganisationFormRegister = ({
                                 <FormControl>
                                     <Input
                                         {...field}
-                                        type="number"
+                                        type="text"
                                         placeholder="siret"
                                         className="w-full"
-                                        onChange={(e) =>
-                                            field.onChange(
-                                                Number(e.target.value)
-                                            )
-                                        }
+                                        value={field.value ?? ''}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -129,7 +117,7 @@ const OrganisationFormRegister = ({
                 </div>
                 <Button
                     type="submit"
-                    onClick={() => console.log('Bouton cliqué')}
+                    // onClick={() => }
                     className="w-1/2 bg-[#fdcf63] rounded-xl hover:bg-[#be3565]"
                 >
                     S'enregistrer

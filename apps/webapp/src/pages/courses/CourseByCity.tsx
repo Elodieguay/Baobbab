@@ -13,8 +13,6 @@ import { useParams } from 'react-router';
 import CourseSkeleton from '@/components/courses/CourseSkeleton';
 
 const CourseByCity = (): JSX.Element | null => {
-    log.debug('composant rendu');
-    // const { city = '' } = useCity();
     const { city } = useParams<{ city: string }>();
     const [selectedCategory, setSelectedCategory] = useState<
         string | undefined
@@ -45,7 +43,7 @@ const CourseByCity = (): JSX.Element | null => {
 
     useEffect(() => {
         if (!category) {
-            setSelectedCategory(undefined); // Charger tous les cours au départ
+            setSelectedCategory(undefined);
         }
         if (category && Array.isArray(category)) {
             setCategoryList(category);
@@ -69,12 +67,11 @@ const CourseByCity = (): JSX.Element | null => {
     if (errorCourses) {
         return <p>Erreur lors du chargement des cours.</p>;
     }
-    log.debug('courses', courses);
-    log.debug('category selectionnée', selectedCategory);
+
     return (
-        <div className=" w-full min-h-screen flex flex-col  gap-6 border border-red-500">
-            <div className="w-full h-full flex flex-col  items-center justify-center border border-blue-500">
-                <div className="w-1/3 flex justify-center items-center border border-green-500 ">
+        <div className=" w-full min-h-screen flex flex-col  gap-6 ">
+            <div className="w-full h-full flex flex-col  items-center justify-center ">
+                <div className="w-1/3 flex justify-center items-center  ">
                     <NavbarCitySelection />
                 </div>
                 <div className="h-14 w-full flex justify-center items-center object-center content-center border-b">

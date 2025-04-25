@@ -11,7 +11,6 @@ import i18n from './i18n/config';
 import { configureLogs } from '@/utils/logConfig/logCongif';
 import '@/utils/logConfig/sentryConfig';
 import { Toaster } from './components/ui/toaster';
-import Footer from './components/footer/Footer';
 
 configureLogs();
 

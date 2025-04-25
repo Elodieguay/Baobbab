@@ -1,4 +1,4 @@
-import { OrganisationAuthResponse, OrganisationInfosDTO } from '@baobbab/dtos';
+import { OrganisationCompleteInfo, OrganisationInfosDTO } from '@baobbab/dtos';
 // import { loginOrganisationSchema } from './auth';
 import log from 'loglevel';
 import { config } from '../config';
@@ -6,14 +6,14 @@ import ky from 'ky';
 
 export const getOrganisationById = async (
     organisationId: string
-): Promise<OrganisationAuthResponse> => {
+): Promise<OrganisationCompleteInfo> => {
     if (typeof organisationId !== 'string' || !organisationId.trim()) {
         log.error('Invalid organisation Id');
     }
 
     try {
         const url = `${config.apiUrl}/organisation/${organisationId}`;
-        const response = await ky.get(url).json<OrganisationAuthResponse>();
+        const response = await ky.get(url).json<OrganisationCompleteInfo>();
 
         log.info('OrganisationInformation succeed:', response);
         return response;

@@ -17,7 +17,7 @@ export class User {
   password!: string;
 
   @Enum({ items: () => UserRole, default: UserRole.USER })
-  role!: UserRole;
+  role!: UserRole.USER;
 
   @Property({ onCreate: () => new Date(), nullable: true })
   createdAt: Date = new Date();

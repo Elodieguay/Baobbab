@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthPayloadDto } from './types/auth.types';
-import { UserDTO, UserRegisterDTO } from '@baobbab/dtos/src/user.dto';
+import { UserRegisterDTO } from '@baobbab/dtos/src/user.dto';
 import { LocalGuard } from './guards/local.guards';
 import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
@@ -84,16 +84,12 @@ export class AuthController {
   @Post('organisationRegister')
   async organisationRegister(
     @Body() createOrganisation: OrganisationRegisterDTO,
-  ): Promise<OrganisationRegisterDTO> {
+  ): Promise<Omit<OrganisationRegisterDTO, 'password'>> {
+    logger.debug(createOrganisation);
     const organisation =
       await this.authService.organisationRegister(createOrganisation);
-
-    return {
-      ...organisation,
-      password: '',
-      status: Status.PENDING,
-      role: UserRole.ADMIN,
-    };
+    logger.debug(organisation);
+    return organisation;
   }
 
   @Post('organisationLogin')

@@ -26,7 +26,7 @@ const CardsCourses = ({
     return (
         <Card
             key={item.id}
-            className="w-full h-64 shadow-sm border rounded-md overflow-hidden flex border-none relative"
+            className="w-full h-64 shadow-md border rounded-md overflow-hidden flex border-none relative"
             onMouseEnter={() => setHoveredCardId(item.id)}
             onMouseLeave={() => setHoveredCardId(null)}
         >

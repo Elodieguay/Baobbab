@@ -59,9 +59,10 @@ export const organisationFormSchema = z.object({
 });
 
 export const organisationRegisterFormSchema = z.object({
-    siret: z.number().min(14, {
-        message: 'Le siret doit contenir au moijns 14 caractères',
-    }),
+    siret: z
+        .string()
+        .length(14, 'Le SIRET doit contenir exactement 14 chiffres')
+        .regex(/^\d+$/, 'Le SIRET doit contenir uniquement des chiffres'),
     organisationName: z.string().min(2, {
         message: 'Le nom doit contenir au moins 2 caractères',
     }),
@@ -95,9 +96,7 @@ export const organisationLoginFormSchema = z.object({
 });
 
 export interface OrganisationRegisterDTO {
-    status: Status;
-    role: UserRole;
-    siret: number;
+    siret: string;
     organisationName: string;
     email: string;
     password: string;
@@ -127,8 +126,13 @@ export interface OrganisationInfosDTO {
     socialMediaInstagram?: string;
     socialMediaFaceBook?: string;
     socialMediaTwitter?: string;
-    socialMediaTikTok?: string;
-    image?: string | File;
+    image?: string;
     createdAt?: Date;
     updatedAt?: Date;
+}
+
+export interface OrganisationCompleteInfo extends OrganisationInfosDTO {
+    id: string;
+    organisationName: string;
+    email: string;
 }

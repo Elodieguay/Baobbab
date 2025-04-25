@@ -4,10 +4,8 @@ import {
     OrganisationRegisterDTO,
     ProtectedRouteDTO,
     RegisterResponse,
-    Status,
     UserLoginDTO,
     UserRegisterDTO,
-    UserRole,
     LoginResponse,
 } from '@baobbab/dtos';
 import { config } from '../config';
@@ -23,12 +21,10 @@ const registerSchema = z.object({
 });
 
 const registerOrganisationSchema = z.object({
-    siret: z.number().min(14),
+    siret: z.string().length(14).regex(/^\d+$/),
     organisationName: z.string().min(2),
     email: z.string().email(),
     password: z.string().min(8),
-    role: z.nativeEnum(UserRole),
-    status: z.nativeEnum(Status),
 });
 
 export const loginOrganisationSchema = z.object({
@@ -44,7 +40,6 @@ export async function registerUser(
     const validationResult = registerSchema.safeParse(createUser);
 
     if (!validationResult.success) {
-        console.error('Validation failed:', validationResult.error);
         throw new Error('Validation error: invalid input data');
     }
 
@@ -110,18 +105,19 @@ export const checkProtectedRoute = async ({
 export async function registerOrganisation(
     createOrganisation: OrganisationRegisterDTO
 ): Promise<OrganisationAuthResponse> {
+    log.debug('payload', createOrganisation);
     const validationResult =
         registerOrganisationSchema.safeParse(createOrganisation);
     if (!validationResult.success) {
         log.error('Validation failed:', validationResult.error);
         throw new Error('Validation error: invalid input data');
     }
-
     try {
         const url = `${config.apiUrl}/auth/organisationRegister`;
         const response = (await ky
             .post(url, { json: createOrganisation })
             .json()) as OrganisationAuthResponse;
+        log.info('response', response);
 
         return response;
     } catch (error) {
@@ -146,6 +142,7 @@ export async function loginOrganisation(
         const response = (await ky
             .post(url, { json: loginOrganisation })
             .json()) as OrganisationAuthResponse;
+
         return response;
     } catch (error) {
         log.error('error logging in user', error);

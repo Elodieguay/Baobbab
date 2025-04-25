@@ -12,13 +12,13 @@ const CardContent = () => {
     ];
 
     return (
-        <div className="flex w-3/4 justify-between items-center gap-10">
+        <div className="flex w-[95%] justify-between items-center gap-8">
             {cards.map((item, index) => (
                 <Card
                     key={index}
-                    className="w-1/2 h-64 rounded-3xl bg-[#cb8501] flex items-center"
+                    className="w-2/3 h-[40dvh] rounded-3xl bg-[#cb8501] flex items-center"
                 >
-                    <CardDescription className="text-base text-white font-semibold p-6">
+                    <CardDescription className="text-xl text-white font-semibold p-6">
                         {item}{' '}
                     </CardDescription>
                 </Card>

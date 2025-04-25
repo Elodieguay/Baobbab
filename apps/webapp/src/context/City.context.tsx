@@ -13,7 +13,6 @@ export const CityProvider = ({
     children: React.ReactNode;
 }): JSX.Element => {
     const [city, setCity] = useState<string | undefined>(undefined);
-    // console.log('city de cityprovider', city);
 
     return (
         <CityContext.Provider value={{ city, setCity }}>

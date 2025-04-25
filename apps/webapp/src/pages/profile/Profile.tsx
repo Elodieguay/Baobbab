@@ -1,22 +1,33 @@
+import Footer from '@/components/footer/Footer';
 import Navbar from '@/components/navbar.tsx/Navbar';
-import TableProfile from '@/components/tables/TableProfile';
+import { useGetOrganisationInfoController } from '@/components/profile/hook/useGetOrganisationController';
+import { columns } from '@/components/profile/profileTable/Columns';
+import { DataTable } from '@/components/profile/profileTable/DataTable';
 import { Button } from '@/components/ui/button';
+import { Card, CardHeader } from '@/components/ui/card';
 import { useAuth } from '@/context/Auth.context';
+import { useCity } from '@/context/City.context';
 import { useGetUserBooking } from '@/hooks/booking/query';
 import { useGetUser } from '@/hooks/user/query';
 import log from 'loglevel';
-import { CircleUser, Smartphone } from 'lucide-react';
+import { AtSign, CircleUser } from 'lucide-react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 const Profile = (): JSX.Element => {
-    const { authToken, removeAuthData, username } = useAuth();
+    const { authToken, username } = useAuth();
+    const { city } = useCity();
     const navigate = useNavigate();
     const { data } = useGetUser(authToken || '');
-    const userId = data?.id;
-    log.debug(data);
+    const { data: user } = useGetUser(authToken || '');
+    const userId = user?.id;
     const { data: userBooking } = useGetUserBooking(userId || '');
-    log.debug('userbooking', userBooking);
+    // const bookingsWithOrgNames = useGetOrganisationInfoController();
+    const { t } = useTranslation('common', {
+        keyPrefix: 'Profile',
+    });
+
     useEffect(() => {
         if (!authToken) {
             navigate('/login');
@@ -24,82 +35,59 @@ const Profile = (): JSX.Element => {
     }, [authToken, navigate]);
 
     if (!authToken) {
-        return <div>Vous devez être connecté pour accéder à cette page</div>;
+        log.error('No authToken is found');
+        return <div>{t('page.error.authToken')}</div>;
     }
     if (!data) {
-        return <div>Loading...</div>; // ou un message d'erreur si tu préfères
+        log.error('No data is found');
+        return <div>{t('page.loading.data.user')}</div>;
     }
 
+    const handleGoBack = () => {
+        if (city) {
+            navigate(`/courses/${city}`);
+        } else {
+            navigate('/');
+        }
+    };
+
     return (
-        <div className="h-full bg-home-svg lg:h-screen max-lg:w-[90%] lg:overflow-hidden">
+        <div className=" flex flex-col items-center ">
             <Navbar />
-            <div className="flex flex-col h-full  items-center gap-10 bg-white">
-                <nav className="relative flex flex-col lg:h-1/5 container mt-5  rounded-xl justify-center items-center lg:text-2xl font-semibold shadow-md bg-white ">
-                    <header className="flex absolute z-10 bottom-8  w-full  justify-center">
-                        <h1 className="">Bonjour {username}</h1>
-                        {/* {username ? (
-                        <AvatarUser
-                            name={username}
-                            className="w-20 h-20 pointer-events-none border-[#01a274]"
-                        />
-                    ) : null} */}
-                    </header>
-                    <aside className="flex h-full w-full justify-between items-end ">
-                        <Button
-                            className="lg:p-4 lg:px-6 bg-[#01a274] text-white max-md:h-8"
-                            variant={'default'}
-                        >
-                            Choisir un cours
-                        </Button>
-                        <Button
-                            className=" lg:p-4 lg:px-6 bg-[#01a274] text-white max-md:h-8"
-                            variant={'default'}
-                            onClick={removeAuthData}
-                        >
-                            Se déconnecter
-                        </Button>
-                    </aside>
-                </nav>
-                <section className="h-full container max-md:flex-col flex justify-center gap-10 ">
-                    <aside className="flex flex-col lg:w-1/4 lg:h-1/2 bg-white items-center rounded-xl shadow-md ">
-                        <div className="flex flex-col w-full h-10 bg-[#01a274] justify-center">
-                            <h2 className="text-center text-white font-semibold">
-                                Mes informations
-                            </h2>
-                        </div>
-                        <ul className="w-full justify-center items-center p-5">
-                            <li className="flex border-b lg:h-10 items-center">
-                                <CircleUser className="text-gray-800" />
-                                <span className="text-right ml-5">
-                                    {username}
-                                </span>
+            <div className="w-full min-h-screen bg-slate-100  rounded-lg p-4 flex flex-col gap-6">
+                <div>
+                    <Button onClick={handleGoBack}>{t('page.button')}</Button>
+                </div>
+                <section className="flex flex-col items-center gap-9 w-full">
+                    <Card className="w-full lg:w-1/3 bg-[#be3565] rounded-md p-4 text-white">
+                        <CardHeader className="text-center text-white font-semibold">
+                            {t('page.card.header')}
+                        </CardHeader>
+                        <ul className="mt-4 space-y-3">
+                            <li className="flex items-center border-b pb-2">
+                                <CircleUser />
+                                <span className="ml-4">{username}</span>
                             </li>
-                            <li className="flex border-b lg:h-10 items-center">
-                                <Smartphone className="text-gray-800" />
-                                <span className="text-right ml-5">
-                                    {username}
-                                </span>
+                            <li className="flex items-center border-b pb-2">
+                                <AtSign />
+                                <span className="ml-4">{data.email}</span>
                             </li>
-                            {/* <li className="flex border-b lg:h-10 items-center">
-                            <AtSign className="text-gray-800" />
-                            <span className="text-center ml-5">
-                                {email}
-                            </span>
-                        </li> */}
                         </ul>
-                    </aside>
-                    <div className="flex flex-col lg:h-4/5 lg:w-3/4 bg-white items-center rounded-xl shadow-md">
-                        <div className="flex flex-col w-full h-10 bg-[#01a274] justify-center">
-                            <h2 className="text-center text-white font-semibold">
-                                Informations sur tes cours d'essai
-                            </h2>
-                        </div>
-                        <div className="w-full h-auto overflow-auto p-4">
-                            <TableProfile />
+                    </Card>
+                    <div className="flex flex-col w-full lg:w-2/3 bg-white rounded-md shadow-md p-4">
+                        <h2 className="text-center font-semibold">
+                            {t('page.table.title')}
+                        </h2>
+                        <div className="w-full overflow-auto">
+                            <DataTable
+                                columns={columns}
+                                data={userBooking || []}
+                            />
                         </div>
                     </div>
                 </section>
             </div>
+            <Footer />
         </div>
     );
 };

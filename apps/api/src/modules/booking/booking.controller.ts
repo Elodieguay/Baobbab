@@ -18,6 +18,7 @@ import { entityToDto } from './booking.entityToDto';
 import { Booking } from 'src/entities/booking.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Request } from 'express';
+import { logger } from '@mikro-orm/nestjs';
 
 @Controller('booking')
 export class BookingController {
@@ -67,9 +68,15 @@ export class BookingController {
   // }
 
   @Delete(':bookingId')
-  async remove(@Param('bookingId') @Req() req, bookingId: string) {
+  async delete(
+    @Param('bookingId') bookingId: string,
+    @Body('userId') userId: string,
+  ) {
+    logger.log('bookingId', bookingId);
+
     try {
-      const userId = req.user.id;
+      logger.log('bookingId', bookingId);
+
       const result = await this.bookingService.remove(bookingId, userId);
       return {
         statusCode: 200,

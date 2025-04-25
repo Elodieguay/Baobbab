@@ -18,6 +18,7 @@ export class CategoriesService {
       { title: 'Environnement' },
       { title: 'Evènements' },
     ];
+
     const categories = categoryArray.map((category) =>
       this.em.create(Categories, category),
     );
