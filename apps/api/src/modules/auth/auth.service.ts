@@ -15,6 +15,7 @@ import * as bcrypt from 'bcryptjs';
 import { logger } from '@mikro-orm/nestjs';
 import {
   OrganisationRegisterDTO,
+  Status,
   SuperAdminDTO,
   UserRegisterDTO,
   UserRole,

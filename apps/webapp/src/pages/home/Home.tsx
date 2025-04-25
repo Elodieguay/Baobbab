@@ -12,9 +12,11 @@ import { useTranslation } from 'react-i18next';
 import Description from './Description';
 import CTA from '@/components/home/CTA';
 import Navbar from '@/components/navbar.tsx/Navbar';
+import { useCity } from '@/context/City.context';
 
 const Home = (): JSX.Element => {
     const [__, setSelectedCity] = useState<string>('');
+    const { setCity } = useCity();
     const navigate = useNavigate();
     const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
     const { t } = useTranslation('common', {
@@ -41,6 +43,7 @@ const Home = (): JSX.Element => {
 
     const onSubmit = (data: z.infer<typeof citySchema>): void => {
         setSelectedCity(data.city);
+        setCity(data.city);
         navigate(`/courses/${data.city}`);
     };
 
@@ -61,7 +64,6 @@ const Home = (): JSX.Element => {
                         <h1 className="font-poppins text-white font-semibold">
                             {t('baseline')}
                         </h1>
-                        {/* <h2 className="font-poppins text-white font-semibold">Des activités pour tous les goûts, à deux pas de chez toi </h2> */}
                         <div className="w-full flex h-14 bottom-0">
                             <SelectCityForm form={form} onSubmit={onSubmit}>
                                 <Button

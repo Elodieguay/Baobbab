@@ -1,5 +1,5 @@
 import { GeocodingFeatureCollection } from '@baobbab/dtos';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class GeocodingService {
@@ -17,7 +17,7 @@ export class GeocodingService {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Error fetching geocoding addresses');
+      Logger.error('Error fetching geocoding addresses');
       return null;
     }
   }

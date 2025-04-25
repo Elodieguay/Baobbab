@@ -39,15 +39,14 @@ const SelectCityForm = ({
         });
         setCity(values.city);
     };
-    // console.log('city', form.getValues('city'));
 
     return (
         <Form {...form}>
             <form
-                className="w-full flex items-center justify-center "
+                className="w-full h-14 flex items-center   "
                 onSubmit={form.handleSubmit(onSubmitForm)}
             >
-                <div className="flex items-center bg-white border-none rounded-xl h-full overflow-hidden w-full max-w-lg">
+                <div className="flex items-center bg-white border-6 rounded-xl h-14 overflow-hidden w-full max-w-lg">
                     <FormField
                         control={form.control}
                         name="city"
@@ -58,30 +57,37 @@ const SelectCityForm = ({
                                     defaultValue={field.value}
                                 >
                                     <FormControl>
-                                        <SelectTrigger className="h-full rounded-none text-base border-none">
+                                        <SelectTrigger className="h-14 rounded-l-md text-base ">
                                             {location.pathname === '/' ? (
-                                                <SelectValue placeholder="Selectionne une ville" />
+                                                <SelectValue
+                                                    placeholder={t('select')}
+                                                />
                                             ) : (
                                                 <SelectValue
-                                                    placeholder="Changer de ville"
+                                                    placeholder={t(
+                                                        'changeCity'
+                                                    )}
                                                     className="text-center"
                                                 />
                                             )}
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem value="Nantes">
+                                        <SelectItem
+                                            value="Nantes"
+                                            className="cursor-pointer"
+                                        >
                                             {t('selectCityNantes')}
                                         </SelectItem>
                                         <SelectItem
                                             value="Paris"
-                                            className=" pointer-events-none bg-slate-100"
+                                            className=" pointer-events-none bg-slate-200"
                                         >
                                             {t('selectCityParis')}
                                         </SelectItem>
                                         <SelectItem
                                             value="Capdenac-Gare"
-                                            className=" pointer-events-none bg-slate-100"
+                                            className=" pointer-events-none bg-slate-200"
                                         >
                                             {t('selectCityCapdenac')}
                                         </SelectItem>

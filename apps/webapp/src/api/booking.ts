@@ -1,5 +1,5 @@
 import { config } from '@/config';
-import { CreateABooking, UserBooking } from '@baobbab/dtos';
+import { BookingResponse, CreateABooking, UserBooking } from '@baobbab/dtos';
 import ky from 'ky';
 import log from 'loglevel';
 
@@ -38,10 +38,10 @@ export const createBookingCourse = async (
 
 export const getUserBooking = async (
     userId: string
-): Promise<UserBooking[]> => {
+): Promise<BookingResponse[]> => {
     try {
         const url = `${config.apiUrl}/booking/${userId}`;
-        const response = await ky.get(url).json<UserBooking[]>();
+        const response = await ky.get(url).json<BookingResponse[]>();
         log.debug('response getUserbooking:', response);
         return response;
     } catch (error) {
@@ -75,15 +75,18 @@ export const getOrganisationUserBooking = async (
     }
 };
 
-export const removeUserBooking = async (bookingId: string, token: string) => {
+export const deleteUserBooking = async (bookingId: string, userId?: string) => {
+    if (!userId) {
+        throw new Error('User ID is required');
+    }
+    if (!bookingId) {
+        throw new Error(' bookingId is missing');
+    }
+
     try {
         const url = `${config.apiUrl}/booking/${bookingId}`;
         const response = await ky
-            .delete(url, {
-                headers: {
-                    Authorization: `Bearer ${token}`, // Ajout du token pour l'authentification
-                },
-            })
+            .delete(url, { json: { userId, bookingId } })
             .json();
 
         log.debug('Booking successfully deleted:', response);

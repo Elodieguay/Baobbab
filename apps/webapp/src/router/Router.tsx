@@ -8,11 +8,15 @@ import Profile from '../pages/profile/Profile';
 import ProtectedRoutes from './ProtectedRoutes';
 import CourseById from '@/pages/courses/CourseById';
 import CourseByCity from '@/pages/courses/CourseByCity';
-// import ModalAuth from '@/components/auth/ModalAuth';
 import Organisation from '@/pages/organisation/Organisation';
 import ForgottenPassword from '@/components/auth/ForgottenPassword';
 import ResetPassword from '@/components/auth/ResetPassword';
 import Footer from '@/components/footer/Footer';
+import CoursesForm from '@/components/dashboard/CoursesForm';
+import UsersBookingTable from '@/components/dashboard/UsersBookingTable';
+import AllCoursesTable from '@/components/dashboard/AllCoursesTable';
+import OrganisationInfo from '@/components/dashboard/OrganisationInfo';
+import HomePage from '@/pages/home/HomePage';
 
 const router = createBrowserRouter([
     // version v7
@@ -21,7 +25,7 @@ const router = createBrowserRouter([
         path: AppRoutes.Home.path,
         element: (
             <>
-                <Home />
+                <HomePage />
                 <Footer />
             </>
         ),
@@ -67,6 +71,24 @@ const router = createBrowserRouter([
             {
                 path: AppRoutes.Dashboard.path,
                 element: <Dashboard />,
+                children: [
+                    {
+                        path: 'createCourse',
+                        element: <CoursesForm />,
+                    },
+                    {
+                        path: 'usersBookingTable',
+                        element: <UsersBookingTable />,
+                    },
+                    {
+                        path: 'allCourses',
+                        element: <AllCoursesTable />,
+                    },
+                    {
+                        path: 'informations',
+                        element: <OrganisationInfo />,
+                    },
+                ],
             },
             {
                 path: AppRoutes.Profile.path,

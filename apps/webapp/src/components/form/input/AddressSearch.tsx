@@ -23,7 +23,6 @@ export function AddressSearch(): JSX.Element {
             label: feature.properties.label, // Label complet avec adresse
         })) ?? [];
 
-    console.log('items:', items);
     log.info('searchValue:', searchValue);
 
     return (

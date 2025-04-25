@@ -1,22 +1,30 @@
-import { OrganisationInfosDTO, OrganisationRegisterDTO } from '@baobbab/dtos';
+import {
+  OrganisationCompleteInfo,
+  OrganisationInfosDTO,
+  OrganisationRegisterDTO,
+} from '@baobbab/dtos';
 import { EntityManager } from '@mikro-orm/core';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Organisation } from 'src/entities/organisation.entity';
 import { OrganisationInfos } from 'src/entities/organisationInfos.entity';
+import { organisationToDto } from './organisation.entityToDTO';
 
 @Injectable()
 export class OrganisationService {
   constructor(private readonly em: EntityManager) {}
 
-  async findById(id: string): Promise<Omit<Organisation, 'password'>> {
-    const organisation = await this.em.findOne(Organisation, { id });
+  async findById(id: string): Promise<OrganisationCompleteInfo> {
+    const organisation = await this.em.findOne(
+      Organisation,
+      { id },
+      { populate: ['organisationInfos'] },
+    );
     if (!organisation) {
       Logger.error(`Organisation with Id ${id} does not exist`);
       throw new Error(`Organisation with Id ${id} does not exist`);
     }
 
-    const { password, ...organisationWithoutPassword } = organisation;
-    return organisationWithoutPassword;
+    return organisationToDto(organisation);
   }
 
   async create({

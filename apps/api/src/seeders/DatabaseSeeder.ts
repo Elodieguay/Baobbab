@@ -18,13 +18,41 @@ export class DatabaseSeeder extends Seeder {
     if (categories.length === 0) {
       throw new Error('Aucune catégorie trouvée en base de données.');
     }
-    // Liste de lat/lon pour Nantes Métropole
-    //  const nantesLocations: { lat: number; lon: number }[] = [
-    //    { lat: 47.2184, lon: -1.5536 }, // Centre de Nantes
-    //    { lat: 47.2065, lon: -1.5914 }, // Rezé
-    //    { lat: 47.2569, lon: -1.5445 }, // Saint-Herblain
-    //    { lat: 47.322, lon: -1.524 }, // Carquefou
-    //  ];
+    const organisationImages = [
+      'https://randomuser.me/api/portraits/men/1.jpg',
+      'https://randomuser.me/api/portraits/women/2.jpg',
+      'https://randomuser.me/api/portraits/men/3.jpg',
+      'https://randomuser.me/api/portraits/women/4.jpg',
+      'https://randomuser.me/api/portraits/men/5.jpg',
+      'https://randomuser.me/api/portraits/women/6.jpg',
+    ];
+
+    const courseImages: Record<string, string[]> = {
+      Sport: [
+        'https://images.unsplash.com/photo-1518458717367-249ba15389d2?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1593786930094-d5c8164ac771?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1474546652694-a33dd8161d66?q=80&w=1184&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      ],
+      Danse: [
+        'https://images.unsplash.com/photo-1466554934129-f71df54ebb27?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      ],
+      'Arts & Cultures': [
+        'https://unsplash.com/fr/photos/personne-tenant-une-pierre-blanche-et-grise-OV44gxH71DU',
+      ],
+      'Bien-être': [
+        'https://images.unsplash.com/photo-1588286840104-8957b019727f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1549576490-b0b4831ef60a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      ],
+      'Vie & Solidarité': [
+        'https://images.unsplash.com/photo-1593113616828-6f22bca04804?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1615897570286-da936a5dfb81?q=80&w=1221&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      ],
+      Environnement: [
+        'https://images.unsplash.com/photo-1593739742226-5e5e2fdb1f1c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1601758260944-72f34e1b8d57?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      ],
+    };
 
     // 2️⃣ Centre de Nantes pour générer des positions uniques
     const centerLat = 47.2184;
@@ -34,7 +62,7 @@ export class DatabaseSeeder extends Seeder {
     for (let i = 0; i < 10; i++) {
       const org = em.create(Organisation, {
         organisationName: faker.company.name(),
-        siret: faker.number.int({ min: 10000000000000, max: 99999999999999 }),
+        siret: faker.string.numeric(14),
         email: faker.internet.email(),
         password: faker.internet.password(),
         status: Status.APPROVED,
@@ -47,14 +75,17 @@ export class DatabaseSeeder extends Seeder {
         lastname: faker.person.lastName(),
         phone: faker.phone.number(),
         address: faker.location.streetAddress(),
-        bio: faker.lorem.sentence(),
+        bio: faker.lorem.paragraphs(),
         website: faker.internet.url(),
         socialMediaInstagram: `https://instagram.com/${faker.internet.username()}`,
         socialMediaFaceBook: `https://facebook.com/${faker.internet.username()}`,
         socialMediaTwitter: `https://twitter.com/${faker.internet.username()}`,
         organisation: org,
         createdAt: new Date(),
-        image: '',
+        image:
+          organisationImages[
+            Math.floor(Math.random() * organisationImages.length)
+          ],
       });
 
       //  const location =
@@ -70,17 +101,20 @@ export class DatabaseSeeder extends Seeder {
 
       usedLocations.add(key); // Ajouter la position à l'ensemble des utilisées
 
-      // // Récupère maintenant les catégories pour les utiliser dans les cours
-      // const categories = await em.find(Categories, {});
-
       // Sélection d'une catégorie aléatoire
       const randomCategory =
         categories[Math.floor(Math.random() * categories.length)];
+      const randomCategoryName = randomCategory.title;
+      const selectedImages = courseImages[randomCategoryName] || [
+        'https://unsplash.com/fr/illustrations/un-homme-court-un-marathon-LhlyOTS92uc',
+      ];
+      const courseImage =
+        selectedImages[Math.floor(Math.random() * selectedImages.length)];
 
       const course = em.create(Courses, {
         title: faker.commerce.productName(),
         description: faker.lorem.paragraph(),
-        image: faker.image.url(),
+        image: courseImage,
         duration: faker.number.int({ min: 30, max: 120 }),
         price: faker.number.int({ min: 10, max: 100 }),
         address: faker.location.streetAddress(),
@@ -91,7 +125,8 @@ export class DatabaseSeeder extends Seeder {
         },
         organisation: org,
         reminder: 'basket',
-        category: randomCategory, // Ajout de la catégorie
+        category: randomCategory,
+        booking: [],
       });
 
       // Ajout des Schedules pour ce Course sans dates spécifiques

@@ -1,5 +1,6 @@
 import {
     createBookingCourse,
+    deleteUserBooking,
     getOrganisationUserBooking,
     getUserBooking,
 } from '@/api/booking';
@@ -62,5 +63,30 @@ export const useGetOrganisationUserBooking = (
     return useQuery({
         queryKey: ['booking'],
         queryFn: () => getOrganisationUserBooking(organisationId, token),
+    });
+};
+
+export const useDeleteUserBooking = (
+    bookingId: string,
+    userId?: string,
+    options?: {
+        onSuccess: () => void;
+        onError: (error: Error) => void;
+    }
+) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async () => {
+            return deleteUserBooking(bookingId, userId);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['booking'],
+            });
+            options?.onSuccess?.();
+        },
+        onError: (error) => {
+            options?.onError(error as Error);
+        },
     });
 };

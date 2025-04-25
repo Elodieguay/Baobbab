@@ -52,11 +52,7 @@ const Organisation = (): JSX.Element => {
     const onSubmitForm = (
         values: z.infer<typeof organisationRegisterFormSchema>
     ): void => {
-        organisationRegister({
-            ...values,
-            role: UserRole.ADMIN,
-            status: Status.PENDING,
-        });
+        organisationRegister(values);
     };
 
     const onSubmitLoginForm = (

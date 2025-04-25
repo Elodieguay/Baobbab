@@ -9,7 +9,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { OrganisationService } from './organisation.service';
-import { OrganisationInfosDTO, OrganisationRegisterDTO } from '@baobbab/dtos';
+import {
+  OrganisationCompleteInfo,
+  OrganisationInfosDTO,
+  OrganisationRegisterDTO,
+} from '@baobbab/dtos';
 import { OrganisationInfos } from 'src/entities/organisationInfos.entity';
 
 @Controller('organisation')
@@ -20,7 +24,7 @@ export class OrganisationController {
   @HttpCode(HttpStatus.OK)
   async findOrganisationById(
     @Param('id') id: string,
-  ): Promise<Omit<OrganisationRegisterDTO, 'password'>> {
+  ): Promise<OrganisationCompleteInfo> {
     return this.organisationService.findById(id);
   }
 

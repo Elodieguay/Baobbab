@@ -101,6 +101,9 @@ export class BookingService {
     if (!bookingId) {
       throw new BadRequestException(' bookingId is missing');
     }
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
 
     const booking = await this.em.findOne(
       Booking,

@@ -89,13 +89,13 @@ const TestImageFile = (): JSX.Element => {
     // }
 
     function onSubmitForm(values: z.infer<typeof imageFormSchema>): void {
-        console.log('Form values:', values);
-        console.log('Image file:', values.image);
-        console.log('Image type:', values.image?.type);
-        console.log('Image size:', values.image?.size);
+        // console.log('Form values:', values);
+        // console.log('Image file:', values.image);
+        // console.log('Image type:', values.image?.type);
+        // console.log('Image size:', values.image?.size);
 
         if (!values.image) {
-            console.warn('Aucune image seléctionnée');
+            // console.warn('Aucune image seléctionnée');
             return;
         }
 
@@ -137,18 +137,18 @@ const TestImageFile = (): JSX.Element => {
                                         const file = e.target.files
                                             ? e.target.files[0]
                                             : null; // Récupérer le fichier
-                                        console.log(file); // Vérifier ce que contient `file`
+                                        // console.log(file); // Vérifier ce que contient `file`
 
                                         if (file) {
                                             field.onChange(file); // Passer à Zod
-                                            console.log(
-                                                'File type:',
-                                                file.type
-                                            );
-                                            console.log(
-                                                'File size:',
-                                                file.size
-                                            );
+                                            // console.log(
+                                            //     'File type:',
+                                            //     file.type
+                                            // );
+                                            // console.log(
+                                            //     'File size:',
+                                            //     file.size
+                                            // );
                                         } else {
                                             field.onChange(null); // Si aucun fichier n'est sélectionné
                                         }

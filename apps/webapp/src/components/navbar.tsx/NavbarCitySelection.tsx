@@ -28,7 +28,7 @@ const NavbarCitySelection = () => {
         navigate(`/courses/${data.city}`);
     };
     return (
-        <div className="w-full flex justify-around items-center rounded-3xl border-2 gap-2">
+        <div className="w-full flex justify-around items-center rounded-3xl border gap-2">
             <div className="flex w-1/3 gap-3 pl-5 p-2">
                 <Building2 className="text-[#be3565]" />
                 {city}
@@ -36,7 +36,7 @@ const NavbarCitySelection = () => {
             <div className="w-2/3 border-l ">
                 <SelectCityForm form={form} onSubmit={onSubmit}>
                     <Button
-                        className=" rounded-l-none bg-[#01a274] text-white"
+                        className="h-full rounded-l-none bg-[#01a274] text-white"
                         variant="ghost"
                     >
                         Allez

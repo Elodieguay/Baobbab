@@ -8,7 +8,7 @@ const CourseDetails = ({ courseData }: CourseDataProps) => {
         return null;
     }
     return (
-        <div className="space-y-5">
+        <div className="space-y-5 mt-12">
             <h1>Le cours en détail</h1>
             <div className="space-y-3 bg-[#01a274] rounded-md p-7">
                 <h2 className="text-white">Coup d'oeil</h2>

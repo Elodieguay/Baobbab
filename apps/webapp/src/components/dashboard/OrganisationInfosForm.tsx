@@ -52,11 +52,9 @@ const OrganisationInfosForm = ({
                 socialMediaInstagram: values.socialMediaInstagram,
                 socialMediaFaceBook: values.socialMediaFaceBook,
                 socialMediaTwitter: values.socialMediaTwitter,
-                socialMediaTikTok: values.socialMediaTikTok,
             },
         });
     };
-    console.log('all values:', form.getValues());
 
     return (
         <Form {...form}>

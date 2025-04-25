@@ -13,17 +13,17 @@
 @layer base {
     
     h1, h2, h3, h4, h5, h6, p {
-        @apply text-gray-700 
+        @apply text-gray-700 font-poppins
     }
 
     h1{
-        @apply text-3xl font-bold
+        @apply text-3xl font-semibold
     }
     h2{
-        @apply text-2xl font-bold
+        @apply text-2xl font-semibold
     }
     h3{
-        @apply text-xl font-bold
+        @apply text-xl font-semibold
     }
     :root {
         --sidebar-background: hsl(0, 0%, 98%);

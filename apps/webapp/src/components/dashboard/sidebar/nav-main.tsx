@@ -2,18 +2,16 @@
 
 import { ChevronRight, type LucideIcon } from 'lucide-react';
 
-import { Collapsible, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
     SidebarGroup,
-    SidebarGroupLabel,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { useLocation, useNavigate } from 'react-router';
 
 export function NavMain({
     items,
-    onItemClick,
 }: {
     items: {
         title: string;
@@ -25,48 +23,32 @@ export function NavMain({
             url: string;
         }[];
     }[];
-    onItemClick: (item: { title: string }) => void;
+    onItemClick: (items: { title: string }) => void;
 }): JSX.Element {
+    const navigate = useNavigate();
+    const location = useLocation();
     return (
         <SidebarGroup>
-            <SidebarGroupLabel></SidebarGroupLabel>
             <SidebarMenu>
-                {items.map((item) => (
-                    <Collapsible
-                        key={item.title}
-                        asChild
-                        defaultOpen={item.isActive}
-                        className="group/collapsible"
-                    >
-                        <SidebarMenuItem>
-                            <CollapsibleTrigger asChild>
-                                <SidebarMenuButton
-                                    tooltip={item.title}
-                                    onClick={() => onItemClick(item)}
-                                >
-                                    {item.icon && <item.icon size={40} />}
-                                    <span className="text-md">
-                                        {item.title}
-                                    </span>
-                                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                                </SidebarMenuButton>
-                            </CollapsibleTrigger>
-                            {/* <CollapsibleContent>
-                                <SidebarMenuSub>
-                                    {item.items?.map((subItem) => (
-                                        <SidebarMenuSubItem key={subItem.title}>
-                                            <SidebarMenuSubButton asChild>
-                                                <a href={subItem.url}>
-                                                    <span>{subItem.title}</span>
-                                                </a>
-                                            </SidebarMenuSubButton>
-                                        </SidebarMenuSubItem>
-                                    ))}
-                                </SidebarMenuSub>
-                            </CollapsibleContent> */}
+                {items.map((item) => {
+                    const isActive = location.pathname === item.url;
+                    return (
+                        <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton
+                                tooltip={item.title}
+                                className={
+                                    isActive ? 'bg-accent text-white' : ''
+                                }
+                                onClick={() => navigate(item.url)}
+                            >
+                                <span className="flex items-center gap-2">
+                                    {item.icon && <item.icon size={24} />}
+                                    <span>{item.title}</span>
+                                </span>
+                            </SidebarMenuButton>
                         </SidebarMenuItem>
-                    </Collapsible>
-                ))}
+                    );
+                })}
             </SidebarMenu>
         </SidebarGroup>
     );

@@ -51,7 +51,7 @@ export default [
         plugins: {
             react,
             'react-refresh': reactRefresh,
-            reactHooks,
+            'react-hooks':reactHooks,
         },
         languageOptions: {
             ecmaVersion: 2020,
@@ -89,7 +89,6 @@ export default [
                 },
             ],  
             // React
-            'react-refresh/only-export-components': "off",
             'react/function-component-definition': [
                 'off',
                 {
@@ -99,7 +98,6 @@ export default [
             ],  
             'react-hooks/rules-of-hooks': 'error',
             'react-hooks/exhaustive-deps': 'warn',      
-            '@typescript-eslint/no-explicit-any':'warn',
             'no-unused-vars': 'warn'
         },
     },
