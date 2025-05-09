@@ -1,24 +1,26 @@
 FROM node:18-alpine
 
-WORKDIR /app
-
-# Copie tout le monorepo (pour accès aux packages)
-COPY . .
-
-# Active pnpm
+# Installer pnpm globalement
 RUN npm install -g pnpm
 
-# Installe les dépendances
+WORKDIR /app
+
+# Copier tout le monorepo
+COPY . .
+
+# Installer les dépendances du monorepo
 RUN pnpm install
 
 # Build uniquement le front
 RUN pnpm --filter webapp build
 
-# Crée un serveur statique avec vite preview
-RUN pnpm --filter webapp --workspace-root add serve
+# Installer serve globalement pour servir le build
+RUN pnpm add -g serve
 
+# Exposer le port utilisé par le serveur statique
 EXPOSE 4173
-# Utilise serve pour lancer les fichiers statiques
+
+# Lancer le serveur statique pour servir les fichiers Vite
 CMD ["serve", "-s", "apps/webapp/dist", "-l", "4173"]
 
 
