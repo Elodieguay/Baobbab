@@ -1,13 +1,10 @@
-import {
-  OrganisationCompleteInfo,
-  OrganisationInfosDTO,
-  OrganisationRegisterDTO,
-} from '@baobbab/dtos';
 import { EntityManager } from '@mikro-orm/core';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Organisation } from 'src/entities/organisation.entity';
 import { OrganisationInfos } from 'src/entities/organisationInfos.entity';
 import { organisationToDto } from './organisation.entityToDTO';
+import { logger } from '@mikro-orm/nestjs';
+import { OrganisationCompleteInfo } from 'src/dtos/organisation';
 
 @Injectable()
 export class OrganisationService {
@@ -27,7 +24,7 @@ export class OrganisationService {
     return organisationToDto(organisation);
   }
 
-  async create({
+  async updateInfoOrganisation({
     id,
     createOrganisationInfos,
   }: {
@@ -43,7 +40,9 @@ export class OrganisationService {
       OrganisationInfos,
       createOrganisationInfos,
     );
-    await this.em.persistAndFlush(organisationInfos);
+    organisation.organisationInfos = organisationInfos;
+    await this.em.persistAndFlush([organisationInfos, organisation]);
+    logger.debug('organisation', organisationInfos);
     return organisationInfos;
   }
 }

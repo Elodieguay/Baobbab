@@ -8,9 +8,9 @@ import {
   Delete,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
-import { CategoryDTO } from '@baobbab/dtos';
 import { logger } from '@mikro-orm/nestjs';
 import { Categories } from '../../entities/categories.entity';
+import { CategoryDTO } from 'src/dtos/courses';
 
 @Controller('categories')
 export class CategoriesController {

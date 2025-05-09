@@ -1,6 +1,5 @@
 import Footer from '@/components/footer/Footer';
 import Navbar from '@/components/navbar.tsx/Navbar';
-import { useGetOrganisationInfoController } from '@/components/profile/hook/useGetOrganisationController';
 import { columns } from '@/components/profile/profileTable/Columns';
 import { DataTable } from '@/components/profile/profileTable/DataTable';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,7 @@ import { useAuth } from '@/context/Auth.context';
 import { useCity } from '@/context/City.context';
 import { useGetUserBooking } from '@/hooks/booking/query';
 import { useGetUser } from '@/hooks/user/query';
+import { UserRole } from '@baobbab/dtos';
 import log from 'loglevel';
 import { AtSign, CircleUser } from 'lucide-react';
 import { useEffect } from 'react';
@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 const Profile = (): JSX.Element => {
-    const { authToken, username } = useAuth();
+    const { authToken, username, role } = useAuth();
     const { city } = useCity();
     const navigate = useNavigate();
     const { data } = useGetUser(authToken || '');
@@ -27,9 +27,9 @@ const Profile = (): JSX.Element => {
     const { t } = useTranslation('common', {
         keyPrefix: 'Profile',
     });
-
+    log.debug('userid de profile', userId);
     useEffect(() => {
-        if (!authToken) {
+        if (!authToken && role != UserRole.USER) {
             navigate('/login');
         }
     }, [authToken, navigate]);
@@ -81,7 +81,13 @@ const Profile = (): JSX.Element => {
                         <div className="w-full overflow-auto">
                             <DataTable
                                 columns={columns}
-                                data={userBooking || []}
+                                data={(userBooking || []).map((booking) => ({
+                                    ...booking,
+                                    schedule: booking.schedule[0] || {
+                                        day: '',
+                                        hours: '',
+                                    },
+                                }))}
                             />
                         </div>
                     </div>

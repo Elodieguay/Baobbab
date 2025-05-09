@@ -1,8 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import AppRoutes from './AppRoutes';
-import Home from '../pages/home/Home';
 import Courses from '../pages/courses/Courses';
-import Booking from '../pages/courses/Booking';
 import Dashboard from '../pages/dashboard/Dashboard';
 import Profile from '../pages/profile/Profile';
 import ProtectedRoutes from './ProtectedRoutes';
@@ -15,8 +13,8 @@ import Footer from '@/components/footer/Footer';
 import CoursesForm from '@/components/dashboard/CoursesForm';
 import UsersBookingTable from '@/components/dashboard/UsersBookingTable';
 import AllCoursesTable from '@/components/dashboard/AllCoursesTable';
-import OrganisationInfo from '@/components/dashboard/OrganisationInfo';
 import HomePage from '@/pages/home/HomePage';
+import InformationsForm from '@/components/form/organisation/InformationsForm';
 
 const router = createBrowserRouter([
     // version v7
@@ -65,10 +63,6 @@ const router = createBrowserRouter([
         element: <ProtectedRoutes />,
         children: [
             {
-                path: AppRoutes.Booking.path,
-                element: <Booking />,
-            },
-            {
                 path: AppRoutes.Dashboard.path,
                 element: <Dashboard />,
                 children: [
@@ -86,7 +80,7 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'informations',
-                        element: <OrganisationInfo />,
+                        element: <InformationsForm />,
                     },
                 ],
             },

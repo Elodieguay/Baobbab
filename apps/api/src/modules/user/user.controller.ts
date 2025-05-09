@@ -1,4 +1,3 @@
-import { UserDTO } from '@baobbab/dtos/src/user.dto';
 import { UserService } from './user.service';
 import {
   Body,
@@ -9,11 +8,12 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { UserRole } from '@baobbab/dtos';
 import { logger } from '@mikro-orm/nestjs';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { UserDTO } from 'src/dtos/user.dto';
+import { UserRole } from 'src/dtos/enum';
 
 interface UserRequest extends Request {
   user?: { id: string; email: string };

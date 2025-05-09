@@ -13,12 +13,12 @@ import { UserBooking } from '@baobbab/dtos';
 import { useDeleteUserBooking } from '@/hooks/booking/query';
 import { useTranslation } from 'react-i18next';
 
-type BookingDeleteModalProps = {
+interface BookingDeleteModalProps {
     trigger: React.ReactNode;
     booking: UserBooking;
     userId?: string;
     setIsEditModalOpen: (value: boolean) => void;
-};
+}
 
 const BookingDeleteModal = ({
     trigger,

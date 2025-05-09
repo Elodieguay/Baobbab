@@ -7,6 +7,7 @@ import { DashName } from './OrganisationSidebar';
 import AllCoursesTable from './AllCoursesTable';
 import UsersBookingTable from './UsersBookingTable';
 import OrganisationInfo from './OrganisationInfo';
+import InformationsForm from '../form/organisation/InformationsForm';
 
 export const ContentDisplay = ({
     activeItem,
@@ -14,15 +15,17 @@ export const ContentDisplay = ({
     activeItem: DashName | null;
 }): JSX.Element => {
     const contentMap: Record<DashName, JSX.Element> = {
-        [DashName.ACCOUNT_INFO]: <OrganisationInfo />,
+        [DashName.ACCOUNT_INFO]: <InformationsForm />,
         [DashName.CREATE]: <CoursesForm />,
         [DashName.PROGRESS]: <AllCoursesTable />,
         [DashName.BOOKING]: <UsersBookingTable />,
     };
 
     return (
-        <div className="w-full">
-            <h1 className=" text-2xl font-bold text-slate-700">{activeItem}</h1>
+        <div className="w-full border-4 border-amber-700">
+            <h1 className=" text-2xl font-bold text-slate-700  border-4 border-amber-700">
+                {activeItem} je suis ici
+            </h1>
             <div className="w-full">
                 {activeItem ? (
                     contentMap[activeItem]

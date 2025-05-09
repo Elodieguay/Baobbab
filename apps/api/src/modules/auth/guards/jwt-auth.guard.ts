@@ -59,7 +59,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         secret: process.env.JWT_SECRET,
       }),
     );
-    // logger.log('JWT secret', process.env.JWT_SECRET);
     try {
       // On vérifie si le token est valide
       const decoded = this.jwtService.verify(token, {

@@ -1,5 +1,5 @@
-import { UserRole } from '@baobbab/dtos';
 import { Entity, Enum, PrimaryKey, Property } from '@mikro-orm/core';
+import { UserRole } from 'src/dtos/enum';
 
 @Entity()
 export class SuperAdmin {

@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronRight, type LucideIcon } from 'lucide-react';
+import { type LucideIcon } from 'lucide-react';
 
 import {
     SidebarGroup,
@@ -41,7 +41,7 @@ export function NavMain({
                                 }
                                 onClick={() => navigate(item.url)}
                             >
-                                <span className="flex items-center gap-2">
+                                <span className="flex items-center gap-2 border-4">
                                     {item.icon && <item.icon size={24} />}
                                     <span>{item.title}</span>
                                 </span>

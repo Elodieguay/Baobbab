@@ -5,8 +5,8 @@ import { AuthPayloadDto } from '../types/auth.types';
 import { logger } from '@mikro-orm/nestjs';
 import { User } from 'src/entities/user.entity';
 import { UserService } from 'src/modules/user/user.service';
-import { LoginResponse } from '@baobbab/dtos';
 import { JwtService } from '@nestjs/jwt';
+import { LoginResponse } from 'src/dtos/user.dto';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

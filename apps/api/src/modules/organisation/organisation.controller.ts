@@ -9,12 +9,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { OrganisationService } from './organisation.service';
+import { OrganisationInfos } from 'src/entities/organisationInfos.entity';
 import {
   OrganisationCompleteInfo,
   OrganisationInfosDTO,
-  OrganisationRegisterDTO,
-} from '@baobbab/dtos';
-import { OrganisationInfos } from 'src/entities/organisationInfos.entity';
+} from 'src/dtos/organisation';
 
 @Controller('organisation')
 export class OrganisationController {
@@ -30,10 +29,13 @@ export class OrganisationController {
 
   @Patch(':id')
   @HttpCode(HttpStatus.CREATED)
-  async createOrganisationInfos(
+  async updateOrganisationInfos(
     @Param('id') id: string,
     @Body() createOrganisationInfos: OrganisationInfos,
   ): Promise<OrganisationInfosDTO> {
-    return this.organisationService.create({ id, createOrganisationInfos });
+    return this.organisationService.updateInfoOrganisation({
+      id,
+      createOrganisationInfos,
+    });
   }
 }

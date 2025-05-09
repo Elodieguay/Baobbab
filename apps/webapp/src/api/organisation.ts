@@ -41,7 +41,7 @@ export const updateOrganisationInfos = async ({
         const response = await ky
             .patch(url, { json: updateOrganisationInfo })
             .json<OrganisationInfosDTO>();
-        log.info('UpdateOrganisationInfo:', response);
+        log.info('UpdateOrganisationInfo de update:', response);
         return response;
     } catch (error) {
         log.error(`Error to update the  organisation'information:`, error);

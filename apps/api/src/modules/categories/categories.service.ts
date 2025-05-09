@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Categories } from '../../entities/categories.entity';
-import { CategoryDTO } from '@baobbab/dtos';
 import { EntityManager } from '@mikro-orm/core';
 import { logger } from '@mikro-orm/nestjs';
+import { CategoryDTO } from 'src/dtos/courses';
 
 @Injectable()
 export class CategoriesService {

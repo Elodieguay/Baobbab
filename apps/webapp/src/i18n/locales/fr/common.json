@@ -21,7 +21,7 @@
         "baseline": "Trouve ton activité à proximité",
         "description":"Baobbab c’est quoi ?",
         "description1":"C’est une rencontre, un élan.",
-        "description2":"Un incontournable pour dénicher les meilleurs cours de loisirs près de chez vous.",
+        "description2":"Un incontournable pour dénicher les meilleurs cours de loisirs près de chez toi.",
         "select": "Selectionnez une ville",
         "changeCity":"Changer de ville",
         "button":"Je me lance",
@@ -104,6 +104,8 @@
         "page.delete.modal.description":"Souhaitez-vous vraiment annuler votre cours d'essai?",
         "page.delete.modal.button.cancel": "Annuler",
         "page.delete.modal.button.delete": "Supprimer",
+        "page.update.modal.button.update": "Modifier",
+
         "page.table.columns.organisation": "Organisation",
         "page.table.columns.day":"Jour",
         "page.table.columns.hour":"Heure",

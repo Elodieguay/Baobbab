@@ -14,13 +14,14 @@ import {
   Logger,
 } from '@nestjs/common';
 import { CoursesService } from './courses.service';
+
+import { courseToDto, singleCourseToDto } from './courses.entityToDto';
+import { logger } from '@mikro-orm/nestjs';
 import {
   CoursesDTO,
   CoursesDTOGeojson,
   UpdateCoursesDTOGeojson,
-} from '@baobbab/dtos';
-import { courseToDto, singleCourseToDto } from './courses.entityToDto';
-import { logger } from '@mikro-orm/nestjs';
+} from 'src/dtos/courses';
 
 @Controller('courses')
 export class CoursesController {

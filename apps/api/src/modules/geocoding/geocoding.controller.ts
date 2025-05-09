@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { GeocodingService } from './geocoding.service';
-import { GeocodingFeatureCollection } from '@baobbab/dtos';
+import { GeocodingFeatureCollection } from 'src/dtos/position';
 
 @Controller('geocoding')
 export class GeocodingController {

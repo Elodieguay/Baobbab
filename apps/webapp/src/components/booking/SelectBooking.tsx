@@ -29,7 +29,7 @@ const SelectBooking = React.forwardRef<HTMLButtonElement, SelectBookingProps>(
                 onChange(item);
             }
         };
-
+        log.debug('data', data);
         log.debug('valueSelectChange', value);
 
         const formatDisplayValue = (value: string | null) => {

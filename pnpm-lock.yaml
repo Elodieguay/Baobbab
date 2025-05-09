@@ -207,6 +207,9 @@ importers:
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
+      zod:
+        specifier: ^3.24.1
+        version: 3.24.1
 
   apps/webapp:
     dependencies:

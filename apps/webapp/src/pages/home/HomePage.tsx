@@ -1,5 +1,7 @@
 import Navbar from '@/components/navbar.tsx/Navbar';
 import guitare from '../../assets/images/guitare.jpg';
+import flute from '../../assets/images/flute.jpg';
+
 import { citySchema } from '@/utils/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -40,7 +42,7 @@ const HomePage = () => {
                 <Navbar className="lg:text-white" />
             </div>
             <div className="flex flex-col lg:flex-row w-full h-full xl:mx-40 xl:max-w-[80%] mx-auto">
-                <div className="flex flex-col  w-1/2  xl:pl-24 xl:p-20 ml-4 px-5 gap-12 z-20 relative justify-end">
+                <div className="flex flex-col  w-1/2  xl:pl-24 xl:p-20 ml-4 px-5 gap-16 z-20 relative justify-end">
                     <h1 className="text-7xl ">{t('name')}</h1>
                     <p className="text-xl container mx-auto flex flex-col px-8">
                         <span>{t('description')}</span>
@@ -63,7 +65,7 @@ const HomePage = () => {
                 </div>
                 <div className="w-1/2 h-full rounded-bl-[60px] overflow-hidden  relative">
                     <img
-                        src={guitare}
+                        src={flute}
                         alt="guitare"
                         className="w-full h-[80dvh] object-cover"
                     />

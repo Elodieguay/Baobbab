@@ -1,6 +1,6 @@
-import { UserRole } from '@baobbab/dtos';
 import { Entity, Enum, OneToMany, PrimaryKey, Property } from '@mikro-orm/core';
 import { Booking } from './booking.entity';
+import { UserRole } from 'src/dtos/enum';
 
 @Entity()
 export class User {

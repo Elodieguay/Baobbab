@@ -13,7 +13,7 @@ import {
 import { Trans } from 'react-i18next';
 import { Input } from '../ui/input';
 import log from 'loglevel';
-import { useResetPassword } from '@/hooks/auth/useAuthMutation';
+import { useResetPassword } from '@/hooks/auth/query';
 
 const ResetPassword = (): JSX.Element => {
     const { token } = useParams(); // Récupère le token depuis l'URL

@@ -1,5 +1,5 @@
-import { GeocodingFeatureCollection } from '@baobbab/dtos';
 import { Injectable, Logger } from '@nestjs/common';
+import { GeocodingFeatureCollection } from 'src/dtos/position';
 
 @Injectable()
 export class GeocodingService {

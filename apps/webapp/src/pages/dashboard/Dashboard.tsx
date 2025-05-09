@@ -1,17 +1,17 @@
 import { OrganisationSidebar } from '@/components/dashboard/OrganisationSidebar';
+import Navbar from '@/components/navbar.tsx/Navbar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Outlet } from 'react-router';
 
 const Dashboard = (): JSX.Element => {
     return (
-        <SidebarProvider>
-            <div className="flex">
-                <OrganisationSidebar />
-                <div className="flex flex-1 w-full items-center justify-center">
-                    <Outlet />
+        <>
+            <SidebarProvider>
+                <div className="flex w-full h-full">
+                    <OrganisationSidebar />
                 </div>
-            </div>
-        </SidebarProvider>
+            </SidebarProvider>
+        </>
     );
 };
 

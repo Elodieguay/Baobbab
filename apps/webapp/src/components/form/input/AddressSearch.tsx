@@ -18,10 +18,12 @@ export function AddressSearch(): JSX.Element {
     // Transformer les données en format attendu par AutoComplete
 
     const items =
-        data?.features.map((feature: GeocodingFeature) => ({
-            value: feature.properties.name, // Nom simple
-            label: feature.properties.label, // Label complet avec adresse
-        })) ?? [];
+        data?.flatMap((collection) =>
+            collection.features.map((feature: GeocodingFeature) => ({
+                value: feature.properties.name, // Nom simple
+                label: feature.properties.label, // Label complet avec adresse
+            }))
+        ) ?? [];
 
     log.info('searchValue:', searchValue);
 

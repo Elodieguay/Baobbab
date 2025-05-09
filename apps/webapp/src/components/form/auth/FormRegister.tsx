@@ -106,8 +106,8 @@ export default function Register({
                 />
 
                 <div className="flex items-center gap-5">
-                    <Checkbox className="h-6 w-6 border-slate-700 data-[state=checked]:bg-[#0b927a] rounded-md" />
-                    <p>{t('userRegister.form.checkbox')}</p>
+                    <Checkbox className="h-5 w-5 border-slate-700 data-[state=checked]:bg-[#0b927a] rounded-md" />
+                    <p className="text-xs">{t('userRegister.form.checkbox')}</p>
                 </div>
 
                 <Button

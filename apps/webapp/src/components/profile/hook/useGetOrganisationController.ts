@@ -1,6 +1,6 @@
 import { useAuth } from '@/context/Auth.context';
 import { useGetUserBooking } from '@/hooks/booking/query';
-import { useOrganisationById } from '@/hooks/organisation/useOrganisation';
+import { useOrganisationById } from '@/hooks/organisation/query';
 import { useGetUser } from '@/hooks/user/query';
 import log from 'loglevel';
 import { useEffect, useMemo, useState } from 'react';

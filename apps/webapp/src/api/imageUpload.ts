@@ -14,8 +14,10 @@ export interface ImageUploadResponse {
 }
 
 const imageUpload = async (
+    organisationId: string,
     imageUploadParams: ImageUploadDTO
 ): Promise<ImageUploadResponse> => {
+    log.info('imageuploadparams', imageUploadParams);
     const validationImage = imageUploadDTOSchema.safeParse(imageUploadParams);
 
     if (!validationImage.success) {
@@ -23,17 +25,18 @@ const imageUpload = async (
     }
 
     try {
-        // Create FormData for file upload
         const formData = new FormData();
+        log.info('formdata', formData);
         formData.append('file', imageUploadParams.data);
         if (imageUploadParams.maxValue) {
             formData.append('maxValue', imageUploadParams.maxValue.toString());
         }
 
-        const url = `${config.apiUrl}/upload`;
+        const url = `${config.apiUrl}/uploadImage/${organisationId}`;
         const response = (await ky
             .post(url, { body: formData })
             .json()) as ImageUploadResponse;
+        log.info('imageupload', response);
         return response;
     } catch (error) {
         log.error('error uploading image', error);

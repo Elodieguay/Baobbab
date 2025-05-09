@@ -10,9 +10,9 @@ import {
 } from '@mikro-orm/core';
 import { Categories } from './categories.entity';
 import { Organisation } from './organisation.entity';
-import { Geometry, Point } from '@baobbab/dtos';
 import { Schedule } from './schedule.entity';
 import { Booking } from './booking.entity';
+import { Point } from 'src/dtos/position';
 
 @Entity()
 export class Courses {

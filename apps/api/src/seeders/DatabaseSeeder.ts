@@ -1,14 +1,13 @@
 import { fakerFR as faker } from '@faker-js/faker';
 
-import { Status, UserRole } from '@baobbab/dtos';
 import { EntityManager } from '@mikro-orm/core';
 import { Organisation } from '../entities/organisation.entity';
 import { OrganisationInfos } from '../entities/organisationInfos.entity';
 import { Courses } from '../entities/courses.entity';
 import { Seeder } from '@mikro-orm/seeder';
 import { Categories } from '../entities/categories.entity';
-import { Point } from '@baobbab/dtos';
 import { Schedule } from '../entities/schedule.entity';
+import { Status, UserRole } from 'src/dtos/enum';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {

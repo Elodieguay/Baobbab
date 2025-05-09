@@ -1,7 +1,7 @@
-import { ScheduleDTO } from '@baobbab/dtos';
 import { EntityManager, wrap } from '@mikro-orm/core';
 import { logger } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ScheduleDTO } from 'src/dtos/courses';
 import { Schedule } from 'src/entities/schedule.entity';
 
 @Injectable()

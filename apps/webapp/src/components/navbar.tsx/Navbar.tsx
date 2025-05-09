@@ -7,9 +7,17 @@ import AvatarUser from '../auth/AvatarUser';
 import { Trans } from 'react-i18next';
 import { UserRole } from '@baobbab/dtos';
 import { cn } from '@/utils/utils';
+import log from 'loglevel';
 
 const Navbar = ({ className }: { className?: string }): JSX.Element => {
-    const { authToken, removeAuthData, username, role, entityId } = useAuth();
+    const {
+        authToken,
+        removeAuthData,
+        username,
+        role,
+        entityId,
+        organisationName,
+    } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
 
     const toggleMenu = (): void => {
@@ -29,7 +37,7 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
             document.removeEventListener('click', closeMenu);
         };
     }, [menuOpen]);
-
+    log.info('role', role);
     return (
         <div className="w-full flex flex-col justify-center items-center border-none">
             <div className="xl:w-3/4 w-full h-16 flex items-center justify-between  px-8">
@@ -45,12 +53,14 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
                         />
                     </h1>
                 </Link>
-                {/* <NavbarCitySelection/> */}
                 <div className={cn('mt-5', className)}>
                     {authToken ? (
                         <div className="relative">
                             <AvatarUser
-                                name={username ?? null}
+                                name={
+                                    (username ?? null) ||
+                                    (organisationName ?? null)
+                                }
                                 onClick={toggleMenu}
                             />
                             {menuOpen && (

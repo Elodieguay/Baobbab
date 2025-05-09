@@ -1,8 +1,7 @@
 {
     "compilerOptions": {
-      "module": "NodeNext",
       "declaration": true,
-      "moduleResolution": "Nodenext",
+      "moduleResolution": "bundler",
       "removeComments": true,
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
@@ -17,8 +16,13 @@
       "noImplicitAny": true,
       "strictBindCallApply": false,
       "forceConsistentCasingInFileNames": false,
-      "noFallthroughCasesInSwitch": false
+      "noFallthroughCasesInSwitch": false,
+      "paths": {
+      "@/*": ["./src/*"]
     },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "dist"]
+
+    },
+    
+    "include": ["src/**/*.ts"],    
+    "exclude": ["node_modules", "dist", "./build.ts"]
   }

@@ -1,8 +1,4 @@
-import {
-  CoursesDTO,
-  CoursesDTOGeojson,
-  UpdateCoursesDTOGeojson,
-} from '@baobbab/dtos';
+import { CoursesDTOGeojson } from '@baobbab/dtos/src';
 import { EntityManager } from '@mikro-orm/core';
 import { NotFoundException } from '@nestjs/common';
 import { Booking } from 'src/entities/booking.entity';

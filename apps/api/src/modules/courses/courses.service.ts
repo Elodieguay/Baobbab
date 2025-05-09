@@ -1,8 +1,3 @@
-import {
-  CoursesDTO,
-  CoursesDTOGeojson,
-  UpdateCoursesDTOGeojson,
-} from '@baobbab/dtos';
 import { EntityManager, wrap } from '@mikro-orm/core';
 import {
   BadRequestException,
@@ -10,6 +5,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { CoursesDTO, UpdateCoursesDTOGeojson } from 'src/dtos/courses';
 import { Courses } from 'src/entities/courses.entity';
 import { Organisation } from 'src/entities/organisation.entity';
 // import { CloudinaryService } from '../cloudinary/cloudinary.service';

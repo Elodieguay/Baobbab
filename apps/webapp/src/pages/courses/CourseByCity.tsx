@@ -1,16 +1,15 @@
-import Maplibre from '@/components/courses/Maplibre';
+import Maplibre from '@/components/courses/coursesListByCity/Maplibre';
 import { getCoordinates } from '@/api/geocoding';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
-import CardsCourses from '@/components/courses/CardsCourses';
+import CardsCourses from '@/components/courses/coursesListByCity/CardsCourses';
 // import { useCity } from '@/context/City.context';
 import { useGetCategory, useGetCourseByCategory } from '@/hooks/courses/query';
-import log from 'loglevel';
 import { CategoryDTO, CoursesDTOGeojson, Point } from '@baobbab/dtos';
 import NavbarMenu from '@/components/navbar.tsx/NavbarMenu';
 import NavbarCitySelection from '@/components/navbar.tsx/NavbarCitySelection';
 import { useParams } from 'react-router';
-import CourseSkeleton from '@/components/courses/CourseSkeleton';
+import CourseSkeleton from '@/components/courses/coursesListByCity/CourseSkeleton';
 
 const CourseByCity = (): JSX.Element | null => {
     const { city } = useParams<{ city: string }>();

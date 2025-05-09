@@ -7,6 +7,7 @@ import { Collection, EntityManager } from '@mikro-orm/core';
 import { courseToDto } from './courses.entityToDto';
 import { Courses } from 'src/entities/courses.entity';
 import { logger } from '@mikro-orm/nestjs';
+import { Booking } from 'src/entities/booking.entity';
 
 enum UserRole {
   ADMIN = 'ADMIN',
@@ -76,11 +77,14 @@ describe('CoursesController (e2e)', () => {
         city: 'Nantes',
         reminder: 'chaussures de sport',
         position: { lat: 45.66665, lng: -1.56999 },
+        schedule: { id: 'schedule1', day: 'Monday', hours: '10:00 AM' },
+        booking: new Collection<Booking>([]),
         category: {
           id: 'yoga',
           title: 'Yoga',
           courses: new Collection<Courses>({}),
         },
+
         organisation: {
           id: 'hddhhdjhdjd',
           role: UserRole.ADMIN,
@@ -108,6 +112,8 @@ describe('CoursesController (e2e)', () => {
         city: 'Nantes',
         reminder: 'chaussures de sport',
         position: { lat: 45.66665, lng: -1.56999 },
+        schedule: { id: 'schedule2', day: 'Wednesday', hours: '2:00 PM' },
+        booking: new Collection<Booking>([]),
         category: {
           id: 'sport',
           title: 'Sport',

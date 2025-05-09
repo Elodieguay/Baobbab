@@ -1,17 +1,17 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { Booking } from 'src/entities/booking.entity';
 import { EntityManager, EntityRepository } from '@mikro-orm/core';
-import { CreateABooking, UserBooking } from '@baobbab/dtos';
-import { InjectRepository } from '@mikro-orm/nestjs';
+import { InjectRepository, logger } from '@mikro-orm/nestjs';
 import { Schedule } from 'src/entities/schedule.entity';
 import { CoursesService } from '../courses/courses.service';
-import { populate } from 'dotenv';
 import { User } from 'src/entities/user.entity';
 import { Courses } from 'src/entities/courses.entity';
+import { CreateABooking, UserBooking } from 'src/dtos/booking';
 
 @Injectable()
 export class BookingService {
@@ -79,23 +79,55 @@ export class BookingService {
     return bookings;
   }
 
-  // async findOne(bookingId: string): Promise<Booking> {
-  //   if (!bookingId) {
-  //     throw new BadRequestException(' bookingId is missing');
-  //   }
+  async findOne(bookingId: string): Promise<Booking> {
+    if (!bookingId) {
+      throw new BadRequestException(' bookingId is missing');
+    }
 
-  //   const booking = await this.em.findOne(
-  //     Booking,
-  //     {
-  //       id: bookingId,
-  //     },
-  //     {
-  //       populate: ['courses', 'schedule'],
-  //     },
-  //   );
-  //   if (!booking) throw new NotFoundException('the booking does not exist');
-  //   return booking;
-  // }
+    const booking = await this.em.findOne(
+      Booking,
+      {
+        id: bookingId,
+      },
+      {
+        populate: ['courses.schedule', 'courses'],
+      },
+    );
+    if (!booking) throw new NotFoundException('the booking does not exist');
+    Logger.debug('booking', booking);
+    return booking;
+  }
+
+  async update(
+    bookingId: string,
+    userId: string,
+    updateBooking: CreateABooking,
+  ) {
+    if (!bookingId) {
+      throw new BadRequestException(' bookingId is missing');
+    }
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+
+    const booking = await this.em.findOne(
+      Booking,
+      { id: bookingId, user: { id: userId } },
+      { populate: ['schedule'] },
+    );
+    if (!booking) {
+      throw new NotFoundException('The booking does not exist');
+    }
+    const schedule = await this.scheduleRepository.findOne({
+      id: updateBooking.scheduleId,
+    });
+    if (!schedule) throw new Error('Schedule not found');
+
+    booking.title = updateBooking.title;
+    booking.schedule = schedule;
+    await this.em.flush();
+    return booking;
+  }
 
   async remove(bookingId: string, userId: string) {
     if (!bookingId) {

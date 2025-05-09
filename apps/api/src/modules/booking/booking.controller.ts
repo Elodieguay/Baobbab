@@ -11,14 +11,27 @@ import {
   Req,
   UseGuards,
   BadRequestException,
+  Put,
+  Logger,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
-import { CreateABooking, UserBooking } from '@baobbab/dtos';
-import { entityToDto } from './booking.entityToDto';
+import {
+  bookingUpdateToDto,
+  entityToBookingWithSchedulesDto,
+  entityToDto,
+} from './booking.entityToDto';
 import { Booking } from 'src/entities/booking.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
+import {
+  BookingResponse,
+  BookingResponseCourses,
+  BookingWithSchedulesResponse,
+  CreateABooking,
+  UserBooking,
+} from 'src/dtos/booking';
+import { CoursesDTOGeojson } from 'src/dtos/courses';
 
 @Controller('booking')
 export class BookingController {
@@ -54,18 +67,39 @@ export class BookingController {
     return bookings;
   }
 
-  // @Get(':bookingId')
-  // async findOne(
-  //   @Param('bookingId') bookingId: string,
-  // ): Promise<CreateABooking> {
-  //   const booking = await this.bookingService.findOne(bookingId);
-  //   return entityToDto(booking);
-  // }
+  @Get(':bookingId')
+  async findOne(
+    @Param('bookingId') bookingId: string,
+  ): Promise<BookingResponseCourses> {
+    const booking = await this.bookingService.findOne(bookingId);
+    Logger.warn('booking', booking);
+    return bookingUpdateToDto(booking);
+  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateBookingDto: UpdateBookingDto) {
-  //   return this.bookingService.update(+id, updateBookingDto);
-  // }
+  @Patch(':bookingId')
+  async update(
+    @Param('bookingId') bookingId: string,
+    @Body()
+    updateUserBooking: { userId: string; updateBooking: CreateABooking },
+  ) {
+    try {
+      const { userId, updateBooking } = updateUserBooking;
+
+      const result = await this.bookingService.update(
+        bookingId,
+        userId,
+        updateBooking,
+      );
+
+      return {
+        statusCode: 200,
+        message: 'Booking successfully updated',
+        data: result,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 
   @Delete(':bookingId')
   async delete(

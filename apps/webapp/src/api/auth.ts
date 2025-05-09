@@ -142,7 +142,7 @@ export async function loginOrganisation(
         const response = (await ky
             .post(url, { json: loginOrganisation })
             .json()) as OrganisationAuthResponse;
-
+        log.debug('response', response);
         return response;
     } catch (error) {
         log.error('error logging in user', error);

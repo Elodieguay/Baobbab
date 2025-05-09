@@ -1,4 +1,4 @@
-import { OrganisationCompleteInfo } from '@baobbab/dtos';
+import { OrganisationCompleteInfo } from 'src/dtos/organisation';
 import { Organisation } from 'src/entities/organisation.entity';
 
 export function organisationToDto(org: Organisation): OrganisationCompleteInfo {

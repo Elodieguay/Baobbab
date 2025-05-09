@@ -7,8 +7,8 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Courses } from './courses.entity';
-import { Status, UserRole } from '@baobbab/dtos';
 import { OrganisationInfos } from './organisationInfos.entity';
+import { Status, UserRole } from 'src/dtos/enum';
 
 @Entity()
 export class Organisation {

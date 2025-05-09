@@ -4,7 +4,6 @@ import {
     getCoursesByCategory,
 } from '@/api/courses';
 import { useQuery } from '@tanstack/react-query';
-import log from 'loglevel';
 
 // export const useGetCourses = (coordinates) => {
 //     return useQuery({
@@ -24,7 +23,6 @@ export const useGetCourseById = (courseId: string) => {
 };
 
 export const useGetCourseByCategory = (categoryId: string) => {
-    log.debug('category dans query', categoryId);
     return useQuery({
         queryKey: ['courseCategory', categoryId],
         queryFn: () => getCoursesByCategory(categoryId),

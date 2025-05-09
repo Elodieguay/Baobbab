@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import {
     organisationLoginFormSchema,
     organisationRegisterFormSchema,
-    Status,
     UserRole,
 } from '@baobbab/dtos';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,7 +11,7 @@ import { z } from 'zod';
 import {
     useOrganisationLogin,
     useOrganisationRegister,
-} from '@/hooks/auth/useAuthMutation';
+} from '@/hooks/auth/query';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
 import OrganisationFormLogin from '@/components/form/auth/OrganisationFormLogin';
@@ -63,11 +62,6 @@ const Organisation = (): JSX.Element => {
             role: UserRole.ADMIN,
         });
     };
-    // useEffect(() => {
-    //     if (authToken && role === UserRole.ADMIN) {
-    //         navigate('/dashboard');
-    //     }
-    // }, [authToken, role]);
 
     return (
         <div className="w-full h-full">

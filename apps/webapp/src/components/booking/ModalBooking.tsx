@@ -1,5 +1,5 @@
 // import { Button } from '../ui/button';
-import { CoursesDTOGeojson } from '@baobbab/dtos';
+import { CoursesDTOGeojson, UserBooking } from '@baobbab/dtos';
 import log from 'loglevel';
 import {
     Form,
@@ -13,32 +13,49 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import SelectBooking from './SelectBooking';
 import { Button } from '../ui/button';
-import { useCreateABooking } from '@/hooks/booking/query';
+import {
+    useCreateABooking,
+    useGetBookingById,
+    useUpdateUserBooking,
+} from '@/hooks/booking/query';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/context/Auth.context';
 import { useGetUser } from '@/hooks/user/query';
+import { useAuth } from '@/context/Auth.context';
 
-type ModalBookingProps = {
-    courseData: CoursesDTOGeojson | undefined;
+export type ModalBookingProps = {
+    courseData?: CoursesDTOGeojson | undefined;
+    mode?: 'create' | 'update';
+    booking?: UserBooking;
 };
-const ModalBooking = ({ courseData }: ModalBookingProps): JSX.Element => {
+export const bookingFormSchema = z.object({
+    title: z.string(),
+    day: z.string().nonempty(),
+});
+const ModalBooking = ({
+    courseData,
+    mode = 'create',
+    booking,
+}: ModalBookingProps): JSX.Element => {
     const { authToken } = useAuth();
-    const { data } = useGetUser(authToken || '');
-    log.debug(data);
-    const userId = data?.id;
-    log.debug(userId);
+    const { data: user } = useGetUser(authToken || '');
+    const userId = user?.id;
     const { toast } = useToast();
+    const { data: courseBookingData } = useGetBookingById(booking?.id ?? '');
     const { mutateAsync: createBooking } = useCreateABooking();
+    const { mutate: updateBooking } = useUpdateUserBooking();
     const bookingFormSchema = z.object({
         title: z.string(),
         day: z.string().nonempty(),
     });
 
+    log.debug('userId', userId);
+    log.debug('courseData de modal', courseBookingData);
+    log.debug('courseSchedule', courseData?.schedule);
     const form = useForm<z.infer<typeof bookingFormSchema>>({
         resolver: zodResolver(bookingFormSchema),
         defaultValues: {
-            title: courseData?.title,
-            day: '',
+            title: booking?.title ?? '',
+            day: booking?.schedule.day ?? '',
         },
     });
 
@@ -52,32 +69,56 @@ const ModalBooking = ({ courseData }: ModalBookingProps): JSX.Element => {
         }
         const [day, hours] = values.day.split(',');
         const dayObject = { day, hours };
-        createBooking(
-            {
-                userId: userId,
-                createBooking: {
-                    title: values.title,
-                    schedule: dayObject,
-                    courseId: courseData?.id ?? '',
-                    scheduleId: courseData?.schedule[0].id ?? '',
+        if (mode === 'update') {
+            updateBooking(
+                {
+                    userId: userId,
+                    bookingId: booking?.id,
+                    updateBooking: {
+                        title: values.title,
+                        schedule: dayObject,
+                        courseId: courseData?.id ?? '',
+                        scheduleId: courseData?.schedule[0].id ?? '',
+                    },
                 },
-            },
-            {
-                onSuccess: () => {
-                    toast({
-                        title: "Votre cours d'essai est enregistré",
-                        variant: 'default',
-                    });
+                {
+                    onSuccess: () =>
+                        toast({ title: 'Votre réservation est mise à jour' }),
+                    onError: () =>
+                        toast({
+                            title: 'La mise à jour a échoué',
+                            variant: 'destructive',
+                        }),
+                }
+            );
+        } else {
+            createBooking(
+                {
+                    userId: userId,
+                    createBooking: {
+                        title: values.title,
+                        schedule: dayObject,
+                        courseId: courseData?.id ?? '',
+                        scheduleId: courseData?.schedule[0].id ?? '',
+                    },
                 },
+                {
+                    onSuccess: () => {
+                        toast({
+                            title: "Votre cours d'essai est enregistré",
+                            variant: 'default',
+                        });
+                    },
 
-                onError: () => {
-                    toast({
-                        title: 'Votre réservation a échoué',
-                        variant: 'destructive',
-                    });
-                },
-            }
-        );
+                    onError: () => {
+                        toast({
+                            title: 'Votre réservation a échoué',
+                            variant: 'destructive',
+                        });
+                    },
+                }
+            );
+        }
     };
     log.debug('value', form.getValues());
     return (
@@ -95,7 +136,10 @@ const ModalBooking = ({ courseData }: ModalBookingProps): JSX.Element => {
                             <FormControl>
                                 <SelectBooking
                                     title="Jours"
-                                    data={courseData?.schedule}
+                                    data={
+                                        courseData?.schedule ||
+                                        courseBookingData?.schedule
+                                    }
                                     value={field.value}
                                     onChange={field.onChange}
                                 />
@@ -109,7 +153,9 @@ const ModalBooking = ({ courseData }: ModalBookingProps): JSX.Element => {
                     variant="outline"
                     className="rounded-xl w-full bg-[#ffcd00] text-base"
                 >
-                    Je confirme le cours d'essai
+                    {mode === 'update'
+                        ? ' Mettre à jour la réservation'
+                        : "Je confirme le cours d'essai"}
                 </Button>
             </form>
         </Form>

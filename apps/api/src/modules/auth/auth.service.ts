@@ -13,17 +13,15 @@ import { EntityManager } from '@mikro-orm/core';
 import { AuthPayloadDto } from './types/auth.types';
 import * as bcrypt from 'bcrypt';
 import { logger } from '@mikro-orm/nestjs';
-import {
-  OrganisationRegisterDTO,
-  Status,
-  SuperAdminDTO,
-  UserRegisterDTO,
-  UserRole,
-} from '@baobbab/dtos';
+
 import { Organisation } from 'src/entities/organisation.entity';
 import { SuperAdmin } from 'src/entities/superAdmin.entity';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { EmailService } from '../email/email.service';
+import { UserRegisterDTO } from 'src/dtos/user.dto';
+import { SuperAdminDTO } from 'src/dtos/admin';
+import { UserRole, Status } from 'src/dtos/enum';
+import { OrganisationRegisterDTO } from 'src/dtos/organisation';
+// import { CloudinaryService } from '../cloudinary/cloudinary.service';
+// import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class AuthService {
@@ -110,19 +108,16 @@ export class AuthService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
-    // Si tout est valide, on renvoie l'utilisateur sans le password
     const { password: pass, ...result } = entity;
     return result;
   }
 
-  // Générer un JWT après validation avec les informations de l'utilisateur
   async login({
     email,
     password,
   }: AuthPayloadDto): Promise<
     Omit<User, 'password'> & { access_token: string }
   > {
-    // On valide l'utilisateur
     const user = await this.validateUser({ email, password });
     // On génère le payload pour le JWT
     const payload = { id: user.id, email: user.email };

@@ -30,6 +30,7 @@ import { ScheduleModule } from './modules/schedule/schedule.module';
     OrganisationModule,
     BookingModule,
     ScheduleModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

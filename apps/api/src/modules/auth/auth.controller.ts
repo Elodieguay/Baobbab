@@ -13,22 +13,23 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthPayloadDto } from './types/auth.types';
-import { UserRegisterDTO } from '@baobbab/dtos/src/user.dto';
+
 import { LocalGuard } from './guards/local.guards';
 import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
+
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   LoginResponse,
+  RegisterResponse,
+  UserRegisterDTO,
+} from 'src/dtos/user.dto';
+import { UserRole, EntityType } from 'src/dtos/enum';
+import {
   OrganisationLoginDTO,
   OrganisationRegisterDTO,
-  RegisterResponse,
-  Status,
-  SuperAdminDTO,
-  UserLoginDTO,
-  UserRole,
-} from '@baobbab/dtos';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { EntityType } from '@baobbab/dtos';
+} from 'src/dtos/organisation';
+import { SuperAdminDTO } from 'src/dtos/admin';
 
 @Controller('auth')
 export class AuthController {

@@ -1,4 +1,4 @@
-import { UserRole } from '@baobbab/dtos';
+import { UserRole } from 'src/dtos/enum';
 
 export interface UserCreateInput {
   username: string;

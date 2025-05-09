@@ -10,9 +10,9 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
-import { ScheduleDTO } from '@baobbab/dtos';
 import { logger } from '@mikro-orm/nestjs';
 import { error } from 'console';
+import { ScheduleDTO } from 'src/dtos/courses';
 
 @Controller('schedule')
 export class ScheduleController {

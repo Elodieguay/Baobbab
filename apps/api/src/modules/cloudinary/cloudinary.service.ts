@@ -21,7 +21,10 @@ export class CloudinaryService {
     configCloudinary();
   }
 
-  async uploadImage(file: Express.Multer.File): Promise<UploadApiResponse> {
+  async uploadImage(
+    organisationId: string,
+    file: Express.Multer.File,
+  ): Promise<UploadApiResponse> {
     try {
       return await new Promise((resolve, reject) => {
         cloudinary.uploader
@@ -32,6 +35,7 @@ export class CloudinaryService {
               quality: 'auto:good',
               width: 1280,
               crop: 'limit',
+              public_id: organisationId,
             },
             (error: UploadApiErrorResponse, result: UploadApiResponse) => {
               if (error) {
