@@ -19,7 +19,8 @@ RUN pnpm --filter webapp build
 # Crée un serveur statique avec vite preview
 RUN pnpm --filter webapp --workspace-root add serve
 
+EXPOSE 4173
 # Utilise serve pour lancer les fichiers statiques
 CMD ["serve", "-s", "apps/webapp/dist", "-l", "4173"]
 
-EXPOSE 4173
+
