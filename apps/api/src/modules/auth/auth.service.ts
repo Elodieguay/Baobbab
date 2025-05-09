@@ -7,7 +7,7 @@ import { UserCreateInput } from '../user/inputs/user-create.input';
 import { EntityManager } from '@mikro-orm/core';
 import { logger } from '@mikro-orm/nestjs';
 import { AuthPayloadDto, LoginResponse } from './types/auth.types';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 @Injectable()
 export class AuthService {
   constructor(
