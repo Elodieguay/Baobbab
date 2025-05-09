@@ -1,29 +1,25 @@
-# Étape 1 - Build
-FROM node:18 AS builder
+FROM node:18-alpine
+
+# Installer pnpm globalement
+RUN npm install -g pnpm
 
 WORKDIR /app
 
-# Copie tout le repo pour avoir les dépendances et packages
-COPY . .
+# Copier les fichiers nécessaires pour le monorepo
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-RUN npm install -g pnpm
-RUN pnpm install
+# Installer les dépendances du monorepo
+RUN pnpm install --frozen-lockfile
+
+# Copier le code source
+COPY apps/api ./apps/api
+COPY packages ./packages
+
+# Build uniquement l'API
 RUN pnpm --filter api build
 
-# Étape 2 - Runner (léger pour la prod)
-FROM node:18 AS runner
-
-WORKDIR /app
-RUN npm install -g pnpm
-
-# Copie uniquement ce qui est nécessaire à l'exécution
-COPY --from=builder /app/apps/api/dist ./dist
-COPY --from=builder /app/apps/api/package.json ./
-
-# Installe uniquement les dépendances nécessaires pour l'exécution
-RUN pnpm install --prod
-
+# Exposer le port
 EXPOSE 4000
 
-# Lancer l'app
-CMD ["node", "dist/main.js"]
+# Lancer le serveur NestJS
+CMD ["node", "apps/api/dist/main.js"]
