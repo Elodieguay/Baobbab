@@ -1,7 +1,7 @@
 FROM node:18-alpine
 
 # Installer pnpm globalement
-RUN npm install -g pnpm
+RUN npm install -g pnpm @nestjs/cli
 
 WORKDIR /app
 
