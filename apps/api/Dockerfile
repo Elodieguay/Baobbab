@@ -14,6 +14,7 @@ RUN pnpm --filter api build
 FROM node:18 AS runner
 
 WORKDIR /app
+RUN npm install -g pnpm
 
 # Copie uniquement ce qui est nécessaire à l'exécution
 COPY --from=builder /app/apps/api/dist ./dist
