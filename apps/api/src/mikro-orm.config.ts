@@ -1,9 +1,13 @@
 import { defineConfig } from '@mikro-orm/postgresql';
 import * as dotenv from 'dotenv';
+import { User } from './entities/user.entity';
+import { Categories } from './entities/categories.entity';
+import { Courses } from './entities/courses.entity';
+import { Association } from './entities/association.entity';
 dotenv.config();
 
 const mikroOrmConfig = defineConfig({
-  entities: ['./dist/entities/**/*.js'],
+  entities: [User, Categories, Courses,Association],
   entitiesTs: ['./src/entities'],
   dbName: 'baobbab_db',
   host: process.env.DB_HOST,
