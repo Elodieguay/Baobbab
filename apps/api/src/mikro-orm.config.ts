@@ -7,13 +7,10 @@ import { Association } from './entities/association.entity';
 dotenv.config();
 
 const mikroOrmConfig = defineConfig({
-  entities: [User, Categories, Courses,Association],
+  entities: [User, Categories, Courses, Association],
   entitiesTs: ['./src/entities'],
   dbName: 'baobbab_db',
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  clientUrl: process.env.DATABASE_URL,
   debug: true,
   migrations: {
     path: './dist/migrations',
