@@ -15,8 +15,9 @@ RUN pnpm install
 RUN pnpm --filter webapp run build || true
 
 # Installer serve globalement pour servir le build
-RUN pnpm add -g serve
-
+ENV PNPM_HOME=/pnpm-global
+ENV PATH=$PNPM_HOME/bin:$PATH
+RUN pnpm config set global-bin-dir $PNPM_HOME && pnpm add -g serve
 # Exposer le port utilisé par le serveur statique
 EXPOSE 4173
 
