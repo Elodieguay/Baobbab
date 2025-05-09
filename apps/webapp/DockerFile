@@ -1,0 +1,25 @@
+# apps/webapp/Dockerfile
+
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copie tout le monorepo (pour accès aux packages)
+COPY . .
+
+# Active pnpm
+RUN npm install -g pnpm
+
+# Installe les dépendances
+RUN pnpm install
+
+# Build uniquement le front
+RUN pnpm --filter webapp build
+
+# Crée un serveur statique avec vite preview
+RUN pnpm --filter webapp --workspace-root add serve
+
+# Utilise serve pour lancer les fichiers statiques
+CMD ["serve", "-s", "apps/webapp/dist", "-l", "4173"]
+
+EXPOSE 4173
