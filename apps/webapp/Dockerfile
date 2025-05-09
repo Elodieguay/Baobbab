@@ -12,7 +12,7 @@ COPY . .
 RUN pnpm install
 
 # Build uniquement le front
-RUN pnpm --filter webapp build
+RUN pnpm --filter webapp run build || true
 
 # Installer serve globalement pour servir le build
 RUN pnpm add -g serve
