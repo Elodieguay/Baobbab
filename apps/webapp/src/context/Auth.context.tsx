@@ -17,7 +17,7 @@ const AuthContext = createContext<Partial<AuthContextType>>({})
 export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
     
     const [authToken, setAuthToken] = useState<string | undefined>(sessionStorage.getItem('JWT_AUTH') || undefined);
-    const [role, setRole] = useState<UserRole |null>(null);
+    const [_, setRole] = useState<UserRole |null>(null);
     
     const setToken = (token: string, userRole:UserRole) => {
         sessionStorage.setItem('JWT_AUTH', token);

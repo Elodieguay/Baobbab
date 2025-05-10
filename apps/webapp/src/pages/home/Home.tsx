@@ -1,5 +1,4 @@
 import Modal from "@/components/auth/ModalAuth"
-import Account from "../account/Account"
 
 const Home = () => {
   return (

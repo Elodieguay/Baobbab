@@ -24,7 +24,7 @@ export default function Register({
       email: values.email,
       password: values.password,
       role: UserRole.USER,
-      created_at: new Date(),
+      created_at: new Date().toISOString(),
     }),
       console.warn(values);
   }

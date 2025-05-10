@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import { useForm} from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -31,7 +31,7 @@ const { handleSubmit, register } = form;
       email: values.email,
       password: values.password,
       role: UserRole.USER,
-      created_at: new Date(),
+      created_at: new Date().toISOString(),
     };
     console.warn(userRegister); // Debug : affiche les données envoyées
     onSubmit(userRegister);
