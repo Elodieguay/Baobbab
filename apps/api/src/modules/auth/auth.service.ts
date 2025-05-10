@@ -21,7 +21,8 @@ import {
   UserRole,
 } from '@baobbab/dtos';
 import { Organisation } from 'src/entities/organisation.entity';
-import { Status } from '@baobbab/dtos';
+import { SuperAdmin } from 'src/entities/superAdmin.entity';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class AuthService {
