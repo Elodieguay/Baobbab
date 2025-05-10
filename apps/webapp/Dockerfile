@@ -12,7 +12,7 @@ COPY . .
 RUN pnpm install
 
 # Build uniquement le front
-RUN pnpm --filter webapp run build || true
+RUN pnpm --filter webapp run build 
 
 
 # Exposer le port utilisé par le serveur statique
