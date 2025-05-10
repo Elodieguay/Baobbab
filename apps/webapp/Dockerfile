@@ -19,6 +19,6 @@ RUN pnpm --filter webapp run build || true
 EXPOSE 4173
 
 # Lancer le serveur statique pour servir les fichiers Vite
-CMD ["pnpm", "--filter", "webapp", "exec", "serve", "-s", "apps/webapp/dist", "-l", "4173"]
+CMD ["pnpm", "--filter", "webapp", "exec", "serve", "-s", "apps/webapp/dist", "--single", "-l", "4173"]
 
 
