@@ -1,7 +1,6 @@
 import z from 'zod';
 import { CreateABooking } from './booking';
 import { Point } from './position';
-import { CreateABooking } from './booking';
 
 export interface CategoryDTO {
     id: string;

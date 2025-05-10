@@ -3,7 +3,6 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -16,13 +15,10 @@ import { logger } from '@mikro-orm/nestjs';
 import {
   OrganisationRegisterDTO,
   Status,
-  SuperAdminDTO,
   UserRegisterDTO,
   UserRole,
 } from '@baobbab/dtos';
 import { Organisation } from 'src/entities/organisation.entity';
-import { SuperAdmin } from 'src/entities/superAdmin.entity';
-import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class AuthService {
@@ -241,66 +237,6 @@ export class AuthService {
   //     access_token,
   //   } as Omit<SuperAdmin, 'password'> & { access_token: string };
   // }
-
-  generateResetToken(userId: string): string {
-    const payload = { sub: userId };
-    return this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: '15m',
-    });
-  }
-
-  async forgotPassword(email: string): Promise<{ token: string }> {
-    const user = await this.userService.findOneUserByEmail(email); // Trouver l'utilisateur par email
-    if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-    }
-
-    // Générer le token de réinitialisation
-    const token = this.generateResetToken(user.id);
-
-    // On envoyer un email avec le lien de réinitialisation du mot de passe (simulé ici)
-    const resetLink = `https://ton-site.com/reset-password?token=${token}`;
-    logger.log(`Envoyer ce lien à l'utilisateur : ${resetLink}`);
-
-    //On envoye l'email via Brevo
-    // await this.emailService.sendResetPasswordEmail(email, resetLink);
-
-    // Envoi de l'email ici avec le lien de réinitialisation (en développement, on l'affiche seulement)
-    // Par exemple, tu peux appeler un service d'email pour envoyer le lien.
-
-    return { token };
-  }
-
-  async validateResetToken(token: string): Promise<string> {
-    logger.debug('validate', token);
-    try {
-      const decoded = this.jwtService.verify(token, {
-        secret: process.env.JWT_SECRET,
-      });
-      // On retourne l'id du user
-      return decoded.sub;
-    } catch (err) {
-      throw new BadRequestException(' Invalid Token or expired');
-    }
-  }
-
-  async resetPassword(token: string, newPassword: string): Promise<string> {
-    logger.debug('in authservice reset', newPassword, token);
-    const userId = await this.validateResetToken(token);
-    logger.debug('userid', userId);
-    const user = await this.userService.findOneUserById(userId);
-    if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-    }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    //On met à jour le mot de passe dans la base
-    user.password = hashedPassword;
-    await this.userService.updateUser(user);
-
-    return 'this is a success';
-  }
 
   generateResetToken(userId: string): string {
     const payload = { sub: userId };

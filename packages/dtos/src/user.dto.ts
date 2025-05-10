@@ -46,7 +46,7 @@ export interface UserRegisterDTO {
     email: string;
     password: string;
     role: UserRole.USER;
-     created_at?: string;
+    created_at?: string;
 }
 
 export interface UserLoginDTO {
@@ -76,21 +76,6 @@ export const formSchema = z.object({
     // phoneNumber: z.string().regex(phoneNumberValidation, {
     //   message: 'le numéro doit contenir au moins 10 chiffres.',
     // }),
-    email: z.string().email({
-        message: "L'adresse email n'est pas valide.",
-    }),
-    password: z
-        .string()
-        .min(8, {
-            message: 'Le mot de passe doit contenir au moins 8 caractères.',
-        })
-        .regex(passwordValidation, {
-            message:
-                'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.',
-        }),
-});
-
-export const formLoginSchema = z.object({
     email: z.string().email({
         message: "L'adresse email n'est pas valide.",
     }),

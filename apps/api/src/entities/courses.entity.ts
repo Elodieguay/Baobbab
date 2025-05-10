@@ -12,8 +12,7 @@ import { Categories } from './categories.entity';
 import { Organisation } from './organisation.entity';
 import { Booking } from './booking.entity';
 import { Schedule } from './schedule.entity';
-import { Point} from '@baobbab/dtos';
-
+import { Point } from '@baobbab/dtos';
 
 @Entity()
 export class Courses {
@@ -51,12 +50,6 @@ export class Courses {
     cascade: [Cascade.REMOVE],
   })
   schedule = new Collection<Schedule>(this);
-
-  @Property({ type: 'text', nullable: true })
-  reminder: string | null = null;
-
-  @Property({ type: 'json' })
-  position: Point;
 
   @ManyToOne(() => Categories)
   category: Categories;

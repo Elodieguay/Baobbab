@@ -13,13 +13,15 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthPayloadDto } from './types/auth.types';
-import { LoginResponse, RegisterResponse, UserRegisterDTO } from '@baobbab/dtos';
+import {
+  LoginResponse,
+  RegisterResponse,
+  UserRegisterDTO,
+} from '@baobbab/dtos';
 import { LocalGuard } from './guards/local.guards';
 import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
-import {
-  UserRole,
-} from '@baobbab/dtos';
+import { UserRole } from '@baobbab/dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { EntityType } from '@baobbab/dtos';
 import { OrganisationLoginDTO, OrganisationRegisterDTO } from '@baobbab/dtos';
@@ -123,30 +125,6 @@ export class AuthController {
   //   const superAdmin = this.authService.loginSuperAdmin(authPayloadDto);
   //   return superAdmin;
   // }
-
-  // Route pour demander un email de réinitialisation de mot de passe
-  @Post('forgotPassword')
-  async forgotPassword(
-    @Body('email') email: string,
-  ): Promise<{ token: string }> {
-    const result = await this.authService.forgotPassword(email);
-    logger.debug('result forgotPassword:', result);
-    return result;
-  }
-
-  @Post('resetPassword')
-  async resetPassword(
-    @Body('token') token: string,
-    @Body('newPassword') newPassword: string,
-  ): Promise<{ message: string }> {
-    logger.debug('result resetpassword', token, newPassword);
-    if (!token || !newPassword) {
-      throw new BadRequestException('Token and new password are required');
-    }
-    const result = await this.authService.resetPassword(token, newPassword);
-    logger.debug('resltat du reset', result);
-    return { message: result };
-  }
 
   // Route pour demander un email de réinitialisation de mot de passe
   @Post('forgotPassword')

@@ -68,16 +68,6 @@ export declare const formSchema: z.ZodObject<{
     password: string;
     username?: string | undefined;
 }>;
-export declare const formLoginSchema: z.ZodObject<{
-    email: z.ZodString;
-    password: z.ZodString;
-}, "strip", z.ZodTypeAny, {
-    email: string;
-    password: string;
-}, {
-    email: string;
-    password: string;
-}>;
 export type forgottenPasswordSchemaType = z.infer<typeof forgottenPasswordSchema>;
 export declare const forgottenPasswordSchema: z.ZodObject<{
     email: z.ZodString;
