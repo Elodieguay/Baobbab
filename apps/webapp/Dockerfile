@@ -1,24 +1,22 @@
 FROM node:18-alpine
 
-# Installer pnpm globalement
 RUN npm install -g pnpm
 
 WORKDIR /app
 
-# Copier tout le monorepo
 COPY . .
 
-# Installer les dépendances du monorepo
 RUN pnpm install
+RUN pnpm --filter webapp run build
 
-# Build uniquement le front
-RUN pnpm --filter webapp run build 
+# 🔁 Change le dossier courant pour simplifier
+WORKDIR /app/apps/webapp
 
+# (Facultatif) Debug : affiche le contenu du dossier dist
+RUN ls -l dist
 
-# Exposer le port utilisé par le serveur statique
 EXPOSE 4173
 
-# Lancer le serveur statique pour servir les fichiers Vite
-CMD ["pnpm", "--filter", "webapp", "exec", "serve", "-s", "apps/webapp/dist", "--single", "-l", "4173"]
-
+# ✅ Lance le serveur statique depuis le bon dossier
+CMD ["npx", "serve", "-s", "dist", "--single", "-l", "4173"]
 
