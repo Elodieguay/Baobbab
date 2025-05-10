@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import {
     organisationLoginFormSchema,
     organisationRegisterFormSchema,
-    Status,
     UserRole,
 } from '@baobbab/dtos';
 import { zodResolver } from '@hookform/resolvers/zod';

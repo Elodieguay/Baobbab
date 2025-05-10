@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from 'react';
 import CardsCourses from '@/components/courses/CardsCourses';
 // import { useCity } from '@/context/City.context';
 import { useGetCategory, useGetCourseByCategory } from '@/hooks/courses/query';
-import log from 'loglevel';
 import { CategoryDTO, CoursesDTOGeojson, Point } from '@baobbab/dtos';
 import NavbarMenu from '@/components/navbar.tsx/NavbarMenu';
 import NavbarCitySelection from '@/components/navbar.tsx/NavbarCitySelection';

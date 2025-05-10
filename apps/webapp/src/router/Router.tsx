@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import AppRoutes from './AppRoutes';
-import Home from '../pages/home/Home';
 import Courses from '../pages/courses/Courses';
 import Booking from '../pages/courses/Booking';
 import Dashboard from '../pages/dashboard/Dashboard';

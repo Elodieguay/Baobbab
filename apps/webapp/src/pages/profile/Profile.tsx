@@ -1,6 +1,5 @@
 import Footer from '@/components/footer/Footer';
 import Navbar from '@/components/navbar.tsx/Navbar';
-import { useGetOrganisationInfoController } from '@/components/profile/hook/useGetOrganisationController';
 import { columns } from '@/components/profile/profileTable/Columns';
 import { DataTable } from '@/components/profile/profileTable/DataTable';
 import { Button } from '@/components/ui/button';

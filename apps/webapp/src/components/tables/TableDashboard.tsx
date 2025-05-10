@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     Table,
     TableHeader,
@@ -8,7 +7,6 @@ import {
     TableCell,
 } from '../ui/table';
 import React from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 import log from 'loglevel';
 import { CoursesDTOGeojson } from '@baobbab/dtos';
 
@@ -27,20 +25,11 @@ interface TableDashboardProps {
 }
 
 const TableDashboard: React.FC<TableDashboardProps> = ({ courses }) => {
-    const [expandedRows, setExpandedRows] = useState<{
-        [key: number]: boolean;
-    }>({});
-
     if (!courses) {
         return null;
     }
     // Fonction pour basculer l'état d'une ligne
-    const toggleRow = (id: string): void => {
-        // setExpandedRows((prevState) => ({
-        //     ...prevState,
-        //     [id]: !prevState[id],
-        // }));
-    };
+
     log.debug('datcourse', courses);
     return (
         <Table className="w-full table-auto border-collapse text-base  overflow-x-auto ">

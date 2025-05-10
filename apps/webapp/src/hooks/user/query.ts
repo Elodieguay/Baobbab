@@ -1,11 +1,5 @@
 import { getUser } from '@/api/user';
-import { UserDTO } from '@baobbab/dtos';
-import {
-    useQuery,
-    UseQueryOptions,
-    UseQueryResult,
-} from '@tanstack/react-query';
-import { ErrorResponse } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 
 // export const useGetUser = (token: string) => {
 //     if (!token) return null;

@@ -13,12 +13,16 @@ export function AddressSearch(): JSX.Element {
     //Prépare l'objet GetAddressDTO pour le fetch
     const searchDTO: GetAddressesDTO = { address: searchValue || '', limit: 5 };
     // Appeler le hook pour récupérer les données de recherche sur l'api
-    const { data, isLoading, error } = useGeocodingAddress(searchDTO);
+    const { data, isLoading, error } = useGeocodingAddress(searchDTO) as {
+        data: GeocodingFeature[] | undefined;
+        isLoading: boolean;
+        error: unknown;
+    };
     log.info('data:', data);
     // Transformer les données en format attendu par AutoComplete
 
     const items =
-        data?.features.map((feature: GeocodingFeature) => ({
+        data?.map((feature: GeocodingFeature) => ({
             value: feature.properties.name, // Nom simple
             label: feature.properties.label, // Label complet avec adresse
         })) ?? [];
