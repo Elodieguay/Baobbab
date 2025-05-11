@@ -8,11 +8,14 @@ import { Courses } from '../entities/courses.entity';
 import { Seeder } from '@mikro-orm/seeder';
 import { Categories } from '../entities/categories.entity';
 import { Schedule } from '../entities/schedule.entity';
+import { logger } from '@mikro-orm/nestjs';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
     // Insérer les catégories si elles n'existent pas
     const existingCategories = await em.count(Categories, {});
+    logger.log(`Nombre de catégories détectées : ${existingCategories}`);
+
     if (existingCategories === 0) {
       const categoryArray = [
         { title: 'Sport' },
@@ -25,7 +28,9 @@ export class DatabaseSeeder extends Seeder {
       ];
       const categories = categoryArray.map((c) => em.create(Categories, c));
       await em.persistAndFlush(categories);
+      logger.log(`✅ ${categories.length} catégories ont été insérées.`);
     }
+    logger.debug('seeding categories done');
     // Créer une organisation
     // Récupérer toutes les catégories depuis la base de données
     const categories = await em.find(Categories, {});
