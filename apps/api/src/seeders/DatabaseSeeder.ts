@@ -7,12 +7,26 @@ import { OrganisationInfos } from '../entities/organisationInfos.entity';
 import { Courses } from '../entities/courses.entity';
 import { Seeder } from '@mikro-orm/seeder';
 import { Categories } from '../entities/categories.entity';
-import { Point } from '@baobbab/dtos';
 import { Schedule } from '../entities/schedule.entity';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
-    // 1️⃣ Créer une organisation
+    // Insérer les catégories si elles n'existent pas
+    const existingCategories = await em.count(Categories, {});
+    if (existingCategories === 0) {
+      const categoryArray = [
+        { title: 'Sport' },
+        { title: 'Danse' },
+        { title: 'Arts & Cultures' },
+        { title: 'Bien-être' },
+        { title: 'Vie & Solidarité' },
+        { title: 'Environnement' },
+        { title: 'Evènements' },
+      ];
+      const categories = categoryArray.map((c) => em.create(Categories, c));
+      await em.persistAndFlush(categories);
+    }
+    // Créer une organisation
     // Récupérer toutes les catégories depuis la base de données
     const categories = await em.find(Categories, {});
     if (categories.length === 0) {
