@@ -25,4 +25,4 @@ RUN pnpm --filter api build
 
 # Lancer le serveur
 EXPOSE 4000
-CMD ["node", "apps/api/dist/main.js"]
+CMD ["node", "apps/api/dist/src/main.js"]
