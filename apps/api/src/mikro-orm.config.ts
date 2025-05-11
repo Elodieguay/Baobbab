@@ -32,7 +32,7 @@ const mikroOrmConfig = defineConfig({
     disableForeignKeys: true,
   },
   seeder: {
-    path: './dist/seeders',
+    path: './dist/src/seeders',
     pathTs: './src/seeders',
     defaultSeeder: 'DatabaseSeeder',
   },
