@@ -34,6 +34,7 @@ const mikroOrmConfig = defineConfig({
   seeder: {
     path: './dist/seeders',
     pathTs: './src/seeders',
+    defaultSeeder: 'DatabaseSeeder',
   },
 });
 
