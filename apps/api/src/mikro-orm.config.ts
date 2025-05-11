@@ -30,7 +30,7 @@ const mikroOrmConfig = defineConfig({
     path: './dist/src/migrations',
     pathTs: './src/migrations',
     allOrNothing: true,
-    disableForeignKeys: true,
+    disableForeignKeys: false,
   },
   seeder: {
     path: './dist/src/seeders',
