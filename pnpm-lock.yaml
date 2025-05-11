@@ -186,6 +186,9 @@ importers:
       jest:
         specifier: ^29.5.0
         version: 29.7.0(@types/node@20.17.8)(ts-node@10.9.2(@types/node@20.17.8)(typescript@5.7.2))
+      mikro-orm:
+        specifier: ^6.4.15
+        version: 6.4.15
       prettier:
         specifier: ^3.0.0
         version: 3.4.1
@@ -5007,6 +5010,10 @@ packages:
 
   mikro-orm@6.4.0:
     resolution: {integrity: sha512-dnkvm+xJifwjPEkwipKPpbVEeW7XL3w06yREQiUxGQwcnVowpt+tYFelgr5dnPTpARFNoP5Lc0qTlpWaXVRsxA==}
+    engines: {node: '>= 18.12.0'}
+
+  mikro-orm@6.4.15:
+    resolution: {integrity: sha512-ghtt7SnXLkoTcmvSzUn2ORsxKqo9pi9NYPmvu3qKIP41a1l0lQzwu0VG+PkywXSHC669DPDbikWqoo2FOdk90w==}
     engines: {node: '>= 18.12.0'}
 
   mime-db@1.33.0:
@@ -12909,6 +12916,8 @@ snapshots:
       picomatch: 2.3.1
 
   mikro-orm@6.4.0: {}
+
+  mikro-orm@6.4.15: {}
 
   mime-db@1.33.0: {}
 
