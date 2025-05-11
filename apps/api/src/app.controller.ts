@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Logger,
   Post,
   Query,
   UnauthorizedException,
@@ -22,6 +23,8 @@ export class AppController {
 
   @Post('/seed')
   async seed(@Query('token') token: string) {
+    Logger.debug('[SeederController] Début du seed...');
+
     if (token !== process.env.SEED_TOKEN) {
       throw new UnauthorizedException('Access refused');
     }
