@@ -8,6 +8,7 @@ import { Booking } from './entities/booking.entity';
 import { OrganisationInfos } from './entities/organisationInfos.entity';
 import { Schedule } from './entities/schedule.entity';
 import { SuperAdmin } from './entities/superAdmin.entity';
+import { SeedManager } from '@mikro-orm/seeder';
 dotenv.config();
 
 const mikroOrmConfig = defineConfig({
@@ -36,6 +37,7 @@ const mikroOrmConfig = defineConfig({
     pathTs: './src/seeders',
     defaultSeeder: 'DatabaseSeeder',
   },
+  extensions: [SeedManager],
 });
 
 export default mikroOrmConfig;
