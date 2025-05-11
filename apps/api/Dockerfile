@@ -15,6 +15,10 @@ RUN pnpm install --frozen-lockfile
 COPY apps/api ./apps/api
 COPY packages ./packages
 
+# Copier le script
+COPY apps/api/start.sh ./apps/api/start.sh
+RUN chmod +x ./apps/api/start.sh
+
 # Installation ciblée dans apps/api (obligatoire ici)
 WORKDIR /app/apps/api
 RUN pnpm install
@@ -25,4 +29,4 @@ RUN pnpm --filter api build
 
 # Lancer le serveur
 EXPOSE 4000
-CMD ["node", "apps/api/dist/src/main.js"]
+CMD ["sh", "./apps/api/start.sh"]
