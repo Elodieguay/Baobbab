@@ -9,9 +9,13 @@ import { Seeder } from '@mikro-orm/seeder';
 import { Categories } from '../entities/categories.entity';
 import { Schedule } from '../entities/schedule.entity';
 import { logger } from '@mikro-orm/nestjs';
+import { Logger } from '@nestjs/common';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
+    logger.log('[DatabaseSeeder] Début du run');
+    Logger.log('[DatabaseSeeder] Début du run');
+
     // Créer une organisation
     // Récupérer toutes les catégories depuis la base de données
     const categories = await em.find(Categories, {});
