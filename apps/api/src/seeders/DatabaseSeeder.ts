@@ -12,25 +12,6 @@ import { logger } from '@mikro-orm/nestjs';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
-    // Insérer les catégories si elles n'existent pas
-    const existingCategories = await em.count(Categories, {});
-    logger.log(`Nombre de catégories détectées : ${existingCategories}`);
-
-    if (existingCategories === 0) {
-      const categoryArray = [
-        { title: 'Sport' },
-        { title: 'Danse' },
-        { title: 'Arts & Cultures' },
-        { title: 'Bien-être' },
-        { title: 'Vie & Solidarité' },
-        { title: 'Environnement' },
-        { title: 'Evènements' },
-      ];
-      const categories = categoryArray.map((c) => em.create(Categories, c));
-      await em.persistAndFlush(categories);
-      logger.log(`✅ ${categories.length} catégories ont été insérées.`);
-    }
-    logger.debug('seeding categories done');
     // Créer une organisation
     // Récupérer toutes les catégories depuis la base de données
     const categories = await em.find(Categories, {});
