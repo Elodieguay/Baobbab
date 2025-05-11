@@ -1,4 +1,4 @@
-version: '3.9'
+version: '4.x'
 
 services:
 
@@ -7,14 +7,14 @@ services:
         context: .
         dockerfile: apps/api/Dockerfile
     container_name: baobbab-api
-    command: pnpm start:dev
+    command: pnpm --filter './apps/api' dev
     volumes:
-      - ./apps/api:/app/api
+      - ./apps/api:/apps/api
     ports:
       - "4000:4000"
     environment:
-      DB_HOST: localhost
-      DB_PORT: 5435
+      DB_HOST: db
+      DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: ponpon
       DB_NAME: baobbab_db
@@ -22,7 +22,7 @@ services:
       - db
 
   db:
-    image: postgres:16-alpine
+    image: postgis/postgis:16-3.5-alpine
     container_name: baobbab-postgres
     ports:
       - 5435:5432

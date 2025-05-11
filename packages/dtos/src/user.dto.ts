@@ -46,7 +46,7 @@ export interface UserRegisterDTO {
     email: string;
     password: string;
     role: UserRole.USER;
-     created_at?: string;
+    created_at?: string;
 }
 
 export interface UserLoginDTO {
@@ -90,7 +90,11 @@ export const formSchema = z.object({
         }),
 });
 
-export const formLoginSchema = z.object({
+export type forgottenPasswordSchemaType = z.infer<
+    typeof forgottenPasswordSchema
+>;
+
+export const forgottenPasswordSchema = z.object({
     email: z.string().email({
         message: "L'adresse email n'est pas valide.",
     }),
@@ -105,14 +109,19 @@ export const formLoginSchema = z.object({
         }),
 });
 
-export type forgottenPasswordSchemaType = z.infer<
-    typeof forgottenPasswordSchema
->;
-
-export const forgottenPasswordSchema = z.object({
+export const formLoginSchema = z.object({
     email: z.string().email({
         message: "L'adresse email n'est pas valide.",
     }),
+    password: z
+        .string()
+        .min(8, {
+            message: 'Le mot de passe doit contenir au moins 8 caractères.',
+        })
+        .regex(passwordValidation, {
+            message:
+                'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.',
+        }),
 });
 
 export type resetPasswordSchemaType = z.infer<typeof resetPasswordSchema>;

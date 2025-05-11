@@ -7,26 +7,29 @@ import ormConfig from './modules/orm/orm.config';
 import { OrmModule } from './modules/orm/orm.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
-import authConfig from './modules/auth/auth.config';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { CoursesModule } from './modules/courses/courses.module';
+import { OrganisationModule } from './modules/organisation/organisation.module';
+import { BookingModule } from './modules/booking/booking.module';
+import { ScheduleModule } from './modules/schedule/schedule.module';
 
 @Module({
-  imports: [ 
-
+  imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [ormConfig],
     }),
     MikroOrmModule,
     OrmModule,
+    AuthModule,
     UserModule,
-    AuthModule
+    CategoriesModule,
+    CoursesModule,
+    OrganisationModule,
+    BookingModule,
+    ScheduleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  constructor() {
-    // Log pour vérifier si les configurations sont correctement chargées
-    console.log('AuthConfig:', authConfig);
-  }
-}
+export class AppModule {}

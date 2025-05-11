@@ -3,7 +3,6 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -13,11 +12,13 @@ import { EntityManager } from '@mikro-orm/core';
 import { AuthPayloadDto } from './types/auth.types';
 import * as bcrypt from 'bcryptjs';
 import { logger } from '@mikro-orm/nestjs';
-import { UserRegisterDTO, UserRole } from '@baobbab/dtos';
-
+import {
+  OrganisationRegisterDTO,
+  Status,
+  UserRegisterDTO,
+  UserRole,
+} from '@baobbab/dtos';
 import { Organisation } from 'src/entities/organisation.entity';
-import { Status } from '@baobbab/dtos';
-import { OrganisationRegisterDTO } from '@baobbab/dtos';
 
 @Injectable()
 export class AuthService {

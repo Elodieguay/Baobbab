@@ -7,7 +7,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Courses } from './courses.entity';
-import {  UserRole } from '@baobbab/dtos';
+import { UserRole } from '@baobbab/dtos';
 import { OrganisationInfos } from './organisationInfos.entity';
 import { Status } from '@baobbab/dtos';
 

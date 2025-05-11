@@ -14,10 +14,10 @@ export declare const organisationFormSchema: z.ZodObject<{
     socialMediaTwitter: z.ZodOptional<z.ZodString>;
     socialMediaTikTok: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
+    address: string;
     firstname: string;
     lastname: string;
     phone: string;
-    address: string;
     bio: string;
     website?: string | undefined;
     socialMediaInstagram?: string | undefined;
@@ -25,10 +25,10 @@ export declare const organisationFormSchema: z.ZodObject<{
     socialMediaTwitter?: string | undefined;
     socialMediaTikTok?: string | undefined;
 }, {
+    address: string;
     firstname: string;
     lastname: string;
     phone: string;
-    address: string;
     bio: string;
     website?: string | undefined;
     socialMediaInstagram?: string | undefined;
@@ -42,15 +42,15 @@ export declare const organisationRegisterFormSchema: z.ZodObject<{
     email: z.ZodString;
     password: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    siret: string;
-    organisationName: string;
     email: string;
     password: string;
+    siret: string;
+    organisationName: string;
 }, {
-    siret: string;
-    organisationName: string;
     email: string;
     password: string;
+    siret: string;
+    organisationName: string;
 }>;
 export declare const organisationLoginFormSchema: z.ZodObject<{
     email: z.ZodString;

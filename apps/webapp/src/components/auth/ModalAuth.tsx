@@ -1,90 +1,180 @@
 import { useState } from 'react';
-import Login from './FormLogin';
+import Login from '../form/auth/FormLogin';
 import { Button } from '../ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from '../ui/dialog';
-import Register from './FormRegister';
-import {formSchema, UserLoginDTO, UserRegisterDTO} from '@baobbab/dtos'
+import Register from '../form/auth/FormRegister';
+import {
+    formSchema,
+    RegisterResponse,
+    UserLoginDTO,
+    UserRegisterDTO,
+    formLoginSchema,
+    LoginResponse,
+} from '@baobbab/dtos';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { useLoginMutation, useRegisterMutation } from '@/hooks/useAuthMutation';
+import {
+    useLoginMutation,
+    useRegisterMutation,
+} from '@/hooks/auth/useAuthMutation';
+import { useAuth } from '@/context/Auth.context';
+import { UserRound } from 'lucide-react';
+import { Link, useNavigate } from 'react-router';
+import log from 'loglevel';
 
 export type FormSchemaType = z.infer<typeof formSchema>;
 
-const Modal = () => {
-  const [isRegister, setIsRegister] = useState(false)
+const Modal = (): JSX.Element => {
+    const navigate = useNavigate();
+    const { setAuthData } = useAuth();
+    const [isRegister, setIsRegister] = useState(false);
+    const { mutate: registerMutate } = useRegisterMutation();
+    const { mutate: loginMutate } = useLoginMutation();
 
-  const {mutate: registerMutate} = useRegisterMutation()
-  const {mutate: loginMutate} = useLoginMutation()
-  // console.log('loginMutate', loginMutate);
-  
+    const userRegisterDTO = (userRegister: UserRegisterDTO): void => {
+        // console.log('je suis dans userRegisterDTO', userRegister);
 
-  const userRegisterDTO = ( userRegister: UserRegisterDTO) => {
-    registerMutate(userRegister)
-  }
-  const userLoginDTO = ( userLogin: UserLoginDTO) => {
-    loginMutate(userLogin)
-  }
-// console.log('userLoginDTO', userLoginDTO);
+        registerMutate(userRegister, {
+            onSuccess: (data: RegisterResponse) => {
+                // console.log('data.token', data.access_token);
+                // console.log('data.role', data.role);
 
-  const openRegister = () => {
-    setIsRegister(true)
-  }
-  const openLogin = () => {
-    setIsRegister(false)
-  }
+                if (setAuthData) {
+                    setAuthData(
+                        data.access_token,
+                        data.role,
+                        'user',
+                        data.username,
+                        data.email
+                    );
+                    // console.log('setAuthData', setAuthData);
+                } else {
+                    log.error('setAuthData is not defined');
+                }
+            },
+        });
+    };
+    const userLoginDTO = (userLogin: UserLoginDTO): void => {
+        loginMutate(userLogin, {
+            onSuccess: (data: LoginResponse) => {
+                if (setAuthData) {
+                    setAuthData(
+                        data.access_token,
+                        data.role,
+                        'user',
+                        data.email,
+                        data.username,
+                        data.id
+                    );
+                } else {
+                    log.error('setAuthData is not defined');
+                }
+            },
+        });
+    };
 
-const form = useForm<FormSchemaType>({
-  resolver: zodResolver(formSchema),
-  mode:'onChange',
-  defaultValues: {
-    username: '',
-    email: '',
-    password: '',
-  },
-});
-  
+    const openRegister = (): void => {
+        setIsRegister(true);
+    };
+    const openLogin = (): void => {
+        setIsRegister(false);
+    };
 
-  return (
-    <Dialog>
-      <DialogTrigger>Open</DialogTrigger>
-      <DialogContent className='bg-[#faf7f0] px-10'>
-        <DialogHeader>
-          {isRegister ? <DialogTitle className='text-center'>Créer un compte</DialogTitle> :
-          <DialogTitle className='text-center'>Connection</DialogTitle>}
-        </DialogHeader>
-        {isRegister ? (
-          <Register form={form} onSubmit={userRegisterDTO}/>
-        ) : (
-          <Login form={form} onSubmit={userLoginDTO} />
-        )}
-        <DialogDescription className='space-y-4'>            
-          <span className='text-center font-semibold'>ou</span>
-          {isRegister ? (
-            <Button 
-            variant="outline"
-            className='rounded-xl w-full'
-            onClick={openLogin}
-            >J'ai déjà un compte</Button>
-          ):(
-            <Button 
-            variant="outline"
-            className='rounded-xl w-full'
-            onClick={openRegister}
-            >Créer un compte</Button>
-          )}
-        </DialogDescription>
-      </DialogContent>
-    </Dialog>
-  );
+    const form = useForm<FormSchemaType>({
+        resolver: zodResolver(formSchema),
+        mode: 'onChange',
+        defaultValues: {
+            username: '',
+            email: '',
+            password: '',
+        },
+    });
+
+    const formLogin = useForm<z.infer<typeof formLoginSchema>>({
+        resolver: zodResolver(formLoginSchema),
+        mode: 'onChange',
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+    });
+
+    return (
+        <Dialog>
+            <DialogTrigger className="flex flex-col items-center text-base font-medium">
+                <UserRound />
+                connection
+            </DialogTrigger>
+            <DialogContent className="font-normal p-10 rounded-2xl ">
+                <DialogHeader>
+                    {isRegister ? (
+                        <DialogTitle className="text-center">
+                            Créer un compte
+                        </DialogTitle>
+                    ) : (
+                        <DialogTitle className="text-center">
+                            Connection
+                        </DialogTitle>
+                    )}
+                </DialogHeader>
+                {isRegister ? (
+                    <Register form={form} onSubmit={userRegisterDTO} />
+                ) : (
+                    <>
+                        <Login form={formLogin} onSubmit={userLoginDTO} />
+                        <Button
+                            variant="ghost"
+                            className=" underline"
+                            onClick={() => navigate('/forgotPassword')}
+                        >
+                            Oups! j'ai oublié mon mot de passe
+                        </Button>
+                    </>
+                )}
+                <DialogDescription className="space-y-4 flex flex-col ">
+                    <span className="text-center justify-center font-semibold">
+                        ou
+                    </span>
+                    {isRegister ? (
+                        <Button
+                            variant="outline"
+                            className="rounded-xl w-full"
+                            onClick={openLogin}
+                        >
+                            J'ai déjà un compte
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="outline"
+                            className="rounded-xl w-full"
+                            onClick={openRegister}
+                        >
+                            Créer un compte
+                        </Button>
+                    )}
+                    <span className="font-bold">
+                        <Link to="/organisation">
+                            <Button
+                                variant="outline"
+                                className="rounded-xl w-full bg-[#ffcd00] text-base"
+                            >
+                                Je suis une Organisation
+                            </Button>
+                        </Link>
+                    </span>
+                </DialogDescription>
+            </DialogContent>
+        </Dialog>
+    );
 };
 
 export default Modal;

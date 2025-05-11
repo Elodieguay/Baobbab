@@ -13,14 +13,15 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthPayloadDto } from './types/auth.types';
-import { LoginResponse, RegisterResponse, UserRegisterDTO } from '@baobbab/dtos';
+import {
+  LoginResponse,
+  RegisterResponse,
+  UserRegisterDTO,
+} from '@baobbab/dtos';
 import { LocalGuard } from './guards/local.guards';
 import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
-import {
-
-  UserRole,
-} from '@baobbab/dtos';
+import { UserRole } from '@baobbab/dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { EntityType } from '@baobbab/dtos';
 import { OrganisationLoginDTO, OrganisationRegisterDTO } from '@baobbab/dtos';

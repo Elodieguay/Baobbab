@@ -12,8 +12,7 @@ import { Categories } from './categories.entity';
 import { Organisation } from './organisation.entity';
 import { Booking } from './booking.entity';
 import { Schedule } from './schedule.entity';
-import { Point} from '@baobbab/dtos';
-
+import { Point } from '@baobbab/dtos';
 
 @Entity()
 export class Courses {
