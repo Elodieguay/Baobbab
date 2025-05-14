@@ -1,10 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuList,
-    NavigationMenuTrigger,
-} from '../ui/navigation-menu';
 import log from 'loglevel';
 import { CategoryDTO } from '@baobbab/dtos';
 
@@ -47,67 +41,30 @@ const NavbarMenu = ({
         }
     };
 
+    const categories = [
+        'culture',
+        'sport',
+        'dance',
+        'health',
+        'life',
+        'environment',
+        'event',
+    ];
+
     return (
-        <NavigationMenu>
-            <NavigationMenuList className="gap-6">
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                        className="bg-none rounded-3xl border "
-                        onClick={() => handleCategoryClick(t('culture'))}
+        <div className="w-full overflow-x-auto overflow-y-hidden px-4 no-scrollbar">
+            <div className="flex flex-nowrap gap-3 min-w-max py-2 justify-center">
+                {categories.map((key) => (
+                    <button
+                        key={key}
+                        onClick={() => handleCategoryClick(t(key))}
+                        className="bg-white text-black border border-gray-300 text-sm px-4 py-2 rounded-full whitespace-nowrap hover:bg-gray-100 transition"
                     >
-                        {t('culture')}
-                    </NavigationMenuTrigger>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                        className="bg-none rounded-3xl border"
-                        onClick={() => handleCategoryClick(t('sport'))}
-                    >
-                        {t('sport')}
-                    </NavigationMenuTrigger>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                        className="bg-none rounded-3xl border"
-                        onClick={() => handleCategoryClick(t('dance'))}
-                    >
-                        {t('dance')}
-                    </NavigationMenuTrigger>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                        className="bg-none rounded-3xl border"
-                        onClick={() => handleCategoryClick(t('health'))}
-                    >
-                        {t('health')}
-                    </NavigationMenuTrigger>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                        className="bg-none rounded-3xl border"
-                        onClick={() => handleCategoryClick(t('life'))}
-                    >
-                        {t('life')}
-                    </NavigationMenuTrigger>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                        className="bg-none rounded-3xl border"
-                        onClick={() => handleCategoryClick(t('environment'))}
-                    >
-                        {t('environment')}
-                    </NavigationMenuTrigger>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                        className="bg-none rounded-3xl border"
-                        onClick={() => handleCategoryClick(t('event'))}
-                    >
-                        {t('event')}
-                    </NavigationMenuTrigger>
-                </NavigationMenuItem>
-            </NavigationMenuList>
-        </NavigationMenu>
+                        {t(key)}
+                    </button>
+                ))}
+            </div>
+        </div>
     );
 };
 

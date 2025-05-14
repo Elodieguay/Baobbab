@@ -7,10 +7,11 @@ const Footer = (): JSX.Element => {
         keyPrefix: 'Footer',
     });
     return (
-        <footer className="flex w-full justify-center  bg-[#373737] py-8 px-8 bottom-0 ">
-            <div className="flex w-3/4 justify-between ">
-                <div className="flex flex-col w-1/4 gap-5">
-                    <h1 className="text-white text-3xl font-semibold">
+        <footer className="flex w-full justify-center bg-[#373737] py-10 px-6">
+            <div className="flex flex-col md:flex-row w-full max-w-6xl gap-8 md:gap-12 justify-between">
+                {/* Logo + description */}
+                <div className="flex flex-col w-full md:w-1/3 gap-4">
+                    <h1 className="text-white text-2xl md:text-3xl font-semibold">
                         <Trans
                             i18nKey="Footer.logo"
                             components={{
@@ -18,36 +19,38 @@ const Footer = (): JSX.Element => {
                             }}
                         />
                     </h1>
-                    <p className="text-white text-base">{t('description')}</p>
+                    <p className="text-white text-base leading-relaxed">
+                        {t('description')}
+                    </p>
                 </div>
 
-                <div className="flex flex-col justify-center gap-3 text-white">
-                    <Link to="/" className="flex flex-col text-base text-white">
+                {/* Liens */}
+                <div className="flex flex-col w-full md:w-1/3 gap-2 text-white">
+                    <Link to="/" className="text-base hover:underline">
                         {t('aboutUs')}
                     </Link>
-                    <Link
-                        to="/courses"
-                        className="flex flex-col text-base text-white"
-                    >
+                    <Link to="/courses" className="text-base hover:underline">
                         {t('findCourse')}
                     </Link>
-                    <Link to="/" className="flex flex-col text-base text-white">
+                    <Link to="/" className="text-base hover:underline">
                         {t('legal')}
                     </Link>
-                    <Link to="/" className="flex flex-col text-base text-white">
+                    <Link to="/" className="text-base hover:underline">
                         {t('cgu')}
                     </Link>
                     <Link
                         to="/organisation"
-                        className="flex flex-col text-base text-white"
+                        className="text-base hover:underline"
                     >
                         {t('organisation')}
                     </Link>
                 </div>
-                <div className="flex  gap-4 items-center">
-                    <Instagram className="h-6 w-6 text-white" />
-                    <Facebook className="h-6 w-6 text-white" />
-                    <Twitter className="h-6 w-6 text-white" />
+
+                {/* Réseaux sociaux */}
+                <div className="flex justify-start md:justify-end items-center gap-6 w-full md:w-1/3">
+                    <Instagram className="h-6 w-6 text-white hover:text-[#01a274]" />
+                    <Facebook className="h-6 w-6 text-white hover:text-[#01a274]" />
+                    <Twitter className="h-6 w-6 text-white hover:text-[#01a274]" />
                 </div>
             </div>
         </footer>

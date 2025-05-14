@@ -68,20 +68,20 @@ const CourseByCity = (): JSX.Element | null => {
     }
 
     return (
-        <div className=" w-full min-h-screen flex flex-col  gap-6 ">
-            <div className="w-full h-full flex flex-col  items-center justify-center ">
-                <div className="w-1/3 flex justify-center items-center  ">
+        <div className="w-full min-h-screen flex flex-col gap-6 overflow-x-hidden">
+            <div className="w-full flex flex-col items-center justify-center">
+                <div className="w-full max-w-md px-4">
                     <NavbarCitySelection />
                 </div>
-                <div className="h-14 w-full flex justify-center items-center object-center content-center border-b">
+                <div className=" w-full flex justify-center items-center border-b px-4">
                     <NavbarMenu
                         setSelectedCategory={setSelectedCategory}
                         categoryList={categoryList}
                     />
                 </div>
             </div>
-            <div className="flex ">
-                <div className="w-1/2 h-full overflow-y-auto px-9 ">
+            <div className="flex flex-col lg:flex-row w-full">
+                <div className="w-full lg:w-1/2 h-full overflow-y-auto px-4 md:px-6">
                     <div className="grid grid-cols-1 gap-4">
                         {courses.map((item) => (
                             <CardsCourses
@@ -93,7 +93,7 @@ const CourseByCity = (): JSX.Element | null => {
                         ))}
                     </div>
                 </div>
-                <div className="w-1/2 sticky h-screen top-0 overflow-hidden">
+                <div className="w-full lg:w-1/2 h-[400px] lg:h-screen sticky top-0 overflow-hidden">
                     <Maplibre
                         loadCoordinates={coordinates}
                         isLoading={isLoading}

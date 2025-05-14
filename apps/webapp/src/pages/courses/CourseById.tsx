@@ -53,28 +53,33 @@ const CourseById = (): JSX.Element => {
     };
 
     return (
-        <div className="flex flex-col w-full h-full bg-neutral-50 items-center gap-5">
-            <section className="flex w-full h-[30rem]">
-                <figure className="w-2/3 h-full overflow-hidden rounded-r-md">
+        <div className="flex flex-col w-full min-h-screen bg-neutral-50 items-center gap-5">
+            <section className="flex flex-col lg:flex-row w-full min-h-[30rem]">
+                <figure className="w-full lg:w-2/3 h-64 lg:h-auto overflow-hidden rounded-b-md lg:rounded-r-md lg:rounded-b-none">
                     <img
                         src={coursesInfos?.image}
                         alt="Activity Image"
-                        className="object-cover w-full h-full "
+                        className="object-cover w-full h-full"
                     />
                 </figure>
-                <div className=" w-1/3 flex flex-col items-center justify-center gap-14">
-                    <h1 className="text-gray-800 text-3xl lg:text-5xl font-bold text-center">
+                <div className="w-full lg:w-1/3 flex flex-col items-center justify-center gap-10 px-4 py-6">
+                    <h1 className="text-gray-800 text-xl sm:text-3xl lg:text-5xl font-bold text-center">
                         {coursesInfos?.title}
                     </h1>
+
                     <div className="flex flex-wrap gap-2">
-                        <Badge variant="outline" className="text-base ">
+                        <Badge
+                            variant="outline"
+                            className="text-sm sm:text-base"
+                        >
                             {getCategoryTitle()}
                         </Badge>
                     </div>
+
                     <div className="flex justify-center items-center">
                         <Dialog
                             open={isModalOpen}
-                            onOpenChange={(open) => setIsModalOpen(open)}
+                            onOpenChange={setIsModalOpen}
                         >
                             <DialogTrigger asChild>
                                 <div className="flex flex-col justify-center items-center gap-2">
@@ -87,18 +92,17 @@ const CourseById = (): JSX.Element => {
                                         {t('page.courseById.button')}
                                     </Button>
                                     {!authToken && (
-                                        <p className="text-red-500 text-sm w-2/3 text-center">
+                                        <p className="text-red-500 text-sm w-3/4 text-center">
                                             {t('page.courseById.auth.button')}
                                         </p>
                                     )}
                                 </div>
                             </DialogTrigger>
-                            <DialogContent className="flex flex-col justify-center items-center font-normal p-10 rounded-2xl ">
+                            <DialogContent className="flex flex-col justify-center items-center font-normal p-6 sm:p-10 rounded-2xl">
                                 <DialogHeader>
                                     <DialogTitle>
                                         {t('page.courseById.dialog.title')}
                                     </DialogTitle>
-                                    <DialogDescription className="space-y-4 flex flex-col  justify-center items-center"></DialogDescription>
                                 </DialogHeader>
                                 <ModalBooking courseData={coursesInfos} />
                             </DialogContent>
@@ -106,10 +110,11 @@ const CourseById = (): JSX.Element => {
                     </div>
                 </div>
             </section>
-            <div className="flex flex-col h-full container lg:py-10 justify-center">
-                <div className="flex flex-col lg:flex-row  lg:gap-10 justify-center ">
+
+            <div className="flex flex-col w-full px-4 lg:px-0 container py-8 lg:py-10">
+                <div className="flex flex-col lg:flex-row gap-10 justify-center">
                     <CourseOrgDetails course={coursesInfos} />
-                    <div className="lg:w-3/4 ">
+                    <div className="lg:w-3/4">
                         <CourseDetails courseData={coursesInfos} />
                     </div>
                 </div>

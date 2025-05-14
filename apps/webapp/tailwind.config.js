@@ -10,10 +10,12 @@ export default {
     ],
     theme: {
     	screens: {
-    		'xs': '20rem',
-    		'md': '48rem',
-    		'lg': '64rem',
-    		'xl': '95rem'
+    		  xs: '20rem',    
+  				sm: '30rem',    
+				md: '48rem',   
+				lg: '64rem',    
+				xl: '80rem',   
+				xxl: '95rem' 
     	},
     	extend: {
     		backgroundImage: {
