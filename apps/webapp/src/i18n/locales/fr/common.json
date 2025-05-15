@@ -3,6 +3,8 @@
         "userLogin.form.email":"email",
         "userLogin.form.password":"mot de passe" ,       
         "userLogin.form.button":" Se connecter",
+        "userLogin.form.connection":"Connexion",
+        "userRegister.form.title":"Créer un compte",
         "userRegister.form.username":"Prénom",
         "userRegister.form.description.username":"Il doit contenir au moins 4 caractères.",
         "userRegister.form.email":"Email",
@@ -10,12 +12,17 @@
         "userRegister.form.password":"Mot de passe",
         "userRegister.form.description.password":"Il doit contenir au moins 8 caractères, dont 1 chiffre et 1 majuscule.",
         "userRegister.form.checkbox":" En t'inscrivant, tu confirmes que tu acceptes les Termes & Conditions, avoir lu la Politique de Confidentialité et avoir au moins 18 ans",
-        "userRegister.form.button":" S'enregistrer"
+        "userRegister.form.button":" S'enregistrer",
+        "userModal.form.forgotten":"Oups! j'ai oublié mon mot de passe",
+        "userModal.form.already":"J'ai déjà un compte",
+        "userModal.form.register":"Créer un compte",
+        "userModal.form.Organisation":"Je suis un professionnel "
+        
 
 
     },
     "Home" : {
-        "logo": "bao<span>b</span>bab",
+        "logo": "bao<span>b</span>bab .",
         "name": "Baobbab .",
         "connect": "connection",
         "baseline": "Trouve ton activité à proximité",
@@ -41,8 +48,15 @@
 
     "Navbar" : {
         "logo": "bao<span>b</span>bab",
-        "logob": "b<span>.</span>"
+        "logob": "b<span>.</span>",
+        "menuProfile":"Mon compte",
+        "menuDashboard":"Tableau de bord",
+        "menuDisconnect":"Déconnexion"
 
+    },
+    "NotFound":{
+        "logo":"b<span>.</span>",
+        "404":" On a tout retourné, mais cette page reste introuvable.Peut-être qu’elle s’est inscrite à un cours de poterie ?"
     },
     "SubNavbar":{
         "culture":"Arts & Cultures",

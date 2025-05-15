@@ -4,16 +4,18 @@ import { useAuth } from '@/context/Auth.context';
 import { Link } from 'react-router';
 import { Button } from '../ui/button';
 import AvatarUser from '../auth/AvatarUser';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { UserRole } from '@baobbab/dtos';
 import { cn } from '@/utils/utils';
 
 const Navbar = ({ className }: { className?: string }): JSX.Element => {
     const { authToken, removeAuthData, username, role, entityId } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
+    const { t } = useTranslation('common', {
+        keyPrefix: 'Navbar',
+    });
 
     const toggleMenu = (): void => {
-        event?.stopPropagation();
         setMenuOpen((prev) => !prev);
     };
 
@@ -31,8 +33,8 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
     }, [menuOpen]);
 
     return (
-        <div className="w-full flex flex-col justify-center items-center border-none">
-            <div className="xl:w-3/4 w-full h-16 flex items-center justify-between  px-8">
+        <div className="w-full flex justify-center border-none">
+            <div className="w-full max-w-7xl h-16 flex items-center justify-between px-4 md:px-8 xl:px-2">
                 <Link to="/">
                     <h1 className="text-3xl font-semibold font-poppins">
                         <Trans
@@ -45,7 +47,6 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
                         />
                     </h1>
                 </Link>
-                {/* <NavbarCitySelection/> */}
                 <div className={cn('mt-5', className)}>
                     {authToken ? (
                         <div className="relative">
@@ -60,14 +61,14 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
                                             to="/profile"
                                             className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-center"
                                         >
-                                            Mon Profile
+                                            {t('menuProfile')}
                                         </Link>
                                     ) : role === UserRole.ADMIN ? (
                                         <Link
                                             to={`/dashboard/${entityId}`}
                                             className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-center"
                                         >
-                                            Mon Dashboard
+                                            {t('menuDashboard')}
                                         </Link>
                                     ) : null}
 
@@ -76,7 +77,7 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
                                         className="block text-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-base"
                                         variant="ghost"
                                     >
-                                        Déconnexion
+                                        {t('menuDisconnect')}
                                     </Button>
                                 </div>
                             )}

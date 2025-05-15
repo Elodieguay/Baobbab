@@ -6,7 +6,7 @@ const Description = () => {
         keyPrefix: 'Description',
     });
     return (
-        <div className="bg-home-bao flex flex-col w-full py-16 px-4 md:px-8 gap-12 justify-center items-center">
+        <div className="w-screen bg-home-bao flex flex-col py-16 px-4 md:px-8 gap-12 justify-center items-center">
             <h1 className="text-2xl md:text-3xl text-center">{t('title')}</h1>
             <div className="w-full flex justify-center">
                 <CardsContent />

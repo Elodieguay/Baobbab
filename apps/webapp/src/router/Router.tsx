@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import AppRoutes from './AppRoutes';
 import Courses from '../pages/courses/Courses';
-import Booking from '../pages/courses/Booking';
 import Dashboard from '../pages/dashboard/Dashboard';
 import Profile from '../pages/profile/Profile';
 import ProtectedRoutes from './ProtectedRoutes';
@@ -16,6 +15,7 @@ import UsersBookingTable from '@/components/dashboard/UsersBookingTable';
 import AllCoursesTable from '@/components/dashboard/AllCoursesTable';
 import OrganisationInfo from '@/components/dashboard/OrganisationInfo';
 import HomePage from '@/pages/home/HomePage';
+import NotFound from '@/pages/notFound/NotFound';
 
 const router = createBrowserRouter([
     // version v7
@@ -64,10 +64,6 @@ const router = createBrowserRouter([
         element: <ProtectedRoutes />,
         children: [
             {
-                path: AppRoutes.Booking.path,
-                element: <Booking />,
-            },
-            {
                 path: AppRoutes.Dashboard.path,
                 element: <Dashboard />,
                 children: [
@@ -97,7 +93,11 @@ const router = createBrowserRouter([
     },
     {
         path: AppRoutes.Error404.path,
-        element: <h1>404 - Page non trouvée</h1>,
+        element: <NotFound />,
+    },
+    {
+        path: '*',
+        element: <NotFound />,
     },
 ]);
 const Router = (): JSX.Element => {

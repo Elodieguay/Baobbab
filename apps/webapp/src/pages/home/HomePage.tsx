@@ -1,5 +1,5 @@
 import Navbar from '@/components/navbar.tsx/Navbar';
-import guitare from '../../assets/images/guitare.jpg';
+import guitare from '@/assets/images/guitare.jpg';
 import { citySchema } from '@/utils/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -8,11 +8,12 @@ import { useNavigate } from 'react-router';
 import SelectCityForm from '@/components/form/courses/SelectCityForm';
 import { Button } from '@/components/ui/button';
 import { useCity } from '@/context/City.context';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import Quotes from '@/components/home/Quotes';
-import Description from '../../components/home/Description';
+import Description from '@/components/home/Description';
 import CTA from '@/components/home/CTA';
+import NotFound from '../notFound/NotFound';
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -36,13 +37,18 @@ const HomePage = () => {
     };
     return (
         <div className="relative w-full min-h-screen">
-            <div className="absolute top-0 left-0 w-full z-10">
-                <Navbar className="lg:text-white" />
+            <div className="absolute top-0 left-0 w-full  z-10">
+                <Navbar className="lg:text-white  " />
             </div>
             <div className="flex flex-col lg:flex-row w-full h-full max-w-[95rem] mx-auto px-4 md:px-8 xl:px-20">
                 <div className="flex flex-col w-full lg:w-1/2 justify-end gap-10 md:gap-12 mt-32 lg:mt-0">
                     <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold">
-                        {t('name')}
+                        <Trans
+                            i18nKey="Home.logo"
+                            components={{
+                                span: <span className="text-[#01a274]" />,
+                            }}
+                        />
                     </h1>
 
                     <p className="text-base md:text-lg lg:text-xl px-2 md:px-4">
@@ -59,8 +65,7 @@ const HomePage = () => {
                         <SelectCityForm form={form} onSubmit={onSubmit}>
                             <Button
                                 type="submit"
-                                className="w-full md:w-1/2 bg-[#be3565] rounded-none text-white text-base"
-                                variant="ghost"
+                                className="h-14 px-6 bg-[#be3565] hover:bg-[#a52c54] text-white font-medium text-base rounded-r-md transition-all duration-200"
                             >
                                 {t('button')}
                             </Button>
@@ -77,7 +82,9 @@ const HomePage = () => {
             </div>
             <div className="my-20 px-4 md:px-8 xl:px-20">
                 <Quotes />
-                <Description />
+            </div>
+            <Description />
+            <div className="my-20 px-4 md:px-8 xl:px-20">
                 <CTA />
             </div>
         </div>

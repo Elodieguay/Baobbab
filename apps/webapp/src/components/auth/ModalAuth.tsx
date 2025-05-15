@@ -30,6 +30,7 @@ import { useAuth } from '@/context/Auth.context';
 import { UserRound } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import log from 'loglevel';
+import { useTranslation } from 'react-i18next';
 
 export type FormSchemaType = z.infer<typeof formSchema>;
 
@@ -39,15 +40,12 @@ const Modal = (): JSX.Element => {
     const [isRegister, setIsRegister] = useState(false);
     const { mutate: registerMutate } = useRegisterMutation();
     const { mutate: loginMutate } = useLoginMutation();
-
+    const { t } = useTranslation('common', {
+        keyPrefix: 'Auth',
+    });
     const userRegisterDTO = (userRegister: UserRegisterDTO): void => {
-        // console.log('je suis dans userRegisterDTO', userRegister);
-
         registerMutate(userRegister, {
             onSuccess: (data: RegisterResponse) => {
-                // console.log('data.token', data.access_token);
-                // console.log('data.role', data.role);
-
                 if (setAuthData) {
                     setAuthData(
                         data.access_token,
@@ -56,7 +54,6 @@ const Modal = (): JSX.Element => {
                         data.username,
                         data.email
                     );
-                    // console.log('setAuthData', setAuthData);
                 } else {
                     log.error('setAuthData is not defined');
                 }
@@ -112,17 +109,17 @@ const Modal = (): JSX.Element => {
         <Dialog>
             <DialogTrigger className="flex flex-col items-center text-base font-medium">
                 <UserRound />
-                connection
+                {t('userLogin.form.connection')}
             </DialogTrigger>
             <DialogContent className="font-normal p-10 rounded-2xl ">
                 <DialogHeader>
                     {isRegister ? (
-                        <DialogTitle className="text-center">
-                            Créer un compte
+                        <DialogTitle className="text-center text-[#be3565]">
+                            {t('userRegister.form.title')}
                         </DialogTitle>
                     ) : (
                         <DialogTitle className="text-center">
-                            Connection
+                            {t('userLogin.form.connection')}
                         </DialogTitle>
                     )}
                 </DialogHeader>
@@ -136,7 +133,7 @@ const Modal = (): JSX.Element => {
                             className=" underline"
                             onClick={() => navigate('/forgotPassword')}
                         >
-                            Oups! j'ai oublié mon mot de passe
+                            {t('userModal.form.forgotten')}
                         </Button>
                     </>
                 )}
@@ -150,7 +147,7 @@ const Modal = (): JSX.Element => {
                             className="rounded-xl w-full"
                             onClick={openLogin}
                         >
-                            J'ai déjà un compte
+                            {t('userModal.form.already')}
                         </Button>
                     ) : (
                         <Button
@@ -158,16 +155,16 @@ const Modal = (): JSX.Element => {
                             className="rounded-xl w-full"
                             onClick={openRegister}
                         >
-                            Créer un compte
+                            {t('userModal.form.register')}
                         </Button>
                     )}
                     <span className="font-bold">
                         <Link to="/organisation">
                             <Button
                                 variant="outline"
-                                className="rounded-xl w-full bg-[#ffcd00] text-base"
+                                className="rounded-xl w-full bg-[#ffcd00]"
                             >
-                                Je suis une Organisation
+                                {t('userModal.form.Organisation')}
                             </Button>
                         </Link>
                     </span>

@@ -12,7 +12,7 @@ const CardContent = () => {
     ];
 
     return (
-        <div className="flex flex-col md:flex-row flex-wrap w-full max-w-6xl justify-center items-stretch gap-8">
+        <div className="flex flex-col md:flex-row flex-wrap w-full max-w-7xl justify-center items-stretch gap-8">
             {cards.map((item, index) => (
                 <Card
                     key={index}
