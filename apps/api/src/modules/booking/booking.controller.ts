@@ -15,9 +15,7 @@ import {
 import { BookingService } from './booking.service';
 import { CreateABooking, UserBooking } from '@baobbab/dtos';
 import { entityToDto } from './booking.entityToDto';
-import { Booking } from 'src/entities/booking.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
 
 @Controller('booking')

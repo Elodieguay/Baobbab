@@ -1,4 +1,4 @@
-import Navbar from '@/components/navbar.tsx/Navbar';
+import Navbar from '@/components/navbar/Navbar';
 import OrganisationFormRegister from '@/components/form/auth/OrganisationFormRegister';
 import { useForm } from 'react-hook-form';
 import {
@@ -11,7 +11,7 @@ import { z } from 'zod';
 import {
     useOrganisationLogin,
     useOrganisationRegister,
-} from '@/hooks/auth/useAuthMutation';
+} from '@/hooks/auth/query';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
 import OrganisationFormLogin from '@/components/form/auth/OrganisationFormLogin';

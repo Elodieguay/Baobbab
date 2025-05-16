@@ -1,4 +1,4 @@
-import Navbar from '@/components/navbar.tsx/Navbar';
+import Navbar from '@/components/navbar/Navbar';
 import guitare from '@/assets/images/guitare.jpg';
 import { citySchema } from '@/utils/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +13,6 @@ import { useState } from 'react';
 import Quotes from '@/components/home/Quotes';
 import Description from '@/components/home/Description';
 import CTA from '@/components/home/CTA';
-import NotFound from '../notFound/NotFound';
 
 const HomePage = () => {
     const navigate = useNavigate();

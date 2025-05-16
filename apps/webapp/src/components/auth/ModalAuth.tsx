@@ -22,15 +22,11 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import {
-    useLoginMutation,
-    useRegisterMutation,
-} from '@/hooks/auth/useAuthMutation';
 import { useAuth } from '@/context/Auth.context';
 import { UserRound } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import log from 'loglevel';
-import { useTranslation } from 'react-i18next';
+import { useLoginMutation, useRegisterMutation } from '@/hooks/auth/query';
 
 export type FormSchemaType = z.infer<typeof formSchema>;
 
@@ -40,9 +36,7 @@ const Modal = (): JSX.Element => {
     const [isRegister, setIsRegister] = useState(false);
     const { mutate: registerMutate } = useRegisterMutation();
     const { mutate: loginMutate } = useLoginMutation();
-    const { t } = useTranslation('common', {
-        keyPrefix: 'Auth',
-    });
+
     const userRegisterDTO = (userRegister: UserRegisterDTO): void => {
         registerMutate(userRegister, {
             onSuccess: (data: RegisterResponse) => {
@@ -68,9 +62,8 @@ const Modal = (): JSX.Element => {
                         data.access_token,
                         data.role,
                         'user',
-                        data.email,
                         data.username,
-                        data.id
+                        data.email
                     );
                 } else {
                     log.error('setAuthData is not defined');
@@ -109,17 +102,17 @@ const Modal = (): JSX.Element => {
         <Dialog>
             <DialogTrigger className="flex flex-col items-center text-base font-medium">
                 <UserRound />
-                {t('userLogin.form.connection')}
+                connection
             </DialogTrigger>
             <DialogContent className="font-normal p-10 rounded-2xl ">
                 <DialogHeader>
                     {isRegister ? (
-                        <DialogTitle className="text-center text-[#be3565]">
-                            {t('userRegister.form.title')}
+                        <DialogTitle className="text-center">
+                            Créer un compte
                         </DialogTitle>
                     ) : (
                         <DialogTitle className="text-center">
-                            {t('userLogin.form.connection')}
+                            Connection
                         </DialogTitle>
                     )}
                 </DialogHeader>
@@ -133,7 +126,7 @@ const Modal = (): JSX.Element => {
                             className=" underline"
                             onClick={() => navigate('/forgotPassword')}
                         >
-                            {t('userModal.form.forgotten')}
+                            Oups! j'ai oublié mon mot de passe
                         </Button>
                     </>
                 )}
@@ -147,7 +140,7 @@ const Modal = (): JSX.Element => {
                             className="rounded-xl w-full"
                             onClick={openLogin}
                         >
-                            {t('userModal.form.already')}
+                            J'ai déjà un compte
                         </Button>
                     ) : (
                         <Button
@@ -155,16 +148,16 @@ const Modal = (): JSX.Element => {
                             className="rounded-xl w-full"
                             onClick={openRegister}
                         >
-                            {t('userModal.form.register')}
+                            Créer un compte
                         </Button>
                     )}
                     <span className="font-bold">
                         <Link to="/organisation">
                             <Button
                                 variant="outline"
-                                className="rounded-xl w-full bg-[#ffcd00]"
+                                className="rounded-xl w-full bg-[#ffcd00] font-semibold "
                             >
-                                {t('userModal.form.Organisation')}
+                                Je suis une Organisation
                             </Button>
                         </Link>
                     </span>

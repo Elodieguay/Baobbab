@@ -1,4 +1,4 @@
-import Navbar from '@/components/navbar.tsx/Navbar';
+import Navbar from '@/components/navbar/Navbar';
 import { Trans, useTranslation } from 'react-i18next';
 
 const NotFound = () => {

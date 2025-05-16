@@ -1,11 +1,16 @@
 import { Heart } from 'lucide-react';
-import { Button } from '../ui/button';
-import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import React from 'react';
 import { CoursesDTOGeojson } from '@baobbab/dtos';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import log from 'loglevel';
+import {
+    Card,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 export interface CardsCoursesProps {
     item: CoursesDTOGeojson;

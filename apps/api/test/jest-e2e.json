@@ -1,9 +1,15 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
-  "testEnvironment": "node",
+  "rootDir": "../",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
+    "^.+\\.(t|j)s$": ["ts-jest", {
+      "tsconfig": "tsconfig.json"
+    }]
+  },
+  "moduleNameMapper": {
+    "^src/(.*)$": "<rootDir>/src/$1",
+    "^@baobbab/dtos(.*)$": "<rootDir>/../../packages/dtos/src$1"
   }
 }
+

@@ -9,16 +9,26 @@ import { UserRole } from '@baobbab/dtos';
 import { cn } from '@/utils/utils';
 
 const Navbar = ({ className }: { className?: string }): JSX.Element => {
-    const { authToken, removeAuthData, username, role, entityId } = useAuth();
+    const {
+        authToken,
+        removeAuthData,
+        username,
+        role,
+        entityId,
+        organisationName,
+    } = useAuth();
+    console.log('role', role);
     const [menuOpen, setMenuOpen] = useState(false);
     const { t } = useTranslation('common', {
         keyPrefix: 'Navbar',
     });
 
     const toggleMenu = (): void => {
+        console.log('toggleMenu clicked');
+        event?.stopPropagation();
         setMenuOpen((prev) => !prev);
     };
-
+    console.log('menuOpen', menuOpen);
     useEffect(() => {
         const closeMenu = (): void => {
             setMenuOpen(false);
@@ -51,7 +61,10 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
                     {authToken ? (
                         <div className="relative">
                             <AvatarUser
-                                name={username ?? null}
+                                name={
+                                    (username ?? null) ||
+                                    (organisationName ?? null)
+                                }
                                 onClick={toggleMenu}
                             />
                             {menuOpen && (

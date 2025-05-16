@@ -3,13 +3,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Booking } from 'src/entities/booking.entity';
 import { EntityManager, EntityRepository } from '@mikro-orm/core';
 import { CreateABooking, UserBooking } from '@baobbab/dtos';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Schedule } from 'src/entities/schedule.entity';
 import { CoursesService } from '../courses/courses.service';
-import { populate } from 'dotenv';
+import { Booking } from 'src/entities/booking.entity';
+import { Schedule } from 'src/entities/schedule.entity';
 import { User } from 'src/entities/user.entity';
 import { Courses } from 'src/entities/courses.entity';
 
