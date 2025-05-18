@@ -20,11 +20,7 @@ export class Booking {
   @Property({ type: 'text' })
   title: string;
 
-  @OneToOne(() => Schedule, (schedule) => schedule.booking, {
-    owner: true,
-    cascade: [Cascade.REMOVE],
-    orphanRemoval: true,
-  })
+  @ManyToOne(() => Schedule, { nullable: false })
   schedule: Schedule;
 
   @ManyToOne(() => Courses, { nullable: true })

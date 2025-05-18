@@ -80,7 +80,10 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                                         {t('page.courseById.dialog.title')}
                                     </DialogTitle>
                                 </DialogHeader>
-                                <ModalBooking courseData={coursesInfos} />
+                                <ModalBooking
+                                    courseData={coursesInfos}
+                                    setIsModalOpen={setIsModalOpen}
+                                />
                             </DialogContent>
                         </Dialog>
                     ) : (
@@ -90,7 +93,7 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                                 className={cn('bg-[#be3565]')}
                                 onClick={() => showMessage()}
                             >
-                                {t('page.courseById.button')}
+                                blablaaaaaaa {t('page.courseById.button')}
                             </Button>
                             {showMessage()}
                         </div>

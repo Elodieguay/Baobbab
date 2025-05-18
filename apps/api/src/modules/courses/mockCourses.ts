@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Status, UserRole } from '@baobbab/dtos';
 import { Collection } from '@mikro-orm/core';
 import { Booking } from 'src/entities/booking.entity';

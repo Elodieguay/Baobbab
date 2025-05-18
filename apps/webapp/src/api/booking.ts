@@ -110,10 +110,12 @@ export const updateUserBooking = async (
     userId: string,
     updateBooking: CreateABooking
 ) => {
+    log.debug(bookingId, userId, updateBooking);
     try {
+        log.debug('laloup');
         const url = `${config.apiUrl}/booking/${bookingId}`;
         const response = await ky
-            .patch(url, { json: { userId, bookingId, updateBooking } })
+            .patch(url, { json: { ...updateBooking, userId } })
             .json();
 
         log.debug('Booking successfully updated:', response);

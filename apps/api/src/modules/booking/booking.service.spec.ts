@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { BookingService } from './booking.service';
 import { EntityManager } from '@mikro-orm/core';

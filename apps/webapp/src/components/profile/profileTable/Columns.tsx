@@ -1,9 +1,10 @@
-import { UserBooking } from '@baobbab/dtos';
+import { BookingResponse, UserBooking } from '@baobbab/dtos';
 import { ColumnDef } from '@tanstack/react-table'; // Adjust the import path if necessary
 import { CellRowCourses } from './CellRowCourses';
 import i18next from 'i18next';
+import log from 'loglevel';
 
-export const columns: ColumnDef<UserBooking>[] = [
+export const columns: ColumnDef<BookingResponse>[] = [
     {
         accessorKey: 'organisationName',
         header: i18next.t('common:Profile.page.table.columns.organisation'),
@@ -37,6 +38,8 @@ export const columns: ColumnDef<UserBooking>[] = [
         cell: (cellData) => {
             if (cellData.row.depth === 0) {
                 const user = cellData.row.original;
+                log.debug('user', user);
+
                 return <CellRowCourses cellData={user} />;
             }
             return null;

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { BookingController } from './booking.controller';
 import { BookingService } from './booking.service';

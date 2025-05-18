@@ -1,7 +1,7 @@
 import Modal from '../auth/ModalAuth';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/Auth.context';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Button } from '../ui/button';
 import AvatarUser from '../auth/AvatarUser';
 import { Trans, useTranslation } from 'react-i18next';
@@ -17,18 +17,23 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
         entityId,
         organisationName,
     } = useAuth();
-    console.log('role', role);
+    const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const { t } = useTranslation('common', {
         keyPrefix: 'Navbar',
     });
 
     const toggleMenu = (): void => {
-        console.log('toggleMenu clicked');
         event?.stopPropagation();
         setMenuOpen((prev) => !prev);
     };
-    console.log('menuOpen', menuOpen);
+
+    const handleRemoveAuthData = (): void => {
+        if (removeAuthData) {
+            removeAuthData();
+        }
+        navigate('/');
+    };
     useEffect(() => {
         const closeMenu = (): void => {
             setMenuOpen(false);
@@ -86,7 +91,7 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
                                     ) : null}
 
                                     <Button
-                                        onClick={removeAuthData}
+                                        onClick={handleRemoveAuthData}
                                         className="block text-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-base"
                                         variant="ghost"
                                     >

@@ -21,7 +21,4 @@ export class Schedule {
 
   @ManyToOne(() => Courses)
   courses!: Courses;
-
-  @OneToOne(() => Booking, (booking) => booking.schedule, { nullable: true })
-  booking: Booking | null = null;
 }

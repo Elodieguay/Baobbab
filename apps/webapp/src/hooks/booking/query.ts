@@ -47,7 +47,7 @@ export const useGetBookingById = (bookingId: string) => {
     return useQuery({
         queryKey: ['booking', 'by-id', bookingId],
         queryFn: () => getBookingCourse(bookingId),
-        staleTime: 5 * 60 * 1000,
+        staleTime: 0,
     });
 };
 
@@ -117,9 +117,18 @@ export const useUpdateUserBooking = (options?: {
             return updateUserBooking(bookingId, userId, updateBooking);
         },
         onSuccess: (_data, variables) => {
+            // queryClient.setQueryData(
+            //     ['booking', 'by-id', variables.bookingId],
+            //     data
+            // );
+
             queryClient.invalidateQueries({
                 queryKey: ['booking', 'user', variables.userId],
             });
+            queryClient.invalidateQueries({
+                queryKey: ['booking', 'by-id', variables.bookingId],
+            });
+
             options?.onSuccess?.();
         },
         onError: (error) => {

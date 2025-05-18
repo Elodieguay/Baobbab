@@ -11,6 +11,7 @@ import {
   Req,
   UseGuards,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateABooking, UserBooking } from '@baobbab/dtos';
@@ -60,10 +61,31 @@ export class BookingController {
   //   return entityToDto(booking);
   // }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateBookingDto: UpdateBookingDto) {
-  //   return this.bookingService.update(+id, updateBookingDto);
-  // }
+  @Patch(':bookingId')
+  async update(
+    @Param('bookingId') bookingId: string,
+    @Body()
+    updateUserBooking: CreateABooking & { userId: string },
+  ) {
+    try {
+      Logger.debug('control', updateUserBooking, bookingId);
+      const { userId, scheduleId, title, courseId, schedule } =
+        updateUserBooking;
+
+      const result = await this.bookingService.update(
+        bookingId,
+        updateUserBooking,
+      );
+      Logger.debug('result', result);
+      return {
+        statusCode: 200,
+        message: 'Booking successfully updated',
+        data: result,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 
   @Delete(':bookingId')
   async delete(
