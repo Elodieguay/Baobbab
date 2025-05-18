@@ -2,7 +2,7 @@ name: "Tests"
 
 on:
   push:
-    branches-ignore: ['dev']
+    branches: ['dev']
   pull_request:
     types: [opened, reopened]
     branches: ['staging', 'main']

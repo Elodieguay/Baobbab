@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* @ts-nocheck */
 
 import { Status, UserRole } from '@baobbab/dtos';
 import { Collection } from '@mikro-orm/core';

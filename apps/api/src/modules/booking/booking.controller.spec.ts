@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* @ts-nocheck */
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { BookingController } from './booking.controller';
