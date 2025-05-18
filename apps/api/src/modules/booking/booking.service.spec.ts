@@ -6,12 +6,14 @@ import { BookingService } from './booking.service';
 import { EntityManager } from '@mikro-orm/core';
 import { CoursesService } from '../courses/courses.service';
 import { Booking } from 'src/entities/booking.entity';
+import { UserService } from '../user/user.service';
 
 describe('BookingService', () => {
   let service: BookingService;
   let emMock: any;
   let scheduleRepoMock: any;
   let coursesServiceMock: any;
+  let userServiceMock: any;
 
   beforeEach(async () => {
     emMock = {
@@ -26,6 +28,9 @@ describe('BookingService', () => {
 
     coursesServiceMock = {
       findById: jest.fn(),
+    };
+    userServiceMock = {
+      findOneUserById: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -43,6 +48,7 @@ describe('BookingService', () => {
           provide: CoursesService,
           useValue: coursesServiceMock,
         },
+        { provide: UserService, useValue: userServiceMock },
       ],
     }).compile();
 
