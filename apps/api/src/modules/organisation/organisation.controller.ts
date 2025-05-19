@@ -14,7 +14,7 @@ import {
   OrganisationInfosDTO,
   OrganisationRegisterDTO,
 } from '@baobbab/dtos';
-import { OrganisationInfos } from 'src/entities/organisationInfos.entity';
+import { OrganisationInfos } from 'entities/organisationInfos.entity';
 
 @Controller('organisation')
 export class OrganisationController {

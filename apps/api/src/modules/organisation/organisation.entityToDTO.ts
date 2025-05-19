@@ -1,5 +1,5 @@
 import { OrganisationCompleteInfo } from '@baobbab/dtos';
-import { Organisation } from 'src/entities/organisation.entity';
+import { Organisation } from 'entities/organisation.entity';
 
 export function organisationToDto(org: Organisation): OrganisationCompleteInfo {
   return {

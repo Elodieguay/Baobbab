@@ -5,7 +5,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { EntityManager } from '@mikro-orm/core';
 import { courseToDto } from './courses.entityToDto';
-import { Courses } from 'src/entities/courses.entity';
+import { Courses } from 'entities/courses.entity';
 import { coursesMock } from './mockCourses';
 
 enum UserRole {

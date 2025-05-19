@@ -5,7 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BookingService } from './booking.service';
 import { EntityManager } from '@mikro-orm/core';
 import { CoursesService } from '../courses/courses.service';
-import { Booking } from 'src/entities/booking.entity';
+import { Booking } from 'entities/booking.entity';
 import { UserService } from '../user/user.service';
 
 describe('BookingService', () => {

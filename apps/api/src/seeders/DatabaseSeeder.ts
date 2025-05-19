@@ -1,13 +1,12 @@
 import { fakerFR as faker } from '@faker-js/faker';
-
 import { Status, UserRole } from '@baobbab/dtos';
 import { EntityManager } from '@mikro-orm/core';
-import { Organisation } from '../entities/organisation.entity';
-import { OrganisationInfos } from '../entities/organisationInfos.entity';
-import { Courses } from '../entities/courses.entity';
+import { Organisation } from 'entities/organisation.entity';
+import { OrganisationInfos } from 'entities/organisationInfos.entity';
+import { Courses } from 'entities/courses.entity';
 import { Seeder } from '@mikro-orm/seeder';
-import { Categories } from '../entities/categories.entity';
-import { Schedule } from '../entities/schedule.entity';
+import { Categories } from 'entities/categories.entity';
+import { Schedule } from 'entities/schedule.entity';
 import { logger } from '@mikro-orm/nestjs';
 import { Logger } from '@nestjs/common';
 

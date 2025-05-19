@@ -10,8 +10,8 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { Courses } from 'src/entities/courses.entity';
-import { Organisation } from 'src/entities/organisation.entity';
+import { Courses } from 'entities/courses.entity';
+import { Organisation } from 'entities/organisation.entity';
 
 // import { CloudinaryService } from '../cloudinary/cloudinary.service';
 

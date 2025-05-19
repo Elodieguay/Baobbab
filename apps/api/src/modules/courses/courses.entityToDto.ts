@@ -5,11 +5,11 @@ import {
 } from '@baobbab/dtos';
 import { EntityManager } from '@mikro-orm/core';
 import { NotFoundException } from '@nestjs/common';
-import { Booking } from 'src/entities/booking.entity';
-import { Categories } from 'src/entities/categories.entity';
-import { Courses } from 'src/entities/courses.entity';
-import { Organisation } from 'src/entities/organisation.entity';
-import { Schedule } from 'src/entities/schedule.entity';
+import { Booking } from 'entities/booking.entity';
+import { Categories } from 'entities/categories.entity';
+import { Courses } from 'entities/courses.entity';
+import { Organisation } from 'entities/organisation.entity';
+import { Schedule } from 'entities/schedule.entity';
 
 // export async function dtoToEntity(
 //   courses: UpdateCoursesDTOGeojson,

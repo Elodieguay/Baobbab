@@ -7,7 +7,6 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user/user.service';
-import { User } from '../../entities/user.entity';
 import { EntityManager } from '@mikro-orm/core';
 import { AuthPayloadDto } from './types/auth.types';
 import * as bcrypt from 'bcryptjs';
@@ -18,7 +17,8 @@ import {
   UserRegisterDTO,
   UserRole,
 } from '@baobbab/dtos';
-import { Organisation } from 'src/entities/organisation.entity';
+import { Organisation } from 'entities/organisation.entity';
+import { User } from 'entities/user.entity';
 
 @Injectable()
 export class AuthService {

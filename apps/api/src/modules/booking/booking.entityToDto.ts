@@ -1,5 +1,5 @@
 import { CreateABooking } from '@baobbab/dtos';
-import { Booking } from 'src/entities/booking.entity';
+import { Booking } from 'entities/booking.entity';
 
 export function entityToDto(booking: Booking): CreateABooking {
   return {

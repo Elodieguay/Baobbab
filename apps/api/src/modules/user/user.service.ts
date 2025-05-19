@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../../entities/user.entity';
 import { EntityManager } from '@mikro-orm/core';
 import { logger } from '@mikro-orm/nestjs';
+import { User } from 'entities/user.entity';
 
 @Injectable()
 export class UserService {

@@ -3,11 +3,11 @@
 
 import { Status, UserRole } from '@baobbab/dtos';
 import { Collection } from '@mikro-orm/core';
-import { Booking } from 'src/entities/booking.entity';
-import { Categories } from 'src/entities/categories.entity';
-import { Courses } from 'src/entities/courses.entity';
-import { Organisation } from 'src/entities/organisation.entity';
-import { Schedule } from 'src/entities/schedule.entity';
+import { Booking } from 'entities/booking.entity';
+import { Categories } from 'entities/categories.entity';
+import { Courses } from 'entities/courses.entity';
+import { Organisation } from 'entities/organisation.entity';
+import { Schedule } from 'entities/schedule.entity';
 
 export const coursesMock = (): Courses => {
   const mockCourse = new Courses();

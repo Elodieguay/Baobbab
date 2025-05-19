@@ -5,8 +5,8 @@ import {
 } from '@baobbab/dtos';
 import { EntityManager } from '@mikro-orm/core';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { Organisation } from 'src/entities/organisation.entity';
-import { OrganisationInfos } from 'src/entities/organisationInfos.entity';
+import { Organisation } from 'entities/organisation.entity';
+import { OrganisationInfos } from 'entities/organisationInfos.entity';
 import { organisationToDto } from './organisation.entityToDTO';
 
 @Injectable()

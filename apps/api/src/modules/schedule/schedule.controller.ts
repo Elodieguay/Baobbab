@@ -12,7 +12,6 @@ import {
 import { ScheduleService } from './schedule.service';
 import { ScheduleDTO } from '@baobbab/dtos';
 import { logger } from '@mikro-orm/nestjs';
-import { error } from 'console';
 
 @Controller('schedule')
 export class ScheduleController {
@@ -35,7 +34,10 @@ export class ScheduleController {
       return schedule;
     } catch (error) {
       logger.error('Error to update the schedule');
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      if (error instanceof Error) {
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      }
+      throw new HttpException('Unknown error', HttpStatus.BAD_REQUEST);
     }
   }
 

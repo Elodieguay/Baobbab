@@ -2,7 +2,7 @@ import { ScheduleDTO } from '@baobbab/dtos';
 import { EntityManager, wrap } from '@mikro-orm/core';
 import { logger } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Schedule } from 'src/entities/schedule.entity';
+import { Schedule } from 'entities/schedule.entity';
 
 @Injectable()
 export class ScheduleService {

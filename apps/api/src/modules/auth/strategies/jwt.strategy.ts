@@ -2,8 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { logger } from '@mikro-orm/nestjs';
-import { User } from 'src/entities/user.entity';
-import { UserService } from 'src/modules/user/user.service';
+import { User } from 'entities/user.entity';
+import { UserService } from 'modules/user/user.service';
 import { LoginResponse } from '@baobbab/dtos';
 
 @Injectable()

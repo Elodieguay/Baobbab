@@ -85,7 +85,11 @@ export class AuthController {
     const organisation =
       await this.authService.organisationRegister(createOrganisation);
     logger.debug(organisation);
-    return organisation;
+    return {
+      email: organisation.email,
+      organisationName: organisation.organisationName,
+      siret: organisation.siret,
+    };
   }
 
   @Post('organisationLogin')
@@ -99,8 +103,9 @@ export class AuthController {
       await this.authService.organisationLogin(authPayloadDto);
 
     return {
-      ...organisation,
+      email: organisation.email,
       role: UserRole.ADMIN,
+      access_token: organisation.access_token,
     };
   }
 

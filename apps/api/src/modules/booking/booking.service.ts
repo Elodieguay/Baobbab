@@ -8,10 +8,10 @@ import { EntityManager, EntityRepository, wrap } from '@mikro-orm/core';
 import { CreateABooking, UserBooking } from '@baobbab/dtos';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { CoursesService } from '../courses/courses.service';
-import { Booking } from 'src/entities/booking.entity';
-import { Schedule } from 'src/entities/schedule.entity';
-import { User } from 'src/entities/user.entity';
-import { Courses } from 'src/entities/courses.entity';
+import { Booking } from 'entities/booking.entity';
+import { Schedule } from 'entities/schedule.entity';
+import { User } from 'entities/user.entity';
+import { Courses } from 'entities/courses.entity';
 import { UserService } from '../user/user.service';
 
 @Injectable()

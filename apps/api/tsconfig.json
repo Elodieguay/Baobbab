@@ -1,4 +1,6 @@
-{
+ { 
+    "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -7,10 +9,10 @@
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "allowSyntheticDefaultImports": true,
+    "composite": true,
     "target": "ES2021",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
+    "outDir": "dist",
+    "baseUrl": "./src",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
@@ -19,5 +21,9 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
+      "strictPropertyInitialization": false
+
   },
+  "include": ["src", "test"],
+  "exclude": ["node_modules", "dist"]
 }
