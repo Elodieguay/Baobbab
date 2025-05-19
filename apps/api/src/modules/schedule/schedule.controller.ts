@@ -34,8 +34,9 @@ export class ScheduleController {
       const schedule = this.scheduleService.update(id, updateScheduleDto);
       return schedule;
     } catch (error) {
-      logger.error('Error to update the schedule');
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unknown error occurred';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
     }
   }
 
