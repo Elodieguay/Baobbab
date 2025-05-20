@@ -3,22 +3,29 @@
         "userLogin.form.email":"email",
         "userLogin.form.password":"mot de passe" ,       
         "userLogin.form.button":" Se connecter",
+        "userLogin.form.connection":"Connexion",
+        "userRegister.form.title":"Créer un compte",
         "userRegister.form.username":"Prénom",
         "userRegister.form.description.username":"Il doit contenir au moins 4 caractères.",
         "userRegister.form.email":"Email",
         "userRegister.form.description.email":"Saisis l'adresse e-mail que tu souhaites utiliser sur baobbab.",
         "userRegister.form.password":"Mot de passe",
         "userRegister.form.description.password":"Il doit contenir au moins 8 caractères, dont 1 chiffre et 1 majuscule.",
-        "userRegister.form.checkbox":" En t'inscrivant, tu confirmes que tu acceptes les Termes & Conditions, avoir lu la Politique de Confidentialité et avoir au moins 18 ans",
-        "userRegister.form.button":" S'enregistrer"
+        "userRegister.form.checkbox":" En vous inscrivant, vous confirmerez que vous acceptez les Termes & Conditions, avoir lu la Politique de Confidentialité et avoir au moins 18 ans",
+        "userRegister.form.button":" S'enregistrer",
+        "userModal.form.forgotten":"Oups! j'ai oublié mon mot de passe",
+        "userModal.form.already":"J'ai déjà un compte",
+        "userModal.form.register":"Créer un compte",
+        "userModal.form.Organisation":"Je suis un professionnel "
+        
 
 
     },
     "Home" : {
-        "logo": "bao<span>b</span>bab",
+        "logo": "bao<span>b</span>bab .",
         "name": "Baobbab .",
         "connect": "connection",
-        "baseline": "Trouve ton activité à proximité",
+        "baseline": "Trouvez votre activité à proximité",
         "description":"Baobbab c’est quoi ?",
         "description1":"C’est une rencontre, un élan.",
         "description2":"Un incontournable pour dénicher les meilleurs cours de loisirs près de chez vous.",
@@ -31,18 +38,25 @@
         "quote":"S’engager dans les activités proches de chez soi, c’est non seulement contribuer à son propre développement, mais aussi renforcer le tissu social et participer à une dynamique collective de transformation."
     },
      "Description":{
-        "title":" Avec Baobbab, tu vas vivre...",
+        "title":" Avec Baobbab, vous allez vivre...",
         "card":{
-            "firstCard":"Un super moment avec des pros passionnés juste à côté de chez toi. Prépare-toi pour une dose de bonne humeur et de créativité !",
-            "secondCard":"De belles rencontres qui, comme toi, ont envie d’apprendre, d’échanger et de s’amuser. Entre rires et découvertes, tu vas te créer des souvenirs qui font chaud au cœur !",
-            "thirdCard":"Une expérience qui te transforme. Tu vas découvrir une nouvelle facette de toi. Tu apprendras de nouvelles compétences, te surprendras, et peut-être même te redécouvriras. Une expérience enrichissante qui fait grandir et booste la confiance en soi !"    
+            "firstCard":"Un super moment avec des pros passionnés juste à côté de chez vous. Prépare-vous pour une dose de bonne humeur et de créativité !",
+            "secondCard":"De belles rencontres qui, comme vous, ont envie d’apprendre, d’échanger et de s’amuser. Entre rires et découvertes, vous allez vous créer des souvenirs qui font chaud au cœur !",
+            "thirdCard":"Une expérience qui vous transforme. Vous allez découvrir une nouvelle facette de vous. Vous apprendrez de nouvelles compétences, vous surprendra. Une expérience enrichissante qui fait grandir et booste la confiance en soi !"    
         }       
     },    
 
     "Navbar" : {
         "logo": "bao<span>b</span>bab",
-        "logob": "b<span>.</span>"
+        "logob": "b<span>.</span>",
+        "menuProfile":"Mon compte",
+        "menuDashboard":"Tableau de bord",
+        "menuDisconnect":"Déconnexion"
 
+    },
+    "NotFound":{
+        "logo":"b<span>.</span>",
+        "404":" On a tout retourné, mais cette page reste introuvable.Peut-être qu’elle s’est inscrite à un cours de poterie ?"
     },
     "SubNavbar":{
         "culture":"Arts & Cultures",
@@ -71,6 +85,15 @@
         "page.courseById.dialog.noCourse":"Aucun cours n'est trouvé",
         "page.courseById.dialog.noCategory":"Aucune catégorie n'est trouvée"
     },
+
+    "Booking":{
+        "course.delete": "Supprime la réservation",
+        "course.update":"Modifier la réservation",
+        "modal.update.success":"La réservation à bien été modifiée",
+        "modal.update.error":"La modification de la réservation a échouée",
+        "modal.delete.success": "La réservation a bien été supprimée",
+        "modal.delete.error":"La suppression de la réservation a échoué"
+    },
    
     "CTA":{
         "title":"Prêt à pousser les portes et à te lancer dans une aventure où apprentissage, rencontres et découvertes sont au rendez-vous ? 🌟",
@@ -98,7 +121,7 @@
         "page.button":"Retour à la liste des activités",
         "page.card.header": "Mes informations",
         "page.table.title": "Informations sur mes cours d'essai",
-        "page.delete.modal.onSuccess":"Votre cours d'essai a bien été supprimé",
+        "page.delete.modal.onSuccess":"Le cours d'essai a bien été supprimé",
         "page.delete.modal.error":"Une erreur est survenue lors de la suppression du cours d'essai",
         "page.delete.modal.title": "Supprimer un cours d'essai",
         "page.delete.modal.description":"Souhaitez-vous vraiment annuler votre cours d'essai?",

@@ -1,11 +1,11 @@
 import maplibregl from 'maplibre-gl';
-import PinCards from './PinCards';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import log from 'loglevel';
 import { CoursesDTOGeojson } from '@baobbab/dtos';
 import { createRoot } from 'react-dom/client';
+import PinCards from './PinCards';
 
 const Maplibre = ({
     isLoading,

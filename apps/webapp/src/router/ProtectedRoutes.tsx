@@ -52,6 +52,7 @@ const ProtectedRoutes = (): JSX.Element => {
         return <Navigate to={AppRoutes.Courses.path ?? '/courses'} />;
     }
 
+    //  Gestion de la route user
     if (
         currentRoute?.accessMode === RouteAccessMode.Authenticated &&
         currentRoute.path === AppRoutes.Profile.path &&
@@ -71,12 +72,6 @@ const ProtectedRoutes = (): JSX.Element => {
 
         return <Navigate to={AppRoutes[route]?.path ?? '/'} />;
     }
-
-    // // Vérifie les accès basés sur les rôles
-    // const roleRedirect = redirectByRole(currentRoute?.accessMode);
-    // if (roleRedirect) {
-    //     return <Navigate to={roleRedirect} />;
-    // }
 
     // Pas de redirection nécessaire, rendu de la route
     return <Outlet />;

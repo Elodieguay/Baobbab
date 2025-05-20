@@ -15,3 +15,7 @@ export declare enum EntityType {
     USER = "user",
     ORGANISATION = "organisation"
 }
+export declare enum ModeBooking {
+    CREATE = "create",
+    UPDATE = "update"
+}

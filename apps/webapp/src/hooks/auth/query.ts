@@ -11,7 +11,6 @@ import {
     OrganisationAuthResponse,
     UserLoginDTO,
     UserRegisterDTO,
-    UserRole,
 } from '@baobbab/dtos';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -73,19 +72,28 @@ export const useOrganisationRegister = (): any => {
 };
 
 export const useOrganisationLogin = (): any => {
-    const { setAuthToken } = useAuth();
+    const { setAuthData } = useAuth();
     const navigate = useNavigate();
 
     return useMutation({
         mutationFn: loginOrganisation,
         onSuccess: (data: OrganisationAuthResponse) => {
-            const { access_token, role, id } = data;
-            if ((access_token && role === UserRole.ADMIN, data.id)) {
-                if (setAuthToken && UserRole.ADMIN && data.id) {
-                    sessionStorage.setItem('organisationId', id);
-                    navigate(`/dashboard/${data.id}`);
-                }
+            if (setAuthData) {
+                setAuthData(
+                    data.access_token,
+                    data.role,
+                    'organisation',
+                    data.email,
+                    data.organisationName,
+                    data.id
+                );
+            } else {
+                log.error('setAuthData is not defined');
             }
+
+            sessionStorage.setItem('organisationId', data.id);
+            navigate(`/dashboard/${data.id}`);
+
             log.info('The login is a success', data);
         },
         onError: (error) => {

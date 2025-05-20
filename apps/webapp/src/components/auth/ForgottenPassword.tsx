@@ -13,7 +13,7 @@ import {
     FormMessage,
 } from '../ui/form';
 import { Input } from '../ui/input';
-import { useForgotPassword } from '@/hooks/auth/useAuthMutation';
+import { useForgotPassword } from '@/hooks/auth/query';
 import { Trans } from 'react-i18next';
 import log from 'loglevel';
 import { useNavigate } from 'react-router';

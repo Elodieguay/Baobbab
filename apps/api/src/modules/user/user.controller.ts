@@ -37,8 +37,6 @@ export class UserController {
   //Récuperer un utilisateur par son nom d'utilisateur
   @Get()
   async getUserById(@Req() req: UserRequest): Promise<UserDTO> {
-    logger.log('req.user:', JSON.stringify(req.user, null, 2));
-
     const userId = req?.user?.id;
     if (!userId) {
       throw new UnauthorizedException('User ID not found');
@@ -48,7 +46,6 @@ export class UserController {
       logger.error(`User with ${userId} not found`);
       throw new NotFoundException('User not found');
     }
-    logger.log('user', user);
     return {
       ...user,
       username: user.username || '',

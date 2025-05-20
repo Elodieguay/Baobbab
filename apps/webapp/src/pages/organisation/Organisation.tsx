@@ -1,4 +1,4 @@
-import Navbar from '@/components/navbar.tsx/Navbar';
+import Navbar from '@/components/navbar/Navbar';
 import OrganisationFormRegister from '@/components/form/auth/OrganisationFormRegister';
 import { useForm } from 'react-hook-form';
 import {
@@ -11,7 +11,7 @@ import { z } from 'zod';
 import {
     useOrganisationLogin,
     useOrganisationRegister,
-} from '@/hooks/auth/useAuthMutation';
+} from '@/hooks/auth/query';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
 import OrganisationFormLogin from '@/components/form/auth/OrganisationFormLogin';
@@ -69,15 +69,20 @@ const Organisation = (): JSX.Element => {
     // }, [authToken, role]);
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full min-h-screen">
             <Navbar />
-            <div className="flex flex-col h-screen w-full items-center space-y-10 overflow-hidden">
-                <h2 className="text-center w-2/3 pt-5">
+            <div className="flex flex-col items-center px-4 pt-10 space-y-10">
+                <h2 className="text-center w-full max-w-3xl text-base md:text-lg">
                     {t('registerContent')}
                 </h2>
-                <div className="flex w-[90%]  min-h-screen xl:gap-8 justify-center ">
-                    <div className="flex w-1/2 h-5/6 justify-center items-center">
-                        <Tabs defaultValue="register" className="w-4/5">
+
+                <div className="flex flex-col-reverse lg:flex-row w-full max-w-6xl gap-6 xl:gap-10 justify-center items-center">
+                    {/* Bloc Formulaires */}
+                    <div className="w-full lg:w-1/2 flex justify-center items-center">
+                        <Tabs
+                            defaultValue="register"
+                            className="w-full max-w-md"
+                        >
                             <TabsList className="grid w-full grid-cols-2 gap-2">
                                 <TabsTrigger value="register">
                                     {t('register')}
@@ -86,22 +91,24 @@ const Organisation = (): JSX.Element => {
                                     {t('login')}
                                 </TabsTrigger>
                             </TabsList>
+
                             <TabsContent
                                 value="register"
                                 className="flex justify-center"
                             >
-                                <div className="w-3/4 p-6 rounded-md ">
+                                <div className="w-full p-4 md:p-6 rounded-md">
                                     <OrganisationFormRegister
                                         form={formRegister}
                                         onSubmit={onSubmitForm}
                                     />
                                 </div>
                             </TabsContent>
+
                             <TabsContent
                                 value="login"
                                 className="flex justify-center"
                             >
-                                <div className="w-3/4 p-6 rounded-md ">
+                                <div className="w-full p-4 md:p-6 rounded-md">
                                     <OrganisationFormLogin
                                         form={formLogin}
                                         onSubmit={onSubmitLoginForm}
@@ -110,10 +117,13 @@ const Organisation = (): JSX.Element => {
                             </TabsContent>
                         </Tabs>
                     </div>
-                    <div className="w-1/2 h-5/6 justify-center items-center rounded-md overflow-hidden">
+
+                    {/* Bloc Image */}
+                    <div className="w-full lg:w-1/2 rounded-md overflow-hidden">
                         <img
                             src={meditation}
-                            className="h-full w-full object-cover rounded-t-md"
+                            alt="méditation"
+                            className="w-full h-64 md:h-96 lg:h-full object-cover rounded-md"
                         />
                     </div>
                 </div>

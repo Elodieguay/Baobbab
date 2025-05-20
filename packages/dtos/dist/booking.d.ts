@@ -1,4 +1,5 @@
 export interface CreateABooking {
+    id?: string;
     courseId: string;
     scheduleId: string;
     title: string;

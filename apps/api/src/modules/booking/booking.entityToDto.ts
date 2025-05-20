@@ -3,6 +3,7 @@ import { Booking } from 'src/entities/booking.entity';
 
 export function entityToDto(booking: Booking): CreateABooking {
   return {
+    id: booking.id,
     courseId: booking.courses?.id,
     scheduleId: booking.schedule.id,
     title: booking.title,

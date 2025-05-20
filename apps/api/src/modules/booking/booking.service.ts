@@ -1,17 +1,18 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { Booking } from 'src/entities/booking.entity';
-import { EntityManager, EntityRepository } from '@mikro-orm/core';
+import { EntityManager, EntityRepository, wrap } from '@mikro-orm/core';
 import { CreateABooking, UserBooking } from '@baobbab/dtos';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Schedule } from 'src/entities/schedule.entity';
 import { CoursesService } from '../courses/courses.service';
-import { populate } from 'dotenv';
+import { Booking } from 'src/entities/booking.entity';
+import { Schedule } from 'src/entities/schedule.entity';
 import { User } from 'src/entities/user.entity';
 import { Courses } from 'src/entities/courses.entity';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class BookingService {
@@ -20,6 +21,7 @@ export class BookingService {
     @InjectRepository(Schedule)
     private scheduleRepository: EntityRepository<Schedule>,
     private coursesService: CoursesService,
+    private userService: UserService,
   ) {}
 
   async create(
@@ -96,6 +98,109 @@ export class BookingService {
   //   if (!booking) throw new NotFoundException('the booking does not exist');
   //   return booking;
   // }
+
+  // async update(
+  //   bookingId: string,
+  //   updateUserBooking: CreateABooking & { userId: string },
+  // ) {
+  //   if (!bookingId) {
+  //     throw new BadRequestException(' bookingId is missing');
+  //   }
+
+  //   const booking = await this.em.findOne(
+  //     Booking,
+  //     { id: bookingId, user: { id: updateUserBooking.userId } },
+  //     { populate: ['schedule'] },
+  //   );
+  //   if (!booking) {
+  //     throw new NotFoundException('The booking does not exist');
+  //   }
+
+  //   const course = await this.coursesService.findById(
+  //     updateUserBooking.courseId,
+  //   );
+  //   if (!course) throw new Error('Course not found');
+  //   const user = await this.userService.findOneUserById(
+  //     updateUserBooking.userId,
+  //   );
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
+
+  //   //  const oldSchedule = await this.scheduleRepository.findOne({
+  //   //   id: updateUserBooking.scheduleId,
+  //   // });
+
+  //   // if (!oldSchedule) throw new Error('Schedule not found');
+  //   const newSchedule = new Schedule();
+  //   newSchedule.day = updateUserBooking.schedule.day;
+  //   newSchedule.hours = updateUserBooking.schedule.hours;
+  //   newSchedule.courses = course;
+  //   newSchedule.id = bookingId;
+
+  //   await this.em.persistAndFlush(newSchedule);
+  //   if (booking.schedule) {
+  //     await this.em.removeAndFlush(booking.schedule);
+  //   }
+  //   wrap(booking).assign({
+  //     courses: course,
+  //     title: updateUserBooking.title,
+  //     schedule: newSchedule,
+  //     user: user,
+  //   });
+
+  //   Logger.debug('serviceUpdatebook', booking.schedule);
+  //   await this.em.flush();
+  //   return booking;
+  // }
+
+  async update(
+    bookingId: string,
+    updateUserBooking: CreateABooking & { userId: string },
+  ) {
+    if (!bookingId) throw new BadRequestException('bookingId is missing');
+
+    const existingBooking = await this.em.findOne(
+      Booking,
+      { id: bookingId, user: { id: updateUserBooking.userId } },
+      { populate: ['schedule'] },
+    );
+
+    if (!existingBooking) {
+      throw new NotFoundException('Booking not found');
+    }
+
+    // Supprimer l'ancienne réservation (Booking + Schedule associé)
+    await this.em.remove(existingBooking.schedule); // Schedule lié
+    await this.em.remove(existingBooking); // Booking
+    await this.em.flush();
+
+    // Créer une nouvelle réservation
+    const course = await this.coursesService.findById(
+      updateUserBooking.courseId,
+    );
+    if (!course) throw new Error('Course not found');
+
+    const user = await this.userService.findOneUserById(
+      updateUserBooking.userId,
+    );
+    if (!user) throw new NotFoundException('User not found');
+
+    const newSchedule = new Schedule();
+    newSchedule.day = updateUserBooking.schedule.day;
+    newSchedule.hours = updateUserBooking.schedule.hours;
+    newSchedule.courses = course;
+
+    const newBooking = new Booking();
+    newBooking.title = updateUserBooking.title;
+    newBooking.user = user;
+    newBooking.courses = course;
+    newBooking.schedule = newSchedule;
+
+    await this.em.persistAndFlush(newBooking);
+
+    return newBooking;
+  }
 
   async remove(bookingId: string, userId: string) {
     if (!bookingId) {

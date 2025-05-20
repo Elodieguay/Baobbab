@@ -57,7 +57,7 @@ const SelectCityForm = ({
                                     defaultValue={field.value}
                                 >
                                     <FormControl>
-                                        <SelectTrigger className="h-14 rounded-l-md text-base ">
+                                        <SelectTrigger className="h-14 rounded-l-md text-base border shadow-none focus:ring-0 focus:outline-none px-4 bg-white">
                                             {location.pathname === '/' ? (
                                                 <SelectValue
                                                     placeholder={t('select')}

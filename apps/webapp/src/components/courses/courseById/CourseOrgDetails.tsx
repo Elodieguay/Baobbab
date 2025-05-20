@@ -21,7 +21,7 @@ const CourseOrgDetails = (course: CourseOrgDetailsProps) => {
     }
     log.debug('course', course);
     return (
-        <aside className="lg:w-1/3 flex flex-col flex-grow-0 gap-6 items-center bg-white shadow rounded-md">
+        <aside className="lg:w-1/3 flex flex-col flex-grow-0 gap-6 items-center bg-[#f0f0f0] shadow rounded-md">
             <div className="flex flex-col items-center px-4 space-y-6 ">
                 <h1 className="text-2xl font-semibold text-neutral-800 mt-2">
                     Focus sur la team

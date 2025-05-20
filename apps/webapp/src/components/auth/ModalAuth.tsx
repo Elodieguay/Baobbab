@@ -22,14 +22,11 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import {
-    useLoginMutation,
-    useRegisterMutation,
-} from '@/hooks/auth/useAuthMutation';
 import { useAuth } from '@/context/Auth.context';
 import { UserRound } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import log from 'loglevel';
+import { useLoginMutation, useRegisterMutation } from '@/hooks/auth/query';
 
 export type FormSchemaType = z.infer<typeof formSchema>;
 
@@ -41,13 +38,8 @@ const Modal = (): JSX.Element => {
     const { mutate: loginMutate } = useLoginMutation();
 
     const userRegisterDTO = (userRegister: UserRegisterDTO): void => {
-        // console.log('je suis dans userRegisterDTO', userRegister);
-
         registerMutate(userRegister, {
             onSuccess: (data: RegisterResponse) => {
-                // console.log('data.token', data.access_token);
-                // console.log('data.role', data.role);
-
                 if (setAuthData) {
                     setAuthData(
                         data.access_token,
@@ -56,7 +48,6 @@ const Modal = (): JSX.Element => {
                         data.username,
                         data.email
                     );
-                    // console.log('setAuthData', setAuthData);
                 } else {
                     log.error('setAuthData is not defined');
                 }
@@ -71,9 +62,8 @@ const Modal = (): JSX.Element => {
                         data.access_token,
                         data.role,
                         'user',
-                        data.email,
                         data.username,
-                        data.id
+                        data.email
                     );
                 } else {
                     log.error('setAuthData is not defined');
@@ -165,7 +155,7 @@ const Modal = (): JSX.Element => {
                         <Link to="/organisation">
                             <Button
                                 variant="outline"
-                                className="rounded-xl w-full bg-[#ffcd00] text-base"
+                                className="rounded-xl w-full bg-[#ffcd00] font-semibold "
                             >
                                 Je suis une Organisation
                             </Button>

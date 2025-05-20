@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EntityType = exports.Status = exports.UserRole = void 0;
+exports.ModeBooking = exports.EntityType = exports.Status = exports.UserRole = void 0;
 var UserRole;
 (function (UserRole) {
     UserRole["ADMIN"] = "ADMIN";
@@ -21,4 +21,9 @@ var EntityType;
     EntityType["USER"] = "user";
     EntityType["ORGANISATION"] = "organisation";
 })(EntityType || (exports.EntityType = EntityType = {}));
+var ModeBooking;
+(function (ModeBooking) {
+    ModeBooking["CREATE"] = "create";
+    ModeBooking["UPDATE"] = "update";
+})(ModeBooking || (exports.ModeBooking = ModeBooking = {}));
 //# sourceMappingURL=enum.js.map

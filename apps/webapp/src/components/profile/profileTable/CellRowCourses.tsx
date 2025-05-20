@@ -3,17 +3,19 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { UserBooking } from '@baobbab/dtos';
+import { BookingResponse } from '@baobbab/dtos';
 import { MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
 import CourseDeleteModal from '../CourseDeleteModal';
 import { useGetUser } from '@/hooks/user/query';
 import { useAuth } from '@/context/Auth.context';
+import CourseUpdateModal from '../CourseUpdateModal';
 
 export type CellRowUserProps = {
-    cellData: UserBooking;
+    cellData: BookingResponse;
 };
 export const CellRowCourses = ({ cellData }: CellRowUserProps) => {
     const { authToken } = useAuth();
@@ -31,16 +33,26 @@ export const CellRowCourses = ({ cellData }: CellRowUserProps) => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <CourseDeleteModal
-                    trigger={
-                        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                            Supprimer
-                        </DropdownMenuItem>
-                    }
-                    booking={cellData}
-                    userId={userId}
-                    setIsEditModalOpen={setIsEditModalOpen}
-                />
+                <DropdownMenuItem
+                    onSelect={(e) => e.preventDefault()}
+                    className="flex flex-col"
+                >
+                    <CourseDeleteModal
+                        trigger={<Button variant="ghost">Supprimer</Button>}
+                        booking={cellData}
+                        userId={userId}
+                        setIsEditModalOpen={setIsEditModalOpen}
+                    />
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    <CourseUpdateModal
+                        trigger={<Button variant="ghost">Modifier</Button>}
+                        userId={userId}
+                        setIsEditModalOpen={setIsEditModalOpen}
+                        booking={cellData}
+                    />
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     );

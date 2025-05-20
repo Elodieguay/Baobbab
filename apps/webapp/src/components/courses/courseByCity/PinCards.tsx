@@ -1,5 +1,5 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CoursesDTOGeojson } from '@baobbab/dtos';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import log from 'loglevel';
 
 export interface PinCardsProps {

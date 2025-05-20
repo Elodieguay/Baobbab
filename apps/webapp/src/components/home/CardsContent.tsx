@@ -12,14 +12,14 @@ const CardContent = () => {
     ];
 
     return (
-        <div className="flex w-[95%] justify-between items-center gap-8">
+        <div className="flex flex-col md:flex-row flex-wrap w-full max-w-7xl justify-center items-stretch gap-8">
             {cards.map((item, index) => (
                 <Card
                     key={index}
-                    className="w-2/3 h-[40dvh] rounded-3xl bg-[#cb8501] flex items-center"
+                    className="w-full md:w-[30%] h-auto min-h-[200px] rounded-3xl bg-[#cb8501] flex items-center"
                 >
-                    <CardDescription className="text-xl text-white font-semibold p-6">
-                        {item}{' '}
+                    <CardDescription className="text-base md:text-lg text-white font-semibold p-6 text-center">
+                        {item}
                     </CardDescription>
                 </Card>
             ))}
