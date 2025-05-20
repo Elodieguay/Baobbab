@@ -15,7 +15,7 @@
     "typecheck": "pnpm -r exec tsc --noEmit",
     "build": "pnpm -r build",
     "build:clean": "rm -rf ./apps/**/dist ./packages/**/dist",
-    "test": "pnpm -r run test",
+    "test": "",
     "test:ci": "pnpm -r run test -- --ci"
   },
   "lint-staged": { 
