@@ -7,7 +7,8 @@ WORKDIR /app
 
 # Copier les fichiers monorepo
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-
+COPY tsconfig.base.json ./  
+COPY tsconfig.json ./ 
 # Installer toutes les dépendances du monorepo
 RUN pnpm install --frozen-lockfile
 
