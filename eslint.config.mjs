@@ -33,21 +33,16 @@ export default [
             parser: tsParser,
         },
         rules: {
-            '@typescript-eslint/interface-name-prefix': 'off',
-            '@typescript-eslint/explicit-function-return-type': [
-                "error",
-                {
-                    "allowExpressions": true, 
-                    "allowTypedFunctionExpressions": true, 
-                    "allowHigherOrderFunctions": true
-                }
-            ],
+      
             '@typescript-eslint/no-unused-vars': 'off',
             'prettier/prettier': 'error',
             'no-unused-vars': 'off',
-            'no-console': 'off',
+            'no-console': 'warn',
+            'no-debugger': 'warn',
             'no-warning-comments': 'off',
             '@typescript-eslint/consistent-type-imports': 'off',
+            '@typescript-eslint/no-explicit-any':'warn'
+
         },
     },
     // Frontend
@@ -56,7 +51,7 @@ export default [
         plugins: {
             react,
             'react-refresh': reactRefresh,
-            reactHooks,
+            'react-hooks':reactHooks,
         },
         languageOptions: {
             ecmaVersion: 2020,
@@ -73,16 +68,65 @@ export default [
             },
         },
         rules: {
-            'react-refresh/only-export-components': 'warn',
-            '@typescript-eslint/explicit-function-return-type':'off', 
+             // Règles React Hooks recommandées
+            ...reactHooks.configs.recommended.rules,
+            // Règles React Refresh
+            'react-refresh/only-export-components': [
+            'warn',
+            { allowConstantExport: true },
+            ],
+            // Shadcn 
+            '@typescript-eslint/no-unsafe-return': 'off', 
+            '@typescript-eslint/ban-ts-comment': 'off', 
+            '@typescript-eslint/no-explicit-any': 'warn', 
+            // typescript
+            '@typescript-eslint/explicit-function-return-type': [
+                'error',
+                {
+                    allowExpressions: true,
+                    allowTypedFunctionExpressions: true,
+                    allowHigherOrderFunctions: true,
+                },
+            ],  
+            // React
+            'react/function-component-definition': [
+                'off',
+                {
+                    namedComponents: 'arrow-function',
+                    unnamedComponents: 'arrow-function',
+                },
+            ],  
+            'react-hooks/rules-of-hooks': 'error',
+            'react-hooks/exhaustive-deps': 'warn',      
+            'no-unused-vars': 'warn'
         },
     },
     // Backend
     {
         files: ['apps/api/**/*.{js, jsx, ts, tsx}'],
+        rules: {
+            '@typescript-eslint/explicit-function-return-type': [
+                'error',
+                {
+                    allowExpressions: false, 
+                    allowTypedFunctionExpressions: false,
+                    allowHigherOrderFunctions: false,
+                },
+            ],
+        },
     },
     // DTOs
     {
         files: ['packages/dtos/**/*.{js, jsx, ts, tsx}'],
+        rules: {
+            '@typescript-eslint/explicit-function-return-type': [
+                'error',
+                {
+                    allowExpressions: false, 
+                    allowTypedFunctionExpressions: false,
+                    allowHigherOrderFunctions: false,
+                },
+            ],
+        },
     },
 ];

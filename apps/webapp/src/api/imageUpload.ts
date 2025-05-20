@@ -1,9 +1,7 @@
-import {
-    imageFormSchema,
-    imageUploadDTOSchema,
-} from '@/components/form/TestImageFile';
+import { imageUploadDTOSchema } from '@/components/form/input/TestImageFile';
 import { config } from '@/config';
 import ky from 'ky';
+import log from 'loglevel';
 
 export interface ImageUploadDTO {
     data: File;
@@ -21,7 +19,6 @@ const imageUpload = async (
     const validationImage = imageUploadDTOSchema.safeParse(imageUploadParams);
 
     if (!validationImage.success) {
-        console.error('Validation failed:', validationImage.error);
         throw new Error('Validation error: invalid input data');
     }
 
@@ -34,13 +31,12 @@ const imageUpload = async (
         }
 
         const url = `${config.apiUrl}/upload`;
-        console.log('urlUpload', url);
         const response = (await ky
             .post(url, { body: formData })
             .json()) as ImageUploadResponse;
         return response;
     } catch (error) {
-        console.error('error uploading image', error);
+        log.error('error uploading image', error);
         throw error;
     }
 };

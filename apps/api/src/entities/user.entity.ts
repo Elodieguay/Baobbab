@@ -1,5 +1,6 @@
 import { UserRole } from '@baobbab/dtos';
-import { Entity, Enum, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, Enum, OneToMany, PrimaryKey, Property } from '@mikro-orm/core';
+import { Booking } from './booking.entity';
 
 @Entity()
 export class User {
@@ -16,11 +17,14 @@ export class User {
   password!: string;
 
   @Enum({ items: () => UserRole, default: UserRole.USER })
-  role!: UserRole;
+  role!: UserRole.USER;
 
   @Property({ onCreate: () => new Date(), nullable: true })
   createdAt: Date = new Date();
 
   @Property({ onUpdate: () => new Date(), nullable: true })
   updatedAt?: Date = new Date();
+
+  @OneToMany(() => Booking, (booking) => booking.user)
+  bookings: Booking[];
 }

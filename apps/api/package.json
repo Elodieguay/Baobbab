@@ -14,30 +14,35 @@
     "start:prod": "node dist/main",
     "orm:sync": "mikro-orm schema:update --run --fk-checks",
     "orm:seed": "mikro-orm seeder:run",
+    "mikro-orm": "mikro-orm",
     "migration:create": "mikro-orm migration:create",
     "migration:check": "mikro-orm migration:check",
     "migration:fresh": "mikro-orm migration:fresh",
     "migration:up": "mikro-orm migration:up",
     "migration:down": "mikro-orm migration:down",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json --detectOpenHandles --forceExit"
   },
   "dependencies": {
     "@baobbab/dtos": "workspace:*",
     "@mikro-orm/core": "^6.4.0",
-    "@mikro-orm/nestjs": "^6.0.2",
+    "@mikro-orm/nestjs": "^6.1.0",
     "@mikro-orm/postgresql": "^6.4.0",
+    "@mikro-orm/seeder": "^6.4.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.4.11",
+    "@sendgrid/mail": "^8.1.4",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "cloudinary": "^2.5.1",
     "dotenv": "^16.4.5",
     "multer": "1.4.5-lts.1",
@@ -46,14 +51,16 @@
     "passport-local": "^1.0.0",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "sib-api-v3-sdk": "^8.5.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.5.0",
     "@mikro-orm/cli": "^6.4.0",
     "@mikro-orm/migrations": "^6.4.0",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
-    "@nestjs/testing": "^10.0.0",
+    "@nestjs/testing": "^10.4.11",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.2",
@@ -68,6 +75,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "jest": "^29.5.0",
+    "mikro-orm": "^6.4.15",
     "prettier": "^3.0.0",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
@@ -76,22 +84,5 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.2"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }

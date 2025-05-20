@@ -5,6 +5,8 @@
   "author": "Baobbab - Elodie Guayroso",
   "private": true,
   "license": "UNLICENSED",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,9 +14,6 @@
       "require": "./dist/index.js"
     }
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "files":[
     "/dist"
   ],

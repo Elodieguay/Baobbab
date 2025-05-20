@@ -1,38 +1,32 @@
-# Utiliser une image Node officielle
-FROM node:22.7-alpine
+FROM node:18-alpine
 
-# Installer pnpm globalement
-RUN npm install -g pnpm
+# Installer pnpm + nestjs CLI
+RUN npm install -g pnpm @nestjs/cli
 
-# Configurer PNPM_HOME pour les binaires globaux
-ENV PNPM_HOME=/pnpm-global
-ENV PATH=$PNPM_HOME/bin:$PATH
+WORKDIR /app
 
-# Définir le répertoire de travail à la racine du projet
-WORKDIR /apps
-
-# Copier les fichiers package*.json, pnpm-lock.yaml et pnpm-workspace.yaml (pour le monorepo) 
+# Copier les fichiers monorepo
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Installer les dépendances globales et locales
+# Installer toutes les dépendances du monorepo
 RUN pnpm install --frozen-lockfile
 
-# Copier le code de l'API dans son propre répertoire
-COPY apps/api/package.json ./apps/api/package.json
-COPY apps/api/tsconfig.json ./apps/api/tsconfig.json
-
-# Copier tout le reste du code, y compris les packages et autres parties du projet
+# Copier le reste du code
 COPY apps/api ./apps/api
 COPY packages ./packages
 
-# Installer les dépendances locales pour l'API (en cas de nouvelles dépendances)
+# Copier le script
+COPY apps/api/start.sh ./apps/api/start.sh
+RUN chmod +x ./apps/api/start.sh
+
+# Installation ciblée dans apps/api (obligatoire ici)
+WORKDIR /app/apps/api
 RUN pnpm install
 
-# Build l'application pour la production (si nécessaire)
-RUN pnpm build
+# :arrow_down: :wrench: Retour à la racine pour le build
+WORKDIR /app
+RUN pnpm --filter api build
 
-# Exposer le port de l'API NestJS
+# Lancer le serveur
 EXPOSE 4000
-
-# Démarrer l'application
-CMD ["pnpm", "--filter", "./apps/api", "dev"]
+CMD ["sh", "./apps/api/start.sh"]

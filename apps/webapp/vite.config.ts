@@ -17,4 +17,8 @@ export default defineConfig({
             '@baobbab/dtos': path.resolve(__dirname, '../../packages/dtos/src'),
         },
     },
+    build: {
+        outDir: 'dist',
+        emptyOutDir: true,
+    },
 });

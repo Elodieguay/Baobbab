@@ -1,5 +1,6 @@
 import { AuthService } from './auth.service';
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -12,18 +13,18 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthPayloadDto } from './types/auth.types';
-import { UserDTO, UserRegisterDTO } from '@baobbab/dtos/src/user.dto';
+import {
+  LoginResponse,
+  RegisterResponse,
+  UserRegisterDTO,
+} from '@baobbab/dtos';
 import { LocalGuard } from './guards/local.guards';
 import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
-import {
-  OrganisationLoginDTO,
-  OrganisationRegisterDTO,
-  Status,
-  SuperAdminDTO,
-  UserRole,
-} from '@baobbab/dtos';
+import { UserRole } from '@baobbab/dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { EntityType } from '@baobbab/dtos';
+import { OrganisationLoginDTO, OrganisationRegisterDTO } from '@baobbab/dtos';
 
 @Controller('auth')
 export class AuthController {
@@ -33,13 +34,13 @@ export class AuthController {
   @Post('register')
   async register(
     @Body() createUserInput: UserRegisterDTO,
-  ): Promise<UserRegisterDTO> {
+  ): Promise<Omit<RegisterResponse, 'password'>> {
     const user = await this.authService.register(createUserInput);
     return {
       ...user,
       username: user.username || '',
-      password: '',
       role: UserRole.USER,
+      entityType: EntityType.USER,
       created_at: user.createdAt,
     };
   }
@@ -49,9 +50,14 @@ export class AuthController {
   @UseGuards(LocalGuard)
   async login(
     @Body() authPayloadDto: AuthPayloadDto,
-  ): Promise<Omit<UserDTO, 'password'> & { access_token: string }> {
-    const user = this.authService.login(authPayloadDto);
-    return user;
+  ): Promise<Omit<LoginResponse, 'password'> & { access_token: string }> {
+    const user = await this.authService.login(authPayloadDto);
+    return {
+      ...user,
+      username: user.username || '',
+      entityType: EntityType.USER,
+      access_token: user.access_token,
+    };
   }
 
   // Endpoint protégé : on verifie si l'utilisateur est authentifié // route auth/protected
@@ -67,8 +73,6 @@ export class AuthController {
   @Get('status')
   @UseGuards(JwtAuthGuard)
   status(@Req() req: Request): unknown {
-    console.log('helloopp');
-
     logger.debug('inside AuthController status', req.user);
     return req.user;
   }
@@ -76,17 +80,12 @@ export class AuthController {
   @Post('organisationRegister')
   async organisationRegister(
     @Body() createOrganisation: OrganisationRegisterDTO,
-  ): Promise<OrganisationRegisterDTO> {
+  ): Promise<Omit<OrganisationRegisterDTO, 'password'>> {
+    logger.debug(createOrganisation);
     const organisation =
       await this.authService.organisationRegister(createOrganisation);
-    console.log('organisation in controller', organisation);
-
-    return {
-      ...organisation,
-      password: '',
-      status: Status.PENDING,
-      role: UserRole.ADMIN,
-    };
+    logger.debug(organisation);
+    return organisation;
   }
 
   @Post('organisationLogin')
@@ -96,8 +95,6 @@ export class AuthController {
   ): Promise<
     Omit<OrganisationLoginDTO, 'password'> & { access_token: string }
   > {
-    console.log('authPayloadDto', authPayloadDto);
-
     const organisation =
       await this.authService.organisationLogin(authPayloadDto);
 
@@ -107,25 +104,49 @@ export class AuthController {
     };
   }
 
-  @Post('superAdminRegister')
-  async superAdminRegister(
-    @Body() createSuperAdmin: SuperAdminDTO,
-  ): Promise<SuperAdminDTO> {
-    const superAdmin =
-      await this.authService.createSuperAdmin(createSuperAdmin);
-    return {
-      ...superAdmin,
-      password: '',
-      role: UserRole.SUPERADMIN,
-    };
-  }
+  // @Post('superAdminRegister')
+  // async superAdminRegister(
+  //   @Body() createSuperAdmin: SuperAdminDTO,
+  // ): Promise<SuperAdminDTO> {
+  //   const superAdmin =
+  //     await this.authService.createSuperAdmin(createSuperAdmin);
+  //   return {
+  //     ...superAdmin,
+  //     password: '',
+  //     role: UserRole.SUPERADMIN,
+  //   };
+  // }
 
   @Post('loginSuperAdmin')
-  @UseGuards(LocalGuard)
-  async loginSuperAdmin(
-    @Body() authPayloadDto: AuthPayloadDto,
-  ): Promise<Omit<SuperAdminDTO, 'password'> & { access_token: string }> {
-    const superAdmin = this.authService.loginSuperAdmin(authPayloadDto);
-    return superAdmin;
+  // @UseGuards(LocalGuard)
+  // async loginSuperAdmin(
+  //   @Body() authPayloadDto: AuthPayloadDto,
+  // ): Promise<Omit<SuperAdminDTO, 'password'> & { access_token: string }> {
+  //   const superAdmin = this.authService.loginSuperAdmin(authPayloadDto);
+  //   return superAdmin;
+  // }
+
+  // Route pour demander un email de réinitialisation de mot de passe
+  @Post('forgotPassword')
+  async forgotPassword(
+    @Body('email') email: string,
+  ): Promise<{ token: string }> {
+    const result = await this.authService.forgotPassword(email);
+    logger.debug('result forgotPassword:', result);
+    return result;
+  }
+
+  @Post('resetPassword')
+  async resetPassword(
+    @Body('token') token: string,
+    @Body('newPassword') newPassword: string,
+  ): Promise<{ message: string }> {
+    logger.debug('result resetpassword', token, newPassword);
+    if (!token || !newPassword) {
+      throw new BadRequestException('Token and new password are required');
+    }
+    const result = await this.authService.resetPassword(token, newPassword);
+    logger.debug('resltat du reset', result);
+    return { message: result };
   }
 }

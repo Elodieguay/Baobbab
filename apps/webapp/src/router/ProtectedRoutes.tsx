@@ -5,11 +5,9 @@ import { Outlet, useLocation } from 'react-router';
 import { Navigate } from 'react-router';
 
 const ProtectedRoutes = (): JSX.Element => {
-    // console.log('AppRoutes:', AppRoutes);
     const location = useLocation();
 
     const { authToken, role } = useAuth();
-    // console.log('authToken:', authToken, 'role:', role);
 
     const findCurrentRoute = (
         pathname: string
@@ -18,14 +16,10 @@ const ProtectedRoutes = (): JSX.Element => {
             if (route.path?.toLowerCase() === pathname.toLowerCase()) {
                 return true;
             }
-            console.log(
-                `Path mismatch: pathname=${pathname}, routePath=${route.path}`
-            );
             return false;
         });
     };
     const currentRoute = findCurrentRoute(location.pathname);
-    // console.log('currentRoute:', currentRoute);
 
     // Redirection si l'utilisateur n'est pas authentifié
     if (
@@ -58,6 +52,7 @@ const ProtectedRoutes = (): JSX.Element => {
         return <Navigate to={AppRoutes.Courses.path ?? '/courses'} />;
     }
 
+    //  Gestion de la route user
     if (
         currentRoute?.accessMode === RouteAccessMode.Authenticated &&
         currentRoute.path === AppRoutes.Profile.path &&
@@ -77,12 +72,6 @@ const ProtectedRoutes = (): JSX.Element => {
 
         return <Navigate to={AppRoutes[route]?.path ?? '/'} />;
     }
-
-    // // Vérifie les accès basés sur les rôles
-    // const roleRedirect = redirectByRole(currentRoute?.accessMode);
-    // if (roleRedirect) {
-    //     return <Navigate to={roleRedirect} />;
-    // }
 
     // Pas de redirection nécessaire, rendu de la route
     return <Outlet />;

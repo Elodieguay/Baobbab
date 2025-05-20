@@ -4,14 +4,18 @@ export interface GetAddressesDTO {
 }
 
 export interface Point {
-    latitude: number;
-    longitude: number;
+    lng: number;
+    lat: number;
 }
 
 export interface Geometry {
-    type: Point;
-    coordinate: [number, number];
+    type: 'Point';
+    coordinates: [lng: number, lat: number];
 }
+// export interface Point {
+//     type: "Point";
+//     coordinates: [number, number];
+// }
 
 // DTO pour les propriétés
 export interface GeocodingProperties {

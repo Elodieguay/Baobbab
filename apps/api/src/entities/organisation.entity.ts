@@ -7,8 +7,9 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { Courses } from './courses.entity';
-import { Status, UserRole } from '@baobbab/dtos';
+import { UserRole } from '@baobbab/dtos';
 import { OrganisationInfos } from './organisationInfos.entity';
+import { Status } from '@baobbab/dtos';
 
 @Entity()
 export class Organisation {
@@ -16,7 +17,7 @@ export class Organisation {
   id!: string;
 
   @Enum({ items: () => UserRole, default: UserRole.ADMIN })
-  role!: UserRole;
+  role!: UserRole.ADMIN;
 
   @Enum({ items: () => Status, default: Status.PENDING })
   status!: Status;
@@ -24,8 +25,8 @@ export class Organisation {
   @Property({ type: 'text', unique: true })
   organisationName!: string;
 
-  @Property({ type: 'bigint' })
-  siret!: number;
+  @Property({ type: 'text', unique: true })
+  siret!: string;
 
   @Property({ type: 'text' })
   email!: string;

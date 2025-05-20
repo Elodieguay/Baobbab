@@ -12,3 +12,13 @@ export enum Status {
     DRAFT = 'DRAFT',
     CANCELLED = 'CANCELLED',
 }
+
+export enum EntityType {
+    USER = 'user',
+    ORGANISATION = 'organisation',
+}
+
+export enum ModeBooking {
+    CREATE = 'create',
+    UPDATE = 'update',
+}

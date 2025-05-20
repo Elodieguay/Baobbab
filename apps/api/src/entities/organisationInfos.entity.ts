@@ -21,19 +21,19 @@ export class OrganisationInfos {
   @Property({ type: 'text' })
   bio: string;
 
-  @Property({ type: 'text' })
-  webSite?: string;
+  @Property({ type: 'text', nullable: true })
+  website: string;
 
-  @Property({ type: 'text' })
-  socialMediaInstagram?: string;
+  @Property({ type: 'text', nullable: true })
+  socialMediaInstagram: string;
 
-  @Property({ type: 'text' })
-  socialMediaFaceBook?: string;
+  @Property({ type: 'text', nullable: true })
+  socialMediaFaceBook: string;
 
-  @Property({ type: 'text' })
-  socialMediaTwitter?: string;
+  @Property({ type: 'text', nullable: true })
+  socialMediaTwitter: string;
 
-  @Property({ type: 'text' })
+  @Property({ type: 'text', nullable: true })
   image: string;
 
   @Property({ onCreate: () => new Date(), nullable: true })

@@ -16,59 +16,57 @@ import {
     UserLoginDTO,
     UserRegisterDTO,
     formLoginSchema,
+    LoginResponse,
 } from '@baobbab/dtos';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { useLoginMutation, useRegisterMutation } from '@/hooks/useAuthMutation';
 import { useAuth } from '@/context/Auth.context';
 import { UserRound } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import log from 'loglevel';
+import { useLoginMutation, useRegisterMutation } from '@/hooks/auth/query';
 
 export type FormSchemaType = z.infer<typeof formSchema>;
 
 const Modal = (): JSX.Element => {
-    const { setAuthToken } = useAuth();
+    const navigate = useNavigate();
+    const { setAuthData } = useAuth();
     const [isRegister, setIsRegister] = useState(false);
     const { mutate: registerMutate } = useRegisterMutation();
     const { mutate: loginMutate } = useLoginMutation();
 
     const userRegisterDTO = (userRegister: UserRegisterDTO): void => {
-        // console.log('je suis dans userRegisterDTO', userRegister);
-
         registerMutate(userRegister, {
             onSuccess: (data: RegisterResponse) => {
-                // console.log('data.token', data.access_token);
-                // console.log('data.role', data.role);
-
-                const { email, username } = data;
-                if (setAuthToken) {
-                    setAuthToken(data.access_token, data.role, {
-                        email,
-                        username,
-                    });
-                    // console.log('setAuthToken', setAuthToken);
+                if (setAuthData) {
+                    setAuthData(
+                        data.access_token,
+                        data.role,
+                        'user',
+                        data.username,
+                        data.email
+                    );
                 } else {
-                    console.error('setAuthToken is not defined');
+                    log.error('setAuthData is not defined');
                 }
             },
         });
     };
     const userLoginDTO = (userLogin: UserLoginDTO): void => {
         loginMutate(userLogin, {
-            onSuccess: (data: RegisterResponse) => {
-                console.log('je suis dans onSuccess de login', data);
-                console.log('data.token de login', data.access_token);
-                console.log('data.role de login', data.role);
-
-                if (setAuthToken) {
-                    setAuthToken(data.access_token, data.role, {
-                        email: data.email,
-                        username: data.username,
-                    });
+            onSuccess: (data: LoginResponse) => {
+                if (setAuthData) {
+                    setAuthData(
+                        data.access_token,
+                        data.role,
+                        'user',
+                        data.username,
+                        data.email
+                    );
                 } else {
-                    console.error('setAuthToken is not defined');
+                    log.error('setAuthData is not defined');
                 }
             },
         });
@@ -106,7 +104,7 @@ const Modal = (): JSX.Element => {
                 <UserRound />
                 connection
             </DialogTrigger>
-            <DialogContent className="bg-[#faf7f0] px-10 font-normal ">
+            <DialogContent className="font-normal p-10 rounded-2xl ">
                 <DialogHeader>
                     {isRegister ? (
                         <DialogTitle className="text-center">
@@ -121,7 +119,16 @@ const Modal = (): JSX.Element => {
                 {isRegister ? (
                     <Register form={form} onSubmit={userRegisterDTO} />
                 ) : (
-                    <Login form={formLogin} onSubmit={userLoginDTO} />
+                    <>
+                        <Login form={formLogin} onSubmit={userLoginDTO} />
+                        <Button
+                            variant="ghost"
+                            className=" underline"
+                            onClick={() => navigate('/forgotPassword')}
+                        >
+                            Oups! j'ai oublié mon mot de passe
+                        </Button>
+                    </>
                 )}
                 <DialogDescription className="space-y-4 flex flex-col ">
                     <span className="text-center justify-center font-semibold">
@@ -148,7 +155,7 @@ const Modal = (): JSX.Element => {
                         <Link to="/organisation">
                             <Button
                                 variant="outline"
-                                className="rounded-xl w-full bg-[#ffcd00] text-base"
+                                className="rounded-xl w-full bg-[#ffcd00] font-semibold "
                             >
                                 Je suis une Organisation
                             </Button>

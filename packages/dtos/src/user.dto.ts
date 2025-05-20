@@ -1,20 +1,27 @@
 import { z } from 'zod';
-import { UserRole } from './enum';
+import { EntityType, UserRole } from './enum';
 
 export interface RegisterResponse {
+    id: string;
     username: string;
     email: string;
     password: string;
-    role: UserRole;
-    created_at: Date;
+    role: UserRole.USER;
     access_token: string;
+    entityType: EntityType.USER;
+    created_at: Date;
 }
 
 export interface LoginResponse {
+    id: string;
     username: string;
+    password: '';
     email: string;
-    role: UserRole;
+    role: UserRole.USER;
     access_token: string;
+    entityType: EntityType.USER;
+    created_at?: Date;
+    updated_at?: Date;
 }
 
 export interface UserDTO {
@@ -39,13 +46,13 @@ export interface UserRegisterDTO {
     email: string;
     password: string;
     role: UserRole.USER;
-    created_at: Date;
+    created_at?: string;
 }
 
 export interface UserLoginDTO {
     email: string;
     password: string;
-    role: UserRole;
+    role: UserRole.USER;
 }
 
 export interface ProtectedRouteDTO {
@@ -83,10 +90,43 @@ export const formSchema = z.object({
         }),
 });
 
+export type forgottenPasswordSchemaType = z.infer<
+    typeof forgottenPasswordSchema
+>;
+
+export const forgottenPasswordSchema = z.object({
+    email: z.string().email({
+        message: "L'adresse email n'est pas valide.",
+    }),
+    password: z
+        .string()
+        .min(8, {
+            message: 'Le mot de passe doit contenir au moins 8 caractères.',
+        })
+        .regex(passwordValidation, {
+            message:
+                'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.',
+        }),
+});
+
 export const formLoginSchema = z.object({
     email: z.string().email({
         message: "L'adresse email n'est pas valide.",
     }),
+    password: z
+        .string()
+        .min(8, {
+            message: 'Le mot de passe doit contenir au moins 8 caractères.',
+        })
+        .regex(passwordValidation, {
+            message:
+                'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.',
+        }),
+});
+
+export type resetPasswordSchemaType = z.infer<typeof resetPasswordSchema>;
+
+export const resetPasswordSchema = z.object({
     password: z
         .string()
         .min(8, {

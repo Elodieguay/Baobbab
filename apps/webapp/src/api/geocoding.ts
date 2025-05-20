@@ -1,6 +1,6 @@
-import { config } from '@/config';
 import { GeocodingFeatureCollection, Point } from '@baobbab/dtos';
 import ky from 'ky';
+import log from 'loglevel';
 
 interface GetAddressesDTO {
     address: string;
@@ -9,23 +9,21 @@ interface GetAddressesDTO {
 
 export async function geocodingAdresses(
     params: GetAddressesDTO
-): Promise<GeocodingFeatureCollection[] | null> {
-    const searchParams = {
-        address: params.address,
-        limit: params.limit,
-    };
-    const url = `${config.apiUrl}/geocoding?address=${searchParams.address}&limit=${searchParams.limit}`;
-    const response = (await ky
-        .get(url, {
-            json: { address: searchParams.address, limit: searchParams.limit },
-        })
-        .json()) as GeocodingFeatureCollection[];
-    // console.log('response api front', response);
+): Promise<GeocodingFeatureCollection | null> {
+    const searchParams = new URLSearchParams({
+        q: params.address,
+        limit: params.limit.toString(),
+    });
+
+    const url = `https://api-adresse.data.gouv.fr/search/?${searchParams.toString()}&lat=42.218371&lon=-1.553621`;
+    const response = await ky.get(url).json<GeocodingFeatureCollection>();
+
+    log.debug('response api front', response);
 
     return response;
 }
 
-export const getCoordinates = async (city: string): Promise<Point> => {
+export const getCoordinates = async (city?: string): Promise<Point> => {
     const url = `https://api-adresse.data.gouv.fr/search/?q=${city}`;
     const response = (await ky.get(url).json()) as GeocodingFeatureCollection;
     // console.log('response in getCoordinates', response);

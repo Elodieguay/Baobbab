@@ -4,3 +4,4 @@ export * from './position';
 export * from './courses';
 export * from './organisation';
 export * from './admin';
+export * from './booking';

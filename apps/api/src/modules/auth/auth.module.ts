@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { UserService } from '../user/user.service';
 import * as dotenv from 'dotenv';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { EmailService } from '../email/email.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 dotenv.config();
 @Module({
   imports: [
@@ -22,11 +23,14 @@ dotenv.config();
   controllers: [AuthController],
   providers: [
     AuthService,
-    UserService,
-    LocalStrategy,
+    JwtService,
+    JwtAuthGuard,
     JwtStrategy,
-    CloudinaryService,
+    LocalStrategy,
+    UserService,
+    EmailService,
+    UserService,
   ],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule, JwtService],
 })
 export class AuthModule {}

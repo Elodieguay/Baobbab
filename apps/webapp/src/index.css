@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Cabin+Sketch:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import 'leaflet/dist/leaflet.css';
+/* @import 'leaflet/dist/leaflet.css'; */
 /* Styles par défaut pour Leaflet */
 /* @import url('https://unpkg.com/leaflet/dist/leaflet.css'); */
 
@@ -13,7 +13,17 @@
 @layer base {
     
     h1, h2, h3, h4, h5, h6, p {
-        @apply text-gray-700 
+        @apply text-gray-700 font-poppins
+    }
+
+    h1{
+        @apply text-3xl font-semibold
+    }
+    h2{
+        @apply text-2xl font-semibold
+    }
+    h3{
+        @apply text-xl font-semibold
     }
     :root {
         --sidebar-background: hsl(0, 0%, 98%);
@@ -25,16 +35,5 @@
         --sidebar-border: hsl(220, 13%, 91%);
         --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
       }
-  /* .dark { 
-        --sidebar-background: 240 5.9% 10%; 
-        --sidebar-foreground: 240 4.8% 95.9%; 
-        --sidebar-primary: 224.3 76.3% 48%; 
-        --sidebar-primary-foreground: 0 0% 100%; 
-        --sidebar-accent: 240 3.7% 15.9%; 
-        --sidebar-accent-foreground: 240 4.8% 95.9%; 
-        --sidebar-border: 240 3.7% 15.9%; 
-        --sidebar-ring: 217.2 91.2% 59.8%;
-  
-    } */
   
 }

@@ -1,8 +1,16 @@
 import z from 'zod';
+import { CreateABooking } from './booking';
 import { Point } from './position';
 
 export interface CategoryDTO {
+    id: string;
     title: string;
+}
+
+export interface ScheduleDTO {
+    id: string;
+    day: string;
+    hours: string;
 }
 
 export interface CityDTO {
@@ -43,27 +51,66 @@ export const courseFormSchema = z.object({
 });
 
 export interface CoursesDTO {
+    id: string;
     title: string;
     address: string;
-    city?: string;
+    city: string | null;
     description: string;
     duration: number;
-    days: string[];
-    hours: string;
+    schedule: ScheduleDTO[];
     price: number;
-    reminder?: string;
+    reminder: string | null;
     category: CategoryDTO;
     image: string;
     position: Point;
     organisationId: string;
+    booking: CreateABooking[];
 }
 
 export interface CourseRegisterDTO {
     name: string;
     address: string;
     details: string;
-    days: string[];
-    hours: string;
+    schedule: ScheduleDTO;
     reminder?: string;
     tags: string[];
+}
+
+export interface CoursesDTOGeojson {
+    id: string;
+    title: string;
+    address: string;
+    city: string | null;
+    description: string;
+    duration: number;
+    schedule: ScheduleDTO[];
+    price: number;
+    reminder: string | null;
+    category: CategoryDTO;
+    image: string;
+    position: {
+        type: 'Point';
+        coordinates: [number, number];
+    };
+    organisationId: string;
+    booking: CreateABooking[];
+}
+export interface UpdateCoursesDTOGeojson {
+    id: string;
+    title: string;
+    address: string;
+    city: string | null;
+    description: string;
+    duration: number;
+    schedule: ScheduleDTO[];
+    price: number;
+    reminder: string | null;
+    category: CategoryDTO;
+    image: string;
+    position: {
+        type: 'Point';
+        coordinates: [number, number];
+    };
+    organisationId: string;
+    booking: CreateABooking[];
 }

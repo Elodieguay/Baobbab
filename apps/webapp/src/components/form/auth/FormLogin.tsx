@@ -10,6 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { formLoginSchema, UserLoginDTO, UserRole } from '@baobbab/dtos';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 
 export default function Login({
     form,
@@ -18,6 +19,7 @@ export default function Login({
     form: UseFormReturn<z.infer<typeof formLoginSchema>>;
     onSubmit: (userLogin: UserLoginDTO) => void;
 }): JSX.Element {
+    const { t } = useTranslation('common', { keyPrefix: 'Auth' });
     function onSubmitForm(values: z.infer<typeof formLoginSchema>): void {
         onSubmit({
             email: values.email,
@@ -40,10 +42,10 @@ export default function Login({
                                 <Input
                                     {...field}
                                     type="email"
-                                    placeholder="email"
+                                    placeholder={t('userLogin.form.email')}
                                     value={field.value ?? ''}
                                 />
-                            </FormControl>
+                            </FormControl>{' '}
                             <FormMessage />
                         </FormItem>
                     )}
@@ -58,7 +60,7 @@ export default function Login({
                                 <Input
                                     {...field}
                                     type="password"
-                                    placeholder="mot de passe"
+                                    placeholder={t('userLogin.form.password')}
                                     value={field.value ?? ''}
                                 />
                             </FormControl>
@@ -70,7 +72,7 @@ export default function Login({
                     type="submit"
                     className="w-full bg-[#0b927a] rounded-xl hover:bg-[#fdcf63]"
                 >
-                    Se connecter
+                    {t('userLogin.form.button')}
                 </Button>
             </form>
         </Form>

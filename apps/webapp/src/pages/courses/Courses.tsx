@@ -1,20 +1,16 @@
-import Navbar from '@/components/navbar.tsx/Navbar';
+import Navbar from '@/components/navbar/Navbar';
 import { Outlet } from 'react-router';
-import TestCourseById from './TestCourseById';
-import CourseByCity from './TestCourseById';
 
 const Courses = (): JSX.Element => {
-    //  const {city} = useParams()
     return (
-        <>
-            <div>
+        <div className="min-h-screen flex flex-col relative">
+            <div className="flex flex-col justify-center items-center">
                 <Navbar />
+            </div>
+            <div className="min-h-screen ">
                 <Outlet />
             </div>
-            <div>
-                <TestCourseById />
-            </div>
-        </>
+        </div>
     );
 };
 

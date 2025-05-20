@@ -19,15 +19,15 @@ export declare const organisationFormSchema: z.ZodObject<{
     password: z.ZodString;
     image: z.ZodEffects<z.ZodEffects<z.ZodType<File, z.ZodTypeDef, File>, File, File>, File, File>;
 }, "strip", z.ZodTypeAny, {
+    email: string;
+    password: string;
     firstname: string;
     lastname: string;
     organisationName: string;
     siret: number;
     phone: string;
-    email: string;
     address: string;
     bio: string;
-    password: string;
     image: File;
     website?: string | undefined;
     socialMediaInstagram?: string | undefined;
@@ -35,15 +35,15 @@ export declare const organisationFormSchema: z.ZodObject<{
     socialMediaTwitter?: string | undefined;
     socialMediaTikTok?: string | undefined;
 }, {
+    email: string;
+    password: string;
     firstname: string;
     lastname: string;
     organisationName: string;
     siret: number;
     phone: string;
-    email: string;
     address: string;
     bio: string;
-    password: string;
     image: File;
     website?: string | undefined;
     socialMediaInstagram?: string | undefined;
@@ -57,15 +57,15 @@ export declare const organisationRegisterFormSchema: z.ZodObject<{
     email: z.ZodString;
     password: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    organisationName: string;
-    siret: number;
     email: string;
     password: string;
+    organisationName: string;
+    siret: number;
 }, {
-    organisationName: string;
-    siret: number;
     email: string;
     password: string;
+    organisationName: string;
+    siret: number;
 }>;
 export interface OrganisationRegisterDTO {
     status: Status;
