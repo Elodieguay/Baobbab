@@ -8,4 +8,4 @@ pnpm --filter api mikro-orm migration:up
 # pnpm --filter api mikro-orm seeder:run
 
 echo "Starting the server..."
-node apps/api/dist/main.js
+node apps/api/dist/src/main.js
