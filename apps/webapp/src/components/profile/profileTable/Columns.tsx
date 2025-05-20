@@ -1,4 +1,4 @@
-import { BookingResponse, UserBooking } from '@baobbab/dtos';
+import { BookingResponse } from '@baobbab/dtos';
 import { ColumnDef } from '@tanstack/react-table'; // Adjust the import path if necessary
 import { CellRowCourses } from './CellRowCourses';
 import i18next from 'i18next';

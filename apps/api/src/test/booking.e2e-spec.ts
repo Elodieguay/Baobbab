@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { BookingModule } from '../src/modules/booking/booking.module';
+import request from 'supertest';
+import { BookingModule } from '../modules/booking/booking.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Booking } from '../src/entities/booking.entity';
-import { Schedule } from '../src/entities/schedule.entity';
-import { User } from '../src/entities/user.entity';
-import { Courses } from '../src/entities/courses.entity';
-import { Organisation } from '../src/entities/organisation.entity';
-import { Categories } from '../src/entities/categories.entity';
-import mikroOrmConfig from 'src/mikro-orm.config';
+import { Booking } from '../entities/booking.entity';
+import { Schedule } from '../entities/schedule.entity';
+import { User } from '../entities/user.entity';
+import { Courses } from '../entities/courses.entity';
+import { Organisation } from '../entities/organisation.entity';
+import { Categories } from '../entities/categories.entity';
 import { EntityManager } from '@mikro-orm/core';
 import { Status, UserRole } from '@baobbab/dtos';
 import { randomUUID } from 'crypto';
+import mikroOrmConfig from 'src/mikro-orm.config';
 
 describe('BookingController (e2e)', () => {
   let app: INestApplication;

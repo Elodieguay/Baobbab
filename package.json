@@ -7,12 +7,16 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "pnpm -r --no-bail build",
     "dev": "pnpm --parallel --filter './apps/**' dev",
     "dev:deps": "pnpm --parallel --filter './packages/**' dev",
     "lint": "pnpm eslint",
     "lint:fix": "pnpm eslint --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "typecheck": "pnpm -r exec tsc --noEmit",
+    "build": "pnpm -r build",
+    "build:clean": "rm -rf ./apps/**/dist ./packages/**/dist",
+    "test": "",
+    "test:ci": "pnpm -r run test -- --ci"
   },
   "lint-staged": { 
     "*.{js,ts,jsx,tsx}": [ 

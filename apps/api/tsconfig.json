@@ -1,4 +1,6 @@
-{
+{  
+  "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -11,6 +13,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "rootDir": "src",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
@@ -19,5 +22,11 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
+      "paths": {
+      "src/*": ["src/*"]                 // alias pour que "src/..." fonctionne
+    },
   },
+   "include": ["src", "src/test"],
+  "exclude": ["node_modules", "dist"]
 }

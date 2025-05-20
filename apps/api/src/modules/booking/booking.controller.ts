@@ -83,7 +83,11 @@ export class BookingController {
         data: result,
       };
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      const message =
+        error && typeof error === 'object' && 'message' in error
+          ? (error as any).message
+          : 'An unknown error occurred';
+      throw new HttpException(message, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -104,7 +108,11 @@ export class BookingController {
         data: result,
       };
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      const message =
+        error && typeof error === 'object' && 'message' in error
+          ? (error as any).message
+          : 'An unknown error occurred';
+      throw new HttpException(message, HttpStatus.BAD_REQUEST);
     }
   }
 }
