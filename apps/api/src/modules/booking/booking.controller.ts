@@ -27,7 +27,6 @@ export class BookingController {
   async create(
     @Body() createABooking: { userId: string; createBooking: CreateABooking },
   ): Promise<CreateABooking> {
-    // Récupération de l'ID de l'utilisateur (à condition que l'authentification soit en place)
     const { userId, createBooking } = createABooking;
     const booking = await this.bookingService.create(userId, createBooking);
     return entityToDto(booking);
@@ -68,7 +67,6 @@ export class BookingController {
     updateUserBooking: CreateABooking & { userId: string },
   ) {
     try {
-      Logger.debug('control', updateUserBooking, bookingId);
       const { userId, scheduleId, title, courseId, schedule } =
         updateUserBooking;
 
@@ -76,18 +74,12 @@ export class BookingController {
         bookingId,
         updateUserBooking,
       );
-      Logger.debug('result', result);
       return {
         statusCode: 200,
-        message: 'Booking successfully updated',
         data: result,
       };
     } catch (error) {
-      const message =
-        error && typeof error === 'object' && 'message' in error
-          ? (error as any).message
-          : 'An unknown error occurred';
-      throw new HttpException(message, HttpStatus.BAD_REQUEST);
+      Logger.error('Error updating booking:', error);
     }
   }
 
@@ -96,23 +88,18 @@ export class BookingController {
     @Param('bookingId') bookingId: string,
     @Body('userId') userId: string,
   ) {
-    logger.log('bookingId', bookingId);
-
     try {
-      logger.log('bookingId', bookingId);
-
       const result = await this.bookingService.remove(bookingId, userId);
       return {
         statusCode: 200,
-        message: 'Booking successfully deleted',
         data: result,
       };
     } catch (error) {
-      const message =
-        error && typeof error === 'object' && 'message' in error
-          ? (error as any).message
-          : 'An unknown error occurred';
-      throw new HttpException(message, HttpStatus.BAD_REQUEST);
+      Logger.error('Error deleting booking:', error);
+      if (error && typeof error === 'object' && 'message' in error) {
+        throw new Error((error as { message: string }).message);
+      }
+      throw new Error('An unknown error occurred');
     }
   }
 }

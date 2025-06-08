@@ -7,6 +7,7 @@ export interface RegisterResponse {
     password: string;
     role: UserRole.USER;
     access_token: string;
+    refresh_token: string;
     entityType: EntityType.USER;
     created_at: Date;
 }
@@ -17,6 +18,7 @@ export interface LoginResponse {
     email: string;
     role: UserRole.USER;
     access_token: string;
+    refresh_token: string;
     entityType: EntityType.USER;
     created_at?: Date;
     updated_at?: Date;

@@ -28,7 +28,6 @@ const HomePage = () => {
             city: '',
         },
     });
-
     const onSubmit = (data: z.infer<typeof citySchema>): void => {
         setSelectedCity(data.city);
         setCity(data.city);

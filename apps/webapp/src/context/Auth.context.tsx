@@ -1,8 +1,15 @@
+import { useRefreshToken } from '@/hooks/auth/query';
+import { isTokenExpired } from '@/utils/authHelpers';
 import { UserRole } from '@baobbab/dtos';
+import log from 'loglevel';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 type EntityType = 'user' | 'organisation';
 
+export type UserInformation = {
+    email: string | null;
+    username: string | null;
+};
 export type AuthContextType = {
     authToken?: string | undefined;
     role: UserRole | null;
@@ -16,6 +23,7 @@ export type AuthContextType = {
     loading: boolean;
     setAuthData: (
         token: string,
+        refreshToken: string,
         userRole: UserRole,
         entityType: EntityType,
         entityId: string,
@@ -25,16 +33,18 @@ export type AuthContextType = {
     ) => void;
     removeAuthData: () => void;
 };
-// On Crée le contexte
+// We create the context
 const AuthContext = createContext<Partial<AuthContextType>>({});
 
-// Fournisseur du contexte
+// Provider of the context
 export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
     children,
 }) => {
     const [authToken, setAuthToken] = useState<string | undefined>(
         sessionStorage.getItem('JWT_AUTH') || undefined
     );
+    const { mutateAsync: tokenRefreshed } = useRefreshToken();
+
     const [role, setRole] = useState<UserRole | null>(
         (sessionStorage.getItem('ROLE') as UserRole) || null
     );
@@ -53,16 +63,50 @@ export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
     const [email, setEmail] = useState<string | null>(
         sessionStorage.getItem('EMAIL') || null
     );
-
     const [loading, setLoading] = useState<boolean>(true);
 
+    const handleRefreshToken = async (
+        refreshTokenValue: string
+    ): Promise<{ access_token: string }> => {
+        log.debug('Refreshing token with value:', refreshTokenValue);
+        try {
+            const response = await tokenRefreshed(refreshTokenValue);
+            log.debug('Token refreshed successfully:', response);
+            return response;
+        } catch (error) {
+            log.error('Error refreshing token:', error);
+            throw error;
+        }
+    };
+
     useEffect(() => {
-        setLoading(false);
-    }, []);
-    // Mise à jour des données d'authentification
+        if (authToken) {
+            const refreshTokenValue = localStorage.getItem('REFRESH_TOKEN');
+            log.debug('refreshTokenValue:', refreshTokenValue);
+
+            const interval = setInterval(
+                async () => {
+                    const expired = isTokenExpired(authToken);
+                    log.debug('Is token expired?', expired);
+                    if (expired) {
+                        log.debug('Inside interval tick...');
+                        handleRefreshToken(refreshTokenValue || '');
+                    } else {
+                        log.debug('Token is not expired, no need to refresh.');
+                    }
+                },
+                1 * 60 * 1000
+            );
+
+            return () => clearInterval(interval);
+        } else {
+            removeAuthData();
+        }
+    }, [authToken]);
 
     const setAuthData = (
         token: string,
+        refreshToken: string,
         userRole: UserRole,
         entityType: EntityType,
         entityId: string,
@@ -70,7 +114,10 @@ export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
         organisationName?: string,
         email?: string
     ): void => {
+        log.debug('Saving tokens:', { token, refreshToken });
+
         sessionStorage.setItem('JWT_AUTH', token);
+        localStorage.setItem('REFRESH_TOKEN', refreshToken);
         sessionStorage.setItem('ROLE', userRole);
         sessionStorage.setItem('ENTITY_TYPE', entityType);
         sessionStorage.setItem('ENTITY_ID', entityId);
@@ -87,7 +134,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
         setOrganisationName(organisationName || null);
         setEmail(email || null);
     };
-    // Suppression des données d'authentification
 
     const removeAuthData = (): void => {
         sessionStorage.clear();
@@ -99,7 +145,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
         setOrganisationName(null);
         setEmail(null);
     };
-
+    log.info('AuthContext initialized with authToken:', authToken);
     return (
         <AuthContext.Provider
             value={{

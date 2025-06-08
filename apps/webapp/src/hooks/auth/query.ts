@@ -2,15 +2,18 @@ import {
     forgotPassword,
     loginOrganisation,
     loginUser,
+    refreshToken,
     registerOrganisation,
     registerUser,
     resetPassword,
 } from '@/api/auth';
 import { useAuth } from '@/context/Auth.context';
 import {
+    EntityType,
     OrganisationAuthResponse,
     UserLoginDTO,
     UserRegisterDTO,
+    UserRole,
 } from '@baobbab/dtos';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -49,13 +52,12 @@ export const useOrganisationRegister = (): any => {
     return useMutation({
         mutationFn: registerOrganisation,
         onSuccess: (data: OrganisationAuthResponse) => {
-            log.debug('je suis là');
-            log.debug(data);
             if (setAuthData) {
                 setAuthData(
                     data.access_token,
                     data.role,
-                    'organisation',
+                    UserRole.ADMIN,
+                    EntityType.ORGANISATION,
                     data.organisationName,
                     data.email
                 );
@@ -82,7 +84,8 @@ export const useOrganisationLogin = (): any => {
                 setAuthData(
                     data.access_token,
                     data.role,
-                    'organisation',
+                    UserRole.ADMIN,
+                    EntityType.ORGANISATION,
                     data.email,
                     data.organisationName,
                     data.id
@@ -133,6 +136,31 @@ export const useResetPassword = (token: string): any => {
             if (error instanceof Error) {
                 error = { name: error.name, message: error.message };
             } else log.error('The useResetPassword is failed:', error);
+        },
+    });
+};
+
+export const useRefreshToken = (options?: {
+    onSuccess: () => void;
+    onError: (error: Error) => void;
+}) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (refreshTokenValue: string) => {
+            log.debug('refreshTokenValue', refreshTokenValue);
+            return refreshToken(refreshTokenValue);
+        },
+        onSuccess: (data) => {
+            localStorage.setItem('accessToken', data.access_token);
+            log.debug('The access token is refreshed:', data.access_token);
+            queryClient.invalidateQueries({
+                queryKey: ['auth', 'refreshToken'],
+            });
+            options?.onSuccess?.();
+        },
+        onError: (error) => {
+            options?.onError(error as Error);
+            log.error('The refreshToken is failed:', error);
         },
     });
 };

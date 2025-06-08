@@ -16,6 +16,7 @@ import AllCoursesTable from '@/components/dashboard/AllCoursesTable';
 import OrganisationInfo from '@/components/dashboard/OrganisationInfo';
 import HomePage from '@/pages/home/HomePage';
 import NotFound from '@/pages/notFound/NotFound';
+import PrivatyPolicy from '@/pages/privatyPolicy/PrivatyPolicy';
 
 const router = createBrowserRouter([
     // version v7
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
                 element: <Profile />,
             },
         ],
+    },
+    {
+        path: AppRoutes.PrivatyPolicy.path,
+        element: <PrivatyPolicy />,
     },
     {
         path: AppRoutes.Error404.path,

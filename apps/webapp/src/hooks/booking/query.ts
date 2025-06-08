@@ -117,11 +117,6 @@ export const useUpdateUserBooking = (options?: {
             return updateUserBooking(bookingId, userId, updateBooking);
         },
         onSuccess: (_data, variables) => {
-            // queryClient.setQueryData(
-            //     ['booking', 'by-id', variables.bookingId],
-            //     data
-            // );
-
             queryClient.invalidateQueries({
                 queryKey: ['booking', 'user', variables.userId],
             });

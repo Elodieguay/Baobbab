@@ -29,7 +29,7 @@ const ProtectedRoutes = (): JSX.Element => {
         return <Navigate to={AppRoutes.Courses.path ?? '/courses'} />;
     }
 
-    // Gestion de la route booking
+    // booking route
     if (
         currentRoute?.accessMode === RouteAccessMode.Authenticated &&
         currentRoute.path === AppRoutes.Booking.path &&
@@ -43,22 +43,22 @@ const ProtectedRoutes = (): JSX.Element => {
         return <Navigate to={navigateTo} />;
     }
 
-    // Gestion de la route admin
+    // Admin route
     if (
         currentRoute?.accessMode === RouteAccessMode.Authenticated &&
         currentRoute.path === AppRoutes.Dashboard.path &&
         role !== UserRole.ADMIN
     ) {
-        return <Navigate to={AppRoutes.Courses.path ?? '/courses'} />;
+        return <Navigate to={AppRoutes.Courses.path ?? '/'} />;
     }
 
-    //  Gestion de la route user
+    //  User route
     if (
         currentRoute?.accessMode === RouteAccessMode.Authenticated &&
         currentRoute.path === AppRoutes.Profile.path &&
         role !== UserRole.USER
     ) {
-        return <Navigate to={AppRoutes.Courses.path ?? '/courses'} />;
+        return <Navigate to={AppRoutes.Courses.path ?? '/'} />;
     }
 
     // Vérifie les redirections spécifiées dans `AppRoutes`
