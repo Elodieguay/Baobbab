@@ -1,11 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import {
-    render,
-    screen,
-    fireEvent,
-    waitFor,
-    prettyDOM,
-} from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ModalBooking from '../components/booking/ModalBooking';
 import '@testing-library/jest-dom';
 window.HTMLElement.prototype.scrollIntoView = vi.fn();
@@ -78,7 +72,6 @@ describe('ModalBooking', () => {
                 setIsModalOpen={mockSetIsModalOpen}
             />
         );
-        console.log(prettyDOM(document.body));
 
         // Check that the course title is displayed
         expect(screen.getByText('Yoga du matin')).toBeInTheDocument();
