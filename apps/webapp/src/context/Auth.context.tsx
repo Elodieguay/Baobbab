@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
     const [email, setEmail] = useState<string | null>(
         sessionStorage.getItem('EMAIL') || null
     );
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading] = useState<boolean>(true);
 
     const handleRefreshToken = async (
         refreshTokenValue: string
