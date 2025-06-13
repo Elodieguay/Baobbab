@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
 import OrganisationFormLogin from '@/components/form/auth/OrganisationFormLogin';
 import Footer from '@/components/footer/Footer';
-import meditation from '@/assets/meditationProf.jpg';
+import meditation from '@/assets/images/meditationProf.jpg';
 
 const Organisation = (): JSX.Element => {
     const { mutate: organisationRegister } = useOrganisationRegister();
