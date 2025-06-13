@@ -15,18 +15,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     logger.log(
       'JwtService Injected jwt in JwtAuthGuard:',
       JSON.stringify(this.jwtService, null, 2),
-    ); // Vérifiez l'injection
+    );
   }
-
-  // onModuleInit() {
-  //   // Assurez-vous que le service est bien initialisé
-  //   logger.log('JwtService Injected jwt moduleinit AuthGuard:', JSON.stringify(this.jwtService, null, 2));
-  //   if (!this.jwtService) {
-  //     logger.warn('JwtService in AuthGuard is undefined during initialization!');
-  //   } else {
-  //     logger.log('JwtService inAuthGuard Injected jwt:', this.jwtService);
-  //   }
-  // }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isAuthorized = (await super.canActivate(context)) as boolean;

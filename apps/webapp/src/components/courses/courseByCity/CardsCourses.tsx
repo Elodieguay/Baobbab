@@ -34,6 +34,7 @@ const CardsCourses = ({
             className="w-full h-auto md:h-64 shadow-md border rounded-md overflow-hidden flex flex-col md:flex-row border-none relative"
             onMouseEnter={() => setHoveredCardId(item.id)}
             onMouseLeave={() => setHoveredCardId(null)}
+            data-testid="course-card"
         >
             <div className="relative w-full md:w-1/3 h-48 md:h-full">
                 <img

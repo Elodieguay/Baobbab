@@ -50,7 +50,6 @@ export class BookingService {
       schedule,
       user,
     });
-
     // On persiste la réservation
     await this.em.persistAndFlush(booking);
     return booking;

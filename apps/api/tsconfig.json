@@ -24,7 +24,7 @@
     "resolveJsonModule": true,
     "strictPropertyInitialization": false,
       "paths": {
-      "src/*": ["src/*"]                 // alias pour que "src/..." fonctionne
+      "src/*": ["src/*"]                 
     },
   },
    "include": ["src", "src/test"],

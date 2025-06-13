@@ -35,8 +35,11 @@ const ModalBooking = ({
     const userId = data?.id;
     const { t } = useTranslation('common');
     const { toast } = useToast();
+
     const { mutateAsync: createBooking } = useCreateABooking();
+
     const { mutateAsync: updateBooking } = useUpdateUserBooking();
+
     const bookingFormSchema = z.object({
         title: z.string(),
         day: z.string().nonempty(),

@@ -17,11 +17,12 @@ import {
     UserRegisterDTO,
     formLoginSchema,
     LoginResponse,
+    EntityType,
+    UserRole,
 } from '@baobbab/dtos';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-
 import { useAuth } from '@/context/Auth.context';
 import { UserRound } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
@@ -43,8 +44,9 @@ const Modal = (): JSX.Element => {
                 if (setAuthData) {
                     setAuthData(
                         data.access_token,
-                        data.role,
-                        'user',
+                        data.refresh_token,
+                        UserRole.USER,
+                        EntityType.USER,
                         data.username,
                         data.email
                     );
@@ -60,8 +62,9 @@ const Modal = (): JSX.Element => {
                 if (setAuthData) {
                     setAuthData(
                         data.access_token,
-                        data.role,
-                        'user',
+                        data.refresh_token,
+                        UserRole.USER,
+                        EntityType.USER,
                         data.username,
                         data.email
                     );

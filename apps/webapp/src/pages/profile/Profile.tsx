@@ -21,8 +21,9 @@ const Profile = (): JSX.Element => {
     const { data } = useGetUser(authToken || '');
     const { data: user } = useGetUser(authToken || '');
     const userId = user?.id;
+
     const { data: userBooking } = useGetUserBooking(userId || '');
-    // const bookingsWithOrgNames = useGetOrganisationInfoController();
+
     const { t } = useTranslation('common', {
         keyPrefix: 'Profile',
     });

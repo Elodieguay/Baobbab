@@ -93,7 +93,7 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                                 className={cn('bg-[#be3565]')}
                                 onClick={() => showMessage()}
                             >
-                                blablaaaaaaa {t('page.courseById.button')}
+                                {t('page.courseById.button')}
                             </Button>
                             {showMessage()}
                         </div>

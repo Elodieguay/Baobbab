@@ -3,6 +3,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -44,17 +45,18 @@ export class AuthService {
 
   async register(
     createUserInput: UserRegisterDTO,
-  ): Promise<Omit<User, 'password'> & { access_token: string }> {
-    // On vérifie si le user existe déjà
+  ): Promise<
+    Omit<User, 'password'> & { access_token: string; refresh_token: string }
+  > {
     const existingUser = await this.em.findOne(User, {
       username: createUserInput.username,
     });
     if (existingUser) {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
-    //Haschage du mot de passe
     const haschPassword = await bcrypt.hash(createUserInput.password, 10);
-    // On créé une instance de l'utilisateur
+
+    // it create an instance of the user
     const user = this.em.create(User, {
       ...createUserInput,
       role: UserRole.USER,
@@ -63,19 +65,25 @@ export class AuthService {
       updatedAt: new Date().toISOString(),
       bookings: [],
     });
-    // On l'enregistre dans la base de données
     await this.em.persistAndFlush(user);
 
-    // On génére un JWT pour l'utilisateur nouvellement créé
     const payload = { id: user.id, email: user.email };
-    // On génère le token
+
+    // it generate a token
     const secret = this.configService.get('JWT_SECRET');
+    const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
+      expiresIn: '5m', // Optional: Set an expiration time for the token
+    });
+    const refresh_token = await this.jwtService.signAsync(payload, {
+      secret: secretRefresh,
+      expiresIn: '7d',
     });
     return {
       ...user,
       access_token,
+      refresh_token,
     };
   }
 
@@ -93,9 +101,8 @@ export class AuthService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
-    const haschPassword = await bcrypt.hash(password, 10);
+    // Compare of the password hash with the password sent
 
-    // Comparaison du mot de passe hasché avec celui envoyé
     const passwordValid = await bcrypt.compare(password, entity.password);
 
     if (!passwordValid) {
@@ -103,7 +110,6 @@ export class AuthService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
-    // Si tout est valide, on renvoie l'utilisateur sans le password
     const { password: pass, ...result } = entity;
     return result;
   }
@@ -113,7 +119,7 @@ export class AuthService {
     email,
     password,
   }: AuthPayloadDto): Promise<
-    Omit<User, 'password'> & { access_token: string }
+    Omit<User, 'password'> & { access_token: string; refresh_token: string }
   > {
     // On valide l'utilisateur
     const user = await this.validateUser({ email, password });
@@ -121,13 +127,46 @@ export class AuthService {
     const payload = { id: user.id, email: user.email };
     //on génère le token
     const secret = this.configService.get('JWT_SECRET');
+    const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
+      expiresIn: '2m', // Optional: Set an expiration time for the token
+    });
+    const refresh_token = await this.jwtService.signAsync(payload, {
+      secret: secretRefresh,
+      expiresIn: '7d',
     });
     return {
       ...user,
       access_token,
-    } as Omit<User, 'password'> & { access_token: string };
+      refresh_token,
+    } as Omit<User, 'password'> & {
+      access_token: string;
+      refresh_token: string;
+    };
+  }
+
+  async refreshToken(refreshTokenValue: string): Promise<string> {
+    try {
+      const payload = this.jwtService.verify(refreshTokenValue, {
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
+      });
+      const user = await this.userService.findOneUserById(payload.id);
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+      const newAccessToken = this.jwtService.sign(
+        { id: user.id, email: user.email },
+        {
+          secret: this.configService.get('JWT_SECRET'),
+          expiresIn: '10m',
+        },
+      );
+      logger.debug('New access token generated:', newAccessToken);
+      return newAccessToken;
+    } catch (err) {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
   }
 
   async organisationRegister(

@@ -1,5 +1,5 @@
 import Navbar from '@/components/navbar/Navbar';
-import guitare from '@/assets/images/guitare.jpg';
+import guitarebab from '@/assets/images/guitarebab.webp';
 import { citySchema } from '@/utils/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -28,7 +28,6 @@ const HomePage = () => {
             city: '',
         },
     });
-
     const onSubmit = (data: z.infer<typeof citySchema>): void => {
         setSelectedCity(data.city);
         setCity(data.city);
@@ -73,9 +72,13 @@ const HomePage = () => {
                 </div>
                 <div className="w-full lg:w-1/2 mt-10 lg:mt-0 rounded-bl-[40px] overflow-hidden relative">
                     <img
-                        src={guitare}
-                        alt="guitare"
+                        src={guitarebab}
+                        alt="Cours de guitare"
+                        width={1920}
+                        height={1080}
                         className="w-full h-60 xs:h-72 sm:h-[40vh] md:h-[50vh] lg:h-[80vh] object-cover"
+                        loading="eager"
+                        fetchPriority="high"
                     />
                 </div>
             </div>

@@ -63,8 +63,6 @@ export class CoursesService {
       },
       { populate: ['schedule', 'booking'] },
     );
-
-    // Vérification pour éviter les erreurs si schedule n'est pas chargé
     coursesCategory.forEach((course) => {
       if (!course.schedule.isInitialized()) {
         this.logger.warn(`Schedules not initialized for course ${course.id}`);

@@ -28,7 +28,6 @@ export const createBookingCourse = async (
 };
 
 export const getBookingCourse = async (bookingId: string) => {
-    log.debug('je sui là haut');
     try {
         const url = `${config.apiUrl}/booking/${bookingId}`;
         const response = await ky.get(url).json<CoursesDTOGeojson>();
@@ -95,10 +94,8 @@ export const deleteUserBooking = async (bookingId: string, userId?: string) => {
             .delete(url, { json: { userId, bookingId } })
             .json();
 
-        log.debug('Booking successfully deleted:', response);
         return response;
     } catch (error) {
-        log.error(`Error deleting the booking:`, error);
         throw new Error(
             error instanceof Error ? error.message : 'Unknown error'
         );
