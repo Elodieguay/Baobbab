@@ -39,11 +39,17 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
     };
     return (
         <section className="flex flex-col lg:flex-row w-full min-h-[30rem]">
-            <figure className="w-full lg:w-2/3 h-64 lg:h-auto overflow-hidden rounded-b-md lg:rounded-r-md lg:rounded-b-none">
+            <figure className="w-full lg:w-2/3 h-64 lg:h-auto overflow-hidden rounded-b-md lg:rounded-r-md lg:rounded-b-none ">
                 <img
-                    src={coursesInfos?.image}
+                    src={
+                        coursesInfos?.image !== ''
+                            ? coursesInfos?.image
+                            : 'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp/'
+                    }
                     alt="Activity Image"
                     className="object-cover w-full h-full"
+                    loading="eager"
+                    fetchPriority="high"
                 />
             </figure>
             <div className="w-full lg:w-1/3 flex flex-col items-center justify-center gap-10 px-4 py-6">
@@ -66,8 +72,9 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                             <DialogTrigger asChild>
                                 <div className="flex flex-col justify-center items-center gap-2">
                                     <Button
+                                        aria-label="Réserver un cours"
                                         variant="default"
-                                        className={cn('bg-[#be3565]')}
+                                        className={cn('bg-buttonPink')}
                                         onClick={() => setIsModalOpen(true)}
                                     >
                                         {t('page.courseById.button')}

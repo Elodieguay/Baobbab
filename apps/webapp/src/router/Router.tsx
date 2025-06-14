@@ -4,8 +4,8 @@ import Courses from '../pages/courses/Courses';
 import Dashboard from '../pages/dashboard/Dashboard';
 import Profile from '../pages/profile/Profile';
 import ProtectedRoutes from './ProtectedRoutes';
-import CourseById from '@/pages/courses/CourseById';
-import CourseByCity from '@/pages/courses/CourseByCity';
+// import CourseById from '@/pages/courses/CourseById';
+// import CourseByCity from '@/pages/courses/CourseByCity';
 import Organisation from '@/pages/organisation/Organisation';
 import ForgottenPassword from '@/components/auth/ForgottenPassword';
 import ResetPassword from '@/components/auth/ResetPassword';
@@ -17,6 +17,14 @@ import OrganisationInfo from '@/components/dashboard/OrganisationInfo';
 import HomePage from '@/pages/home/HomePage';
 import NotFound from '@/pages/notFound/NotFound';
 import PrivatyPolicy from '@/pages/privatyPolicy/PrivatyPolicy';
+import { lazy, Suspense } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
+const CourseByCity = lazy(() => import('@/pages/courses/CourseByCity'));
+const CourseById = lazy(() => import('@/pages/courses/CourseById'));
+
+const withSuspense = (element: React.ReactNode) => (
+    <Suspense fallback={<Skeleton />}>{element}</Suspense>
+);
 
 const router = createBrowserRouter([
     // version v7
@@ -49,7 +57,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: ':city',
-                element: <CourseByCity />,
+                element: withSuspense(<CourseByCity />),
             },
             {
                 path: ':city/:id',

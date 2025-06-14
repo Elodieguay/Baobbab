@@ -4,7 +4,6 @@ interface CityContextType {
     city: string | undefined;
     setCity: (city: string) => void;
 }
-
 const CityContext = createContext<CityContextType | undefined>(undefined);
 
 export const CityProvider = ({
@@ -13,7 +12,6 @@ export const CityProvider = ({
     children: React.ReactNode;
 }): JSX.Element => {
     const [city, setCity] = useState<string | undefined>(undefined);
-
     return (
         <CityContext.Provider value={{ city, setCity }}>
             {children}

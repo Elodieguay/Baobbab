@@ -7,9 +7,7 @@ import {
   Post,
   Req,
   UnauthorizedException,
-  UploadedFile,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthPayloadDto } from './types/auth.types';
@@ -67,12 +65,10 @@ export class AuthController {
   async refreshToken(
     @Body() { refreshTokenValue }: { refreshTokenValue: string },
   ): Promise<{ access_token: string }> {
-    logger.debug('refreshToken called with:', refreshTokenValue);
     if (!refreshTokenValue) {
       throw new BadRequestException('Refresh token is required');
     }
     const accessToken = await this.authService.refreshToken(refreshTokenValue);
-    logger.debug('Generated access token:', accessToken);
     return { access_token: accessToken };
   }
 
@@ -97,10 +93,8 @@ export class AuthController {
   async organisationRegister(
     @Body() createOrganisation: OrganisationRegisterDTO,
   ): Promise<Omit<OrganisationRegisterDTO, 'password'>> {
-    logger.debug(createOrganisation);
     const organisation =
       await this.authService.organisationRegister(createOrganisation);
-    logger.debug(organisation);
     return organisation;
   }
 
@@ -148,7 +142,6 @@ export class AuthController {
     @Body('email') email: string,
   ): Promise<{ token: string }> {
     const result = await this.authService.forgotPassword(email);
-    logger.debug('result forgotPassword:', result);
     return result;
   }
 
@@ -157,12 +150,10 @@ export class AuthController {
     @Body('token') token: string,
     @Body('newPassword') newPassword: string,
   ): Promise<{ message: string }> {
-    logger.debug('result resetpassword', token, newPassword);
     if (!token || !newPassword) {
       throw new BadRequestException('Token and new password are required');
     }
     const result = await this.authService.resetPassword(token, newPassword);
-    logger.debug('resltat du reset', result);
     return { message: result };
   }
 }

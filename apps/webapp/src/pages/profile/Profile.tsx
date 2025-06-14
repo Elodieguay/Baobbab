@@ -59,7 +59,7 @@ const Profile = (): JSX.Element => {
                     <Button onClick={handleGoBack}>{t('page.button')}</Button>
                 </div>
                 <section className="flex flex-col items-center gap-9 w-full">
-                    <Card className="w-full lg:w-1/3 bg-[#be3565] rounded-md p-4 text-white">
+                    <Card className="w-full lg:w-1/3 bg-buttonPink rounded-md p-4 text-white">
                         <CardHeader className="text-center text-white font-semibold">
                             {t('page.card.header')}
                         </CardHeader>

@@ -24,7 +24,7 @@ export const formSchema = z.object({
 });
 
 export const citySchema = z.object({
-    city: z.string().min(2, 'Une ville est requise'),
+    city: z.string().min(0, 'Une ville est requise'),
 });
 
 export const coursesSchema = z.object({

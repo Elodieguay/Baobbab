@@ -62,6 +62,7 @@ const HomePage = () => {
                     <div className="px-2 md:px-4">
                         <SelectCityForm form={form} onSubmit={onSubmit}>
                             <Button
+                                aria-label="Sélectionner une ville"
                                 type="submit"
                                 className="h-14 px-6 bg-[#be3565] hover:bg-[#a52c54] text-white font-medium text-base rounded-r-md transition-all duration-200"
                             >

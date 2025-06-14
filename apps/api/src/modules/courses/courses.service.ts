@@ -1,8 +1,4 @@
-import {
-  CoursesDTO,
-  CoursesDTOGeojson,
-  UpdateCoursesDTOGeojson,
-} from '@baobbab/dtos';
+import { CoursesDTO, UpdateCoursesDTOGeojson } from '@baobbab/dtos';
 import { EntityManager, wrap } from '@mikro-orm/core';
 import {
   BadRequestException,
