@@ -1,10 +1,13 @@
 import {
+    createCourses,
     getCategory,
     getCourseById,
     getCoursesByCategory,
 } from '@/api/courses';
-import { useQuery } from '@tanstack/react-query';
+import { CoursesDTOGeojson } from '@baobbab/dtos';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
+import log from 'loglevel';
 
 // export const useGetCourses = (coordinates) => {
 //     return useQuery({
@@ -46,5 +49,33 @@ export const useGetCategory = () => {
     return useQuery({
         queryKey: ['category'],
         queryFn: () => getCategory(),
+    });
+};
+
+export const useCreateCourse = (options?: {
+    onSuccess: (data: CoursesDTOGeojson) => void;
+    onError: (error: Error) => void;
+}) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async ({
+            createCourse,
+        }: {
+            createCourse: CoursesDTOGeojson;
+        }) => {
+            return createCourses(createCourse);
+        },
+        onSuccess: (data) => {
+            const userbooking = data;
+            queryClient.invalidateQueries({
+                queryKey: ['course', 'organisation'],
+            });
+            options?.onSuccess?.(userbooking);
+            log.debug('Les modifications sont enregistrées:', data);
+        },
+        onError: (error) => {
+            log.error('Les modifications ont échouées:', error);
+            options?.onError(error as Error);
+        },
     });
 };

@@ -64,3 +64,22 @@ export const getCategory = async (): Promise<CategoryDTO> => {
         );
     }
 };
+
+export const createCourses = async (
+    createCourse: CoursesDTOGeojson
+): Promise<CoursesDTOGeojson> => {
+    try {
+        const url = `${config.apiUrl}/courses`;
+        const response = await ky
+            .post(url, {
+                json: createCourse,
+            })
+            .json<CoursesDTOGeojson>();
+        return response;
+    } catch (error) {
+        log.error(`Error to create a course`, error);
+        throw new Error(
+            error instanceof Error ? error.message : 'Unknown error'
+        );
+    }
+};

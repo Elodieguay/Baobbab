@@ -4,21 +4,18 @@ import Courses from '../pages/courses/Courses';
 import Dashboard from '../pages/dashboard/Dashboard';
 import Profile from '../pages/profile/Profile';
 import ProtectedRoutes from './ProtectedRoutes';
-// import CourseById from '@/pages/courses/CourseById';
-// import CourseByCity from '@/pages/courses/CourseByCity';
 import Organisation from '@/pages/organisation/Organisation';
 import ForgottenPassword from '@/components/auth/ForgottenPassword';
 import ResetPassword from '@/components/auth/ResetPassword';
 import Footer from '@/components/footer/Footer';
 import CoursesForm from '@/components/dashboard/CoursesForm';
 import UsersBookingTable from '@/components/dashboard/UsersBookingTable';
-import AllCoursesTable from '@/components/dashboard/AllCoursesTable';
-import OrganisationInfo from '@/components/dashboard/OrganisationInfo';
 import HomePage from '@/pages/home/HomePage';
 import NotFound from '@/pages/notFound/NotFound';
 import PrivatyPolicy from '@/pages/privatyPolicy/PrivatyPolicy';
 import { lazy, Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import InformationsForm from '@/components/form/organisation/InformationsForm';
 const CourseByCity = lazy(() => import('@/pages/courses/CourseByCity'));
 const CourseById = lazy(() => import('@/pages/courses/CourseById'));
 
@@ -31,7 +28,7 @@ const router = createBrowserRouter([
 
     {
         path: AppRoutes.Home.path,
-        element: (
+        element: withSuspense(
             <>
                 <HomePage />
                 <Footer />
@@ -85,12 +82,8 @@ const router = createBrowserRouter([
                         element: <UsersBookingTable />,
                     },
                     {
-                        path: 'allCourses',
-                        element: <AllCoursesTable />,
-                    },
-                    {
                         path: 'informations',
-                        element: <OrganisationInfo />,
+                        element: <InformationsForm />,
                     },
                 ],
             },

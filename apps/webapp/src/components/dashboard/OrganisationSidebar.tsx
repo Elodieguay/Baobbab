@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { LogOut } from 'lucide-react';
-
-import { NavMain } from '@/components/dashboard/sidebar/nav-main';
 import {
     Sidebar,
     SidebarContent,
@@ -10,48 +8,51 @@ import {
     SidebarRail,
 } from '@/components/ui/sidebar';
 import { useState } from 'react';
-import { ContentDisplay } from '@/components/dashboard/ContentDisplay';
-import { useOrganisationById } from '@/hooks/organisation/useOrganisation';
 import { useAuth } from '@/context/Auth.context';
 import { Button } from '../ui/button';
-import { useNavigate } from 'react-router';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router';
+import { Trans } from 'react-i18next';
+import { useOrganisationById } from '@/hooks/organisation/useOrganisation';
+import { Content } from '@radix-ui/react-dialog';
+import { ContentDisplay } from './ContentDisplay';
 
 export enum DashName {
     ACCOUNT_INFO = 'Informations',
     CREATE = 'Créer une activité',
-    PROGRESS = 'Activités en cours',
     BOOKING = 'Activités réservées',
 }
 
-const organisationId = sessionStorage.getItem('organisationId');
-const navMainItems = [
-    {
-        title: DashName.ACCOUNT_INFO,
-        url: `/dashboard/${organisationId}/informations`,
-        isActive: true,
-    },
-    {
-        title: DashName.CREATE,
-        url: `/dashboard/${organisationId}/createCourse`,
-    },
-    {
-        title: DashName.PROGRESS,
-        url: `/dashboard/${organisationId}/allCourses`,
-    },
-    {
-        title: DashName.BOOKING,
-        url: `/dashboard/${organisationId}/usersBookingTable`,
-    },
-];
+// const organisationId = sessionStorage.getItem('organisationId');
+// const navMainItems = [
+//     {
+//         title: DashName.ACCOUNT_INFO,
+//         url: `/dashboard/${organisationId}/informations`,
+//         isActive: true,
+//     },
+//     {
+//         title: DashName.CREATE,
+//         url: `/dashboard/${organisationId}/createCourse`,
+//     },
+//     {
+//         title: DashName.PROGRESS,
+//         url: `/dashboard/${organisationId}/allCourses`,
+//     },
+//     {
+//         title: DashName.BOOKING,
+//         url: `/dashboard/${organisationId}/usersBookingTable`,
+//     },
+// ];
 
 export function OrganisationSidebar({
     ...props
 }: React.ComponentProps<typeof Sidebar>): JSX.Element {
-    const [activeItem, setActiveItem] = useState<DashName | null>();
+    const [activeItem, setActiveItem] = useState<DashName>(
+        DashName.ACCOUNT_INFO
+    );
     const organisationId = sessionStorage.getItem('organisationId');
+
     const { removeAuthToken } = useAuth();
     const navigate = useNavigate();
-
     if (!organisationId) {
         throw new Error(" Vous n'avez pas accès à cette page");
     }
@@ -70,33 +71,57 @@ export function OrganisationSidebar({
         <div className="flex w-full h-full">
             <Sidebar
                 collapsible="icon"
-                className="bg-[#0b927a] text-white font-semibold"
+                className="bg-[#be3565] text-white font-semibold p-5"
                 {...props}
             >
-                <SidebarHeader>{organisation?.organisationName}</SidebarHeader>
-                <SidebarContent>
-                    <NavMain
-                        items={navMainItems}
-                        onItemClick={(item) =>
-                            setActiveItem(item.title as DashName)
-                        }
-                    />
+                <SidebarHeader className="gap-10 text-white">
+                    <Link to="/">
+                        <h1 className="text-3xl font-semibold font-poppins">
+                            <Trans
+                                i18nKey="Navbar.logob"
+                                components={{
+                                    span: <span className="text-[#ffffff] " />,
+                                }}
+                            />
+                        </h1>
+                    </Link>
+                    <h3 className="text-white">
+                        {organisation?.organisationName}
+                    </h3>
+                </SidebarHeader>
+                <SidebarContent className="flex flex-col text-lg items-start p-4">
+                    <NavLink to={`/dashboard/${organisationId}/informations`}>
+                        Informations
+                    </NavLink>
+                    <NavLink to={`/dashboard/${organisationId}/createCourse`}>
+                        Créer un cours
+                    </NavLink>
+                    <NavLink
+                        to={`/dashboard/${organisationId}/usersBookingTable`}
+                    >
+                        Réservations
+                    </NavLink>
                 </SidebarContent>
                 <SidebarFooter>
-                    <div className="text-sm mb-2">{organisation?.email}</div>
+                    <div className=" mb-2 ">
+                        <p className="text-white text-base">
+                            {organisation?.email}
+                        </p>
+                    </div>
+
                     <Button
-                        className="p-4 px-6 bg-[#01a274] text-white gap-2"
-                        variant={'ghost'}
                         onClick={handleLogout}
+                        className="p-4 px-6 bg-[#ffffff] text-white gap-2"
+                        variant="ghost"
                     >
-                        <LogOut />
+                        <LogOut className="text-slate-400" />
                         <p>Se déconnecter</p>
                     </Button>
                 </SidebarFooter>
                 <SidebarRail />
             </Sidebar>
-            <div className="flex-1">
-                {activeItem && <ContentDisplay activeItem={activeItem} />}
+            <div className="flex-1 p-6 overflow-y-auto">
+                <Outlet />
             </div>
         </div>
     );

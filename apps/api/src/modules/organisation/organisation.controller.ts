@@ -6,14 +6,9 @@ import {
   HttpStatus,
   Param,
   Patch,
-  Post,
 } from '@nestjs/common';
 import { OrganisationService } from './organisation.service';
-import {
-  OrganisationCompleteInfo,
-  OrganisationInfosDTO,
-  OrganisationRegisterDTO,
-} from '@baobbab/dtos';
+import { OrganisationCompleteInfo, OrganisationInfosDTO } from '@baobbab/dtos';
 import { OrganisationInfos } from 'src/entities/organisationInfos.entity';
 
 @Controller('organisation')
