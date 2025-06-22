@@ -7,7 +7,6 @@ import {
     SidebarHeader,
     SidebarRail,
 } from '@/components/ui/sidebar';
-import { useState } from 'react';
 import { useAuth } from '@/context/Auth.context';
 import { Button } from '../ui/button';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router';
@@ -24,9 +23,6 @@ export enum DashName {
 export function OrganisationSidebar({
     ...props
 }: React.ComponentProps<typeof Sidebar>): JSX.Element {
-    const [activeItem, setActiveItem] = useState<DashName>(
-        DashName.ACCOUNT_INFO
-    );
     const organisationId = sessionStorage.getItem('organisationId');
 
     const { removeAuthToken } = useAuth();

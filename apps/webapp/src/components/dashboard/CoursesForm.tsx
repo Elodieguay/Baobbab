@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import MultiSelect from '../form/input/Multiselect';
-import { useCreateCourse, useGetCategory } from '@/hooks/courses/query';
+import { useGetCategory } from '@/hooks/courses/query';
 import { useState } from 'react';
 
 const courseSchema = z.object({
@@ -44,8 +44,8 @@ const optionsDays = [
 
 const CoursesForm = (): JSX.Element => {
     const { data: category } = useGetCategory();
-    const { mutateAsync: createCourse } = useCreateCourse();
-    const [disabled, setDisabled] = useState(true);
+    // const { mutateAsync: createCourse } = useCreateCourse();
+    const [disabled] = useState(true);
     const form = useForm({
         resolver: zodResolver(courseSchema),
         defaultValues: {
@@ -62,26 +62,29 @@ const CoursesForm = (): JSX.Element => {
         },
     });
 
-    const onSubmit = (values: z.infer<typeof courseSchema>): void => {
-        createCourse({
-            title: values.title,
-            description: values.description,
-            address: values.address,
-            city: values.city,
-            category: values.category,
-            price: values.price,
-            duration: values.duration,
-            schedule: values.days.map((day) => ({
-                day,
-                hours: values.hours,
-            })),
-            image: 'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp',
-            position: {
-                type: 'Point',
-                coordinates: [-1.553621, 47.218371],
-            },
-            organisationId: sessionStorage.getItem('organisationId')!,
-        });
+    const onSubmit = () => {
+        // createCourse({
+        //     createCourse: {
+        //         title: values.title,
+        //         description: values.description,
+        //         address: values.address,
+        //         city: values.city ?? null,
+        //         category: values.category ,
+        //         price: values.price,
+        //         duration: values.duration,
+        //         schedule: values.days.map((day, idx) => ({
+        //             id: `${day}-${idx}-${Date.now()}`,
+        //             day,
+        //             hours: values.hours,
+        //         })),
+        //         image: 'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp',
+        //         position: {
+        //             type: 'Point',
+        //             coordinates: [-1.553621, 47.218371],
+        //         },
+        //         organisationId: sessionStorage.getItem('organisationId')!,
+        //     },
+        // });
     };
 
     return (
