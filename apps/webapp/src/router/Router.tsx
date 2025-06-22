@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router';
 import AppRoutes from './AppRoutes';
 import Courses from '../pages/courses/Courses';
 import Dashboard from '../pages/dashboard/Dashboard';
@@ -9,13 +9,13 @@ import ForgottenPassword from '@/components/auth/ForgottenPassword';
 import ResetPassword from '@/components/auth/ResetPassword';
 import Footer from '@/components/footer/Footer';
 import CoursesForm from '@/components/dashboard/CoursesForm';
-import UsersBookingTable from '@/components/dashboard/UsersBookingTable';
 import HomePage from '@/pages/home/HomePage';
 import NotFound from '@/pages/notFound/NotFound';
 import PrivatyPolicy from '@/pages/privatyPolicy/PrivatyPolicy';
 import { lazy, Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import InformationsForm from '@/components/form/organisation/InformationsForm';
+import DetailsCoursesBooked from '@/components/dashboard/DetailsCoursesBooked';
 const CourseByCity = lazy(() => import('@/pages/courses/CourseByCity'));
 const CourseById = lazy(() => import('@/pages/courses/CourseById'));
 
@@ -74,12 +74,17 @@ const router = createBrowserRouter([
                 element: <Dashboard />,
                 children: [
                     {
+                        path: '',
+                        index: true,
+                        element: <Navigate to="allCourses" replace />,
+                    },
+                    {
                         path: 'createCourse',
                         element: <CoursesForm />,
                     },
                     {
-                        path: 'usersBookingTable',
-                        element: <UsersBookingTable />,
+                        path: 'allCourses',
+                        element: <DetailsCoursesBooked />,
                     },
                     {
                         path: 'informations',

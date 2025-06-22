@@ -34,12 +34,12 @@ const HomePage = () => {
         navigate(`/courses/${data.city}`);
     };
     return (
-        <div className="relative w-full min-h-screen">
-            <div className="absolute top-0 left-0 w-full  z-10">
+        <div className="relative w-full min-h-screen overflow-x-hidden">
+            <div className="absolute top-0 left-0 w-full z-10">
                 <Navbar className="lg:text-white  " />
             </div>
-            <div className="flex flex-col lg:flex-row w-full h-full max-w-[95rem] mx-auto px-4 md:px-8 xl:px-20">
-                <div className="flex flex-col w-full lg:w-1/2 justify-end gap-10 md:gap-12 mt-32 lg:mt-0">
+            <div className="flex flex-col lg:flex-row w-full h-full max-w-[130rem] mx-auto px-4 md:px-8 xl:px-20">
+                <div className="flex flex-col w-full lg:w-1/2 justify-end gap-10 md:gap-12 mt-32 lg:mt-0 lg:ml-4">
                     <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold">
                         <Trans
                             i18nKey="Home.logo"
@@ -71,23 +71,23 @@ const HomePage = () => {
                         </SelectCityForm>
                     </div>
                 </div>
-                <div className="w-full lg:w-1/2 mt-10 lg:mt-0 rounded-bl-[40px] overflow-hidden relative">
+                <div className="w-full lg:w-1/2 mt-10 lg:mt-0 rounded-bl-[3rem] rounded-br-[1rem] overflow-hidden relative mr-4">
                     <img
                         src={guitarebab}
                         alt="Cours de guitare"
                         width={1920}
                         height={1080}
-                        className="w-full h-60 xs:h-72 sm:h-[40vh] md:h-[50vh] lg:h-[80vh] object-cover"
+                        className="w-full h-60 xs:h-72 sm:h-[40vh] md:h-[50vh] lg:h-[70vh] object-cover"
                         loading="eager"
                         fetchPriority="high"
                     />
                 </div>
             </div>
-            <div className="my-20 px-4 md:px-8 xl:px-20">
+            <div className="my-15 px-4 xl:px-0">
                 <Quotes />
             </div>
             <Description />
-            <div className="my-20 px-4 md:px-8 xl:px-20">
+            <div className="my-15 px-4  xl:px-15">
                 <CTA />
             </div>
         </div>

@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import MultiSelect from '../form/input/Multiselect';
 import { useCreateCourse, useGetCategory } from '@/hooks/courses/query';
+import { useState } from 'react';
 
 const courseSchema = z.object({
     title: z.string().min(3, 'Le titre est requis'),
@@ -44,6 +45,7 @@ const optionsDays = [
 const CoursesForm = (): JSX.Element => {
     const { data: category } = useGetCategory();
     const { mutateAsync: createCourse } = useCreateCourse();
+    const [disabled, setDisabled] = useState(true);
     const form = useForm({
         resolver: zodResolver(courseSchema),
         defaultValues: {
@@ -83,7 +85,7 @@ const CoursesForm = (): JSX.Element => {
     };
 
     return (
-        <div className="w-full">
+        <div className="w-full relative">
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -289,6 +291,22 @@ const CoursesForm = (): JSX.Element => {
                     </Button>
                 </form>
             </Form>
+            {disabled && (
+                <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-50 flex items-center justify-center pointer-events-auto">
+                    <div className="text-center space-y-2 px-4">
+                        <p className="text-lg font-semibold text-red-700">
+                            Cette fonctionnailité arrive bientôt.
+                        </p>
+                        <p className="text-sm text-gray-700">
+                            Vous ne pouvez pas encore créer de cours sur la
+                            plateforme.
+                            <br />
+                            Contactez-nous à :
+                            <span className="font-medium ">pro@baobbab.fr</span>
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import z from 'zod';
 import { passwordValidation } from './user.dto';
-import { CoursesDTO } from './courses';
+import { CoursesDTO, CoursesDTOGeojson } from './courses';
 import { Status, UserRole } from './enum';
 
 const phoneNumberValidation = new RegExp(/^((\+33|0)[6-7])\d{8}$/);
@@ -135,4 +135,5 @@ export interface OrganisationCompleteInfo extends OrganisationInfosDTO {
     id: string;
     organisationName: string;
     email: string;
+    courses: CoursesDTOGeojson[];
 }

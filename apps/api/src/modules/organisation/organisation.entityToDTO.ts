@@ -1,6 +1,6 @@
 import { OrganisationCompleteInfo } from '@baobbab/dtos';
 import { Organisation } from 'src/entities/organisation.entity';
-
+import { singleCourseToDto } from '../courses/courses.entityToDto';
 export function organisationToDto(org: Organisation): OrganisationCompleteInfo {
   return {
     id: org.id,
@@ -18,5 +18,6 @@ export function organisationToDto(org: Organisation): OrganisationCompleteInfo {
     image: org.organisationInfos?.image,
     createdAt: org.organisationInfos?.createdAt,
     updatedAt: org.organisationInfos?.updatedAt,
+    courses: org.courses?.map(singleCourseToDto) ?? [],
   };
 }

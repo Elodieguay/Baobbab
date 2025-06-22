@@ -1,5 +1,6 @@
 import { useGetCourseById } from '@/hooks/courses/query';
 import { useOrganisationById } from '@/hooks/organisation/useOrganisation';
+import log from 'loglevel';
 import { Quote } from 'lucide-react';
 import { useParams } from 'react-router';
 
@@ -13,6 +14,7 @@ const CourseOrgDetails = () => {
     if (!orgId) {
         return;
     }
+    log.debug(orgInfoData);
     return (
         <aside className="lg:w-1/3 flex flex-col flex-grow-0 gap-6 items-center bg-[#f0f0f0] shadow rounded-md">
             <div className="flex flex-col items-center px-4 space-y-6 ">

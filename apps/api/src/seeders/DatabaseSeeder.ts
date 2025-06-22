@@ -39,8 +39,8 @@ export class DatabaseSeeder extends Seeder {
         'https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=800&q=75&fm=webp',
       ],
       'Arts & Cultures': [
-        'https://www.pexels.com/fr-fr/photo/prenez-it-easy-painted-road-1570264&w=800&q=75&fm=webp',
-        'https://www.pexels.com/fr-fr/photo/photographie-selective-d-un-mur-avec-grafitti-1194420&w=800&q=75&fm=webp',
+        'https://images.pexels.com/photos/1570264/pexels-photo-1570264.jpeg?_gl=1*cdd46j*_ga*NTkwNDEzMzY3LjE3NTA1NDk2Mzg.*_ga_8JE65Q40S6*czE3NTA1NDk2MzckbzEkZzEkdDE3NTA1NTAyOTgkajYwJGwwJGgw&w=800&q=75&fm=webp',
+        'https://images.pexels.com/photos/1194420/pexels-photo-1194420.jpeg?_gl=1*qjvml8*_ga*NTkwNDEzMzY3LjE3NTA1NDk2Mzg.*_ga_8JE65Q40S6*czE3NTA1NDk2MzckbzEkZzEkdDE3NTA1NTAzMjYkajMyJGwwJGgw&w=800&q=75&fm=webp',
       ],
       'Bien-être': [
         'https://images.unsplash.com/photo-1588286840104-8957b019727f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=800&q=75&fm=webp',

@@ -28,9 +28,9 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
         setMenuOpen((prev) => !prev);
     };
 
-    const handleRemoveAuthData = (): void => {
+    const handleRemoveAuthData = async (): Promise<void> => {
         if (removeAuthData) {
-            removeAuthData();
+            await removeAuthData();
         }
         navigate('/');
     };
@@ -49,7 +49,7 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
 
     return (
         <div className="w-full flex justify-center border-none">
-            <div className="w-full max-w-7xl h-16 flex items-center justify-between px-4 md:px-8 xl:px-2">
+            <div className="w-full lg:mx-4 xl:mx-[5.5rem] h-16 flex items-center justify-between px-4 md:px-8 xl:px-2">
                 <Link to="/">
                     <h1 className="text-3xl font-semibold font-poppins">
                         <Trans

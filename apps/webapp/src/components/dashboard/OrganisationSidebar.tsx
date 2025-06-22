@@ -13,35 +13,13 @@ import { Button } from '../ui/button';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
 import { useOrganisationById } from '@/hooks/organisation/useOrganisation';
-import { Content } from '@radix-ui/react-dialog';
-import { ContentDisplay } from './ContentDisplay';
+import log from 'loglevel';
 
 export enum DashName {
     ACCOUNT_INFO = 'Informations',
     CREATE = 'Créer une activité',
     BOOKING = 'Activités réservées',
 }
-
-// const organisationId = sessionStorage.getItem('organisationId');
-// const navMainItems = [
-//     {
-//         title: DashName.ACCOUNT_INFO,
-//         url: `/dashboard/${organisationId}/informations`,
-//         isActive: true,
-//     },
-//     {
-//         title: DashName.CREATE,
-//         url: `/dashboard/${organisationId}/createCourse`,
-//     },
-//     {
-//         title: DashName.PROGRESS,
-//         url: `/dashboard/${organisationId}/allCourses`,
-//     },
-//     {
-//         title: DashName.BOOKING,
-//         url: `/dashboard/${organisationId}/usersBookingTable`,
-//     },
-// ];
 
 export function OrganisationSidebar({
     ...props
@@ -58,7 +36,7 @@ export function OrganisationSidebar({
     }
 
     const { data: organisation } = useOrganisationById(organisationId);
-
+    log.debug(organisation);
     const handleLogout = (): void => {
         if (removeAuthToken) {
             removeAuthToken();
@@ -90,16 +68,14 @@ export function OrganisationSidebar({
                     </h3>
                 </SidebarHeader>
                 <SidebarContent className="flex flex-col text-lg items-start p-4">
+                    <NavLink to={`/dashboard/${organisationId}/allCourses`}>
+                        Détails des réservations
+                    </NavLink>
                     <NavLink to={`/dashboard/${organisationId}/informations`}>
                         Informations
                     </NavLink>
                     <NavLink to={`/dashboard/${organisationId}/createCourse`}>
                         Créer un cours
-                    </NavLink>
-                    <NavLink
-                        to={`/dashboard/${organisationId}/usersBookingTable`}
-                    >
-                        Réservations
                     </NavLink>
                 </SidebarContent>
                 <SidebarFooter>
