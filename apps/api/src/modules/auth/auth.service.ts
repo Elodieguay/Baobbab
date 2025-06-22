@@ -74,7 +74,7 @@ export class AuthService {
     const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
-      expiresIn: '5m', // Optional: Set an expiration time for the token
+      expiresIn: '5m',
     });
     const refresh_token = await this.jwtService.signAsync(payload, {
       secret: secretRefresh,
@@ -121,16 +121,16 @@ export class AuthService {
   }: AuthPayloadDto): Promise<
     Omit<User, 'password'> & { access_token: string; refresh_token: string }
   > {
-    // On valide l'utilisateur
+    // we validate the user with email and password
     const user = await this.validateUser({ email, password });
-    // On génère le payload pour le JWT
+    // we generate the payload for the JWT
     const payload = { id: user.id, email: user.email };
-    //on génère le token
+    //we generate the token
     const secret = this.configService.get('JWT_SECRET');
     const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
-      expiresIn: '2m', // Optional: Set an expiration time for the token
+      expiresIn: '2m',
     });
     const refresh_token = await this.jwtService.signAsync(payload, {
       secret: secretRefresh,
@@ -162,7 +162,6 @@ export class AuthService {
           expiresIn: '10m',
         },
       );
-      logger.debug('New access token generated:', newAccessToken);
       return newAccessToken;
     } catch (err) {
       throw new UnauthorizedException('Invalid or expired refresh token');
@@ -198,11 +197,9 @@ export class AuthService {
     await this.em.persistAndFlush(organisation);
     const payload = { id: organisation.id, email: organisation.email };
     const secret = this.configService.get('JWT_SECRET');
-    logger.debug('secret', secret);
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
     });
-    logger.debug('token', access_token);
 
     return {
       ...organisation,
@@ -214,9 +211,7 @@ export class AuthService {
   async organisationLogin(
     loginOrganisation: AuthPayloadDto,
   ): Promise<Omit<Organisation, 'password'> & { access_token: string }> {
-    // On valide l'utilisateur
     const organisation = await this.validateUser(loginOrganisation);
-    // On génère le payload pour le JWT
     const payload = { id: organisation.id, email: organisation.email };
     const secret = this.configService.get('JWT_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {

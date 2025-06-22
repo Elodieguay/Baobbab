@@ -26,7 +26,6 @@ const CardsCourses = ({
         keyPrefix: 'Courses.cardsCourses',
     });
     const navigate = useNavigate();
-    log.debug('schedule', item.schedule);
 
     return (
         <Card
@@ -41,8 +40,13 @@ const CardsCourses = ({
                     src={item.image}
                     alt={item.title}
                     className="w-full h-full object-cover"
+                    loading="lazy"
+                    fetchPriority="low"
+                    width={400}
+                    height={300}
                 />
                 <Button
+                    aria-label="Ajouter aux favoris"
                     variant="ghost"
                     size="icon"
                     className="absolute bottom-2 right-2 transition-transform transform hover:scale-110"
@@ -67,6 +71,7 @@ const CardsCourses = ({
                 </CardHeader>
                 <div className="mt-4">
                     <Button
+                        aria-label="Voir plus de détails"
                         className="text-sm px-4 py-2 rounded-xl hover:bg-[#dfa438]"
                         onClick={() => navigate(`/courses/${city}/${item.id}`)}
                     >

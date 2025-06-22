@@ -7,4 +7,5 @@ node_modules
 #Docker
 /docker
 /services
-/packages/dtos/dist/tsconfig.tsbuildinfo
+
+*.tsbuildinfo

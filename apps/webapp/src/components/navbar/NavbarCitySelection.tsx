@@ -30,7 +30,7 @@ const NavbarCitySelection = () => {
     return (
         <div className="w-full flex justify-around items-center rounded-3xl border gap-2">
             <div className="flex w-1/3 gap-3 pl-5 p-2">
-                <Building2 className="text-[#be3565]" />
+                <Building2 className="text-buttonPink" />
                 {city}
             </div>
             <div className="w-2/3 border-l ">

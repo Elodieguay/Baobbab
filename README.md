@@ -9,12 +9,12 @@ Search engine to find the best leisure courses near you.
   <a href="#key_features">Key Features</a> &nbsp;&bull;&nbsp;
   <a href="#tech_stack">Tech Stack</a> &nbsp;&bull;&nbsp;
   <a href="#getting_started">Getting Started</a> &nbsp;&bull;&nbsp;
+  <a href="#contact">Contact</a>
 </p>
 
 </div>
 
 ---
-<!-- ABOUT THE PROJECT -->
 <div id="about">
 
 ## 📖 About the project
@@ -22,7 +22,6 @@ Search engine to find the best leisure courses near you.
 <p>
 Purpose of the application:
 Baobbab is an essential search engine to find the best leisure courses near you. Easily connect with passionate teachers, dynamic associations, and excellent clubs around you, and discover a new way to learn and grow.
-Baobbab is specifically designed for small towns that do not yet have visualization tools for their local activities, enabling them to attract new residents and revitalize their community.
 </p>
 <br>
 </div>
@@ -36,17 +35,10 @@ Baobbab is specifically designed for small towns that do not yet have visualizat
 - **Map Visualization:** View available courses on an interactive map.
 - **Course Details:** Access detailed information about each course with photos or videos.
 - **Quick Booking:** Book a trial class with a single click.
-- **User Pages:**
-  - Users can view their profiles and the list of trial classes they have booked.
-  - Organizations (associations, clubs, etc.) have an admin space to create and manage their courses.
-  - A super admin validates the data submitted by organizations.
-- **User Roles:**
+- **Role-based access:**
   - **User:** Books trial classes and views information.
   - **Organization Admin:** Manages courses for their organization.
-  - **Superadmin:** Validates organization data and supervises the system.
-
-
-
+  
 ****
 <!-- Teck Stack -->
 <div id="tech_stack">  
@@ -61,6 +53,7 @@ Baobbab is specifically designed for small towns that do not yet have visualizat
 - **Zod:** Data validation library.
 - **TailwindCSS:** CSS framework for modern and responsive design.
 - **Shadcn:** Prebuilt components to accelerate UI development.
+- **MapLibre:** Library for creating interactive maps.
 
 ### Backend
 
@@ -69,13 +62,12 @@ Baobbab is specifically designed for small towns that do not yet have visualizat
 - **PostgreSQL:** Relational database.
 - **PostGIS:** Spatial extension for PostgreSQL to handle geographic data.
 
-### Mapping
-
-- **MapLibre:** Library for creating interactive maps.
-
-### External API
+### External Service
 
 - **API Adresse (.gouv):** Service for geolocating addresses.  
+- **Brevo** for email automation (still in progress)
+- **Render** for deployment
+
 ****
 <!-- GETTING STARTED -->
 <div id="getting_started">
@@ -85,32 +77,66 @@ Baobbab is specifically designed for small towns that do not yet have visualizat
 <p>Clone down this repository.</p>
 ` git clone git@github.com:Elodieguay/baobbab.git `
 
-<div id="prerequisites">
-
 ### Prerequisites:
-<p>You will need `node`, `pnpm`and `Docker` installed on your machine.</p>
-</div>
+You need:
 
-<div id="installation">
+- [Node.js](https://nodejs.org/) (v18+)
+- [pnpm](https://pnpm.io/)
+- [Docker](https://www.docker.com/)
+
 
 ### Installation:
 
-1 - Create .env file, one in the root, one in the Api and one in the Webapp, according to .env-example.
+1. **Clone the repository**
 
-2 - Install dependencies 
+```bash
+git clone git@github.com:Elodieguay/baobbab.git 
+cd baobbab
+```
+
+2. **Install all dependencies** 
 `pnpm install`
 
-### Start the Application:
+3. **Create .env files** 
+You need one .env file in:
+./apps/api
+./apps/web
+root (optional)
+Use the .env.example files provided.
 
-1 - Build and start yhe Docker containers
+### Start with Docker (PostgreSQL + API):
+
+1. **Launch Docker containers**
 `docker-compose up --build`
 
-2 - Launch the DTO's in the package folder with pnpm dev
+This will start:
+PostgreSQL database and NestJS API
 
-3 - Launch the Api with pnpm dev
+2. **If you're not using Docker for the API, start it manually:**
 
-4 - Launch the Webapp with pnpm dev
+```bash
+cd apps/api
+pnpm dev
+```
+3. **Launch the DTO's in the package folder with pnpm dev** 
 
+`pnpm dev`
+
+4. **Launch the front with pnpm dev**
+
+`pnpm dev`
+
+## Developper Notes
+
+- API + Database can be fully managed with Docker.
+
+- The frontend is launched locally using pnpm dev for hot reload and development.
+
+- Database connection string (in .env):
+
+`DATABASE_URL=postgresql://sunagenda:password@localhost:5432/sunagenda `
+
+- Make sure ports 5432 (Postgres) and 3000 (API) are free.
 
 
 ----

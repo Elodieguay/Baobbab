@@ -22,8 +22,7 @@ const Maplibre = ({
 }): JSX.Element => {
     const mapContainer = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<maplibregl.Map | null>(null);
-    log.debug('loadCordinates', loadCoordinates);
-    log.debug('coursedata de maplibre', courseData);
+
     const adjustPositions = useCallback(
         (courseData: CoursesDTOGeojson[]): CoursesDTOGeojson[] => {
             const seenCoords = new Map();
@@ -32,9 +31,9 @@ const Maplibre = ({
                 const coordsKey = course.position.coordinates.join(',');
 
                 if (seenCoords.has(coordsKey)) {
-                    // On a déjà vu ces coordonnées → On ajoute un petit décalage
+                    // we use a Map to track how many times we've seen each coordinate
                     const count = seenCoords.get(coordsKey);
-                    const offset = count * 0.0001; // Décalage progressif
+                    const offset = count * 0.0001; //progresive offset
                     seenCoords.set(coordsKey, count + 1);
 
                     return {
@@ -42,13 +41,14 @@ const Maplibre = ({
                         position: {
                             ...course.position,
                             coordinates: [
-                                course.position.coordinates[0] + offset, // Décalage en longitude
-                                course.position.coordinates[1] + offset, // Décalage en latitude
+                                course.position.coordinates[0] + offset, // longitude offset
+                                course.position.coordinates[1] + offset, // latitude offset
                             ],
                         },
                     };
                 } else {
-                    // Première fois qu'on voit ces coordonnées
+                    // first time we see this coordinate
+                    // we add it to the Map with a count of 1
                     seenCoords.set(coordsKey, 1);
                     return course;
                 }
@@ -65,12 +65,6 @@ const Maplibre = ({
     });
 
     const adjustedData = useMemo(() => adjustPositions(validData), [validData]);
-    // const adjustedData = useMemo(
-    //     () => adjustPositions(validData),
-    //     [validData, adjustPositions]
-    // );
-
-    // log.debug('validata:', validData);
 
     useEffect(() => {
         if (!mapContainer.current || !loadCoordinates) return;
@@ -83,8 +77,6 @@ const Maplibre = ({
         });
 
         map.on('load', () => {
-            // log.info('Map loaded, adding points layer...');
-
             map.addSource('points', {
                 type: 'geojson',
                 data: {
@@ -100,7 +92,7 @@ const Maplibre = ({
                 },
             });
 
-            // On ajoute une couche pour les marqueurs
+            // we use a circle layer to represent points
             map.addLayer({
                 id: 'points-layer',
                 type: 'circle',
@@ -108,10 +100,10 @@ const Maplibre = ({
                 paint: {
                     'circle-radius': [
                         'case',
-                        // Si l'ID correspond à hoveredCardId
+                        // if ID match hoveredCardId
                         ['==', ['get', 'id'], hoveredCardId ?? ''],
                         10,
-                        // Taille par défaut
+                        // default width
                         8,
                     ],
                     'circle-color': [
@@ -141,13 +133,12 @@ const Maplibre = ({
                 }
             });
 
-            // On ajuste la vue pour inclure tous les marqueurs
+            // we create a bounds object to fit all points
             const bounds = new maplibregl.LngLatBounds();
             adjustedData.forEach((point) => {
                 const coords = point.position.coordinates;
                 bounds.extend([coords[0], coords[1]]);
             });
-            log.info('Bounds to fit:', bounds);
             map.fitBounds(bounds, { padding: 100 });
             map.setZoom(12);
             mapRef.current = map;
@@ -164,7 +155,7 @@ const Maplibre = ({
 
         const map = mapRef.current;
 
-        // Applique des mises à jour sur les sources existantes sans recréer la carte
+        // we update the data of the 'points' source
         (map.getSource('points') as maplibregl.GeoJSONSource)?.setData({
             type: 'FeatureCollection',
             features: adjustedData.map((course) => ({
@@ -183,9 +174,7 @@ const Maplibre = ({
 
         const layer = mapRef.current.getLayer('points-layer');
         if (!layer) return;
-        // On vérifie si la couche existe avant de modifier son style
-        // if (mapRef.current.getLayer('points-layer')) {
-
+        // we update the paint properties of the 'points-layer'
         mapRef.current.setPaintProperty('points-layer', 'circle-radius', [
             'case',
             ['==', ['get', 'id'], hoveredCardId],
@@ -198,7 +187,6 @@ const Maplibre = ({
             '#01a274',
             '#e47890',
         ]);
-        // }
     }, [hoveredCardId]);
 
     if (isLoading) {

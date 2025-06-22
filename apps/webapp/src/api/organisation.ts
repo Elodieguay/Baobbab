@@ -14,8 +14,7 @@ export const getOrganisationById = async (
     try {
         const url = `${config.apiUrl}/organisation/${organisationId}`;
         const response = await ky.get(url).json<OrganisationCompleteInfo>();
-
-        log.info('OrganisationInformation succeed:', response);
+        log.debug('GetOrganisationById:', response);
         return response;
     } catch (error) {
         log.error(`Error to get organisation information:`, error);
@@ -41,7 +40,7 @@ export const updateOrganisationInfos = async ({
         const response = await ky
             .patch(url, { json: updateOrganisationInfo })
             .json<OrganisationInfosDTO>();
-        log.info('UpdateOrganisationInfo:', response);
+        log.debug('UpdateOrganisationInfos:', response);
         return response;
     } catch (error) {
         log.error(`Error to update the  organisation'information:`, error);

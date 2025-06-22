@@ -1,4 +1,5 @@
 import z from 'zod';
+import { CoursesDTOGeojson } from './courses';
 import { UserRole } from './enum';
 export declare const MAX_FILE_SIZE: number;
 export declare const ACCEPTED_IMAGE_TYPES: string[];
@@ -42,15 +43,15 @@ export declare const organisationRegisterFormSchema: z.ZodObject<{
     email: z.ZodString;
     password: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    email: string;
-    password: string;
     siret: string;
     organisationName: string;
+    email: string;
+    password: string;
 }, {
-    email: string;
-    password: string;
     siret: string;
     organisationName: string;
+    email: string;
+    password: string;
 }>;
 export declare const organisationLoginFormSchema: z.ZodObject<{
     email: z.ZodString;
@@ -98,4 +99,5 @@ export interface OrganisationCompleteInfo extends OrganisationInfosDTO {
     id: string;
     organisationName: string;
     email: string;
+    courses: CoursesDTOGeojson[];
 }

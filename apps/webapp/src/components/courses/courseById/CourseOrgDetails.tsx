@@ -1,25 +1,20 @@
 import { useGetCourseById } from '@/hooks/courses/query';
 import { useOrganisationById } from '@/hooks/organisation/useOrganisation';
-import { CoursesDTOGeojson } from '@baobbab/dtos';
 import log from 'loglevel';
 import { Quote } from 'lucide-react';
 import { useParams } from 'react-router';
 
-interface CourseOrgDetailsProps {
-    course: CoursesDTOGeojson | undefined;
-}
-const CourseOrgDetails = (course: CourseOrgDetailsProps) => {
+const CourseOrgDetails = () => {
     const params = useParams();
     const courseId = params.id;
     const { data: courseById } = useGetCourseById(courseId || '');
     const orgId = courseById?.organisationId;
 
     const { data: orgInfoData } = useOrganisationById(orgId || '');
-    log.debug('orgaINfo', orgInfoData);
     if (!orgId) {
         return;
     }
-    log.debug('course', course);
+    log.debug(orgInfoData);
     return (
         <aside className="lg:w-1/3 flex flex-col flex-grow-0 gap-6 items-center bg-[#f0f0f0] shadow rounded-md">
             <div className="flex flex-col items-center px-4 space-y-6 ">

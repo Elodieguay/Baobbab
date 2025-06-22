@@ -12,10 +12,6 @@ import { AuthGuard } from '@nestjs/passport';
 export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(private readonly jwtService: JwtService) {
     super();
-    logger.log(
-      'JwtService Injected jwt in JwtAuthGuard:',
-      JSON.stringify(this.jwtService, null, 2),
-    );
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -23,44 +19,27 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (!isAuthorized) {
       return false;
     }
-    logger.log(
-      'JwtService Injected jwt AuthGuard:',
-      JSON.stringify(this.jwtService, null, 2),
-    );
 
     // On récupère le contexte de l'exécution
     const request = context.switchToHttp().getRequest();
     const authHeader = request.headers.authorization;
-
-    logger.debug(authHeader);
 
     if (!authHeader) {
       throw new UnauthorizedException('you are not authorized');
     }
     const token = authHeader.split(' ')[1];
 
-    logger.debug(token);
     if (!token) {
       throw new UnauthorizedException('invalid authorization header format');
     }
-    logger.debug(
-      'decoded',
-      this.jwtService.verify(token, {
-        secret: process.env.JWT_SECRET,
-      }),
-    );
+
     // logger.log('JWT secret', process.env.JWT_SECRET);
     try {
       // On vérifie si le token est valide
       const decoded = this.jwtService.verify(token, {
         secret: process.env.JWT_SECRET,
       });
-      logger.debug(
-        'decoded',
-        this.jwtService.verify(token, {
-          secret: process.env.JWT_SECRET,
-        }),
-      );
+
       request.user = decoded;
       return true;
     } catch (error) {
