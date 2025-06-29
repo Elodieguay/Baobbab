@@ -31,7 +31,9 @@ const ModalBooking = ({
     setIsModalOpen,
 }: ModalBookingProps): JSX.Element => {
     const { authData } = useAuth();
-    const { data } = useGetUser(authData?.token || '');
+    const { data } = useGetUser({
+        enabled: !!authData?.token,
+    });
     const userId = data?.id;
     const { t } = useTranslation('common');
     const { toast } = useToast();
@@ -66,7 +68,6 @@ const ModalBooking = ({
             updateBooking(
                 {
                     bookingId: bookingId,
-                    userId: userId,
                     updateBooking: {
                         title: values.title,
                         schedule: dayObject,
@@ -95,7 +96,6 @@ const ModalBooking = ({
         } else {
             createBooking(
                 {
-                    userId: userId,
                     createBooking: {
                         title: values.title,
                         schedule: dayObject,

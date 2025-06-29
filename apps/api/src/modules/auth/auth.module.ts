@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserService } from '../user/user.service';
 import * as dotenv from 'dotenv';
 import { LocalStrategy } from './strategies/local.strategy';
@@ -14,17 +14,20 @@ dotenv.config();
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: {
-        expiresIn: process.env.JWT_EXPIRE_IN,
-      },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_EXPIRE_IN') || '5m',
+        },
+      }),
     }),
   ],
   controllers: [AuthController],
   providers: [
     AuthService,
-    JwtService,
     JwtAuthGuard,
     JwtStrategy,
     LocalStrategy,
@@ -33,6 +36,6 @@ dotenv.config();
     UserService,
     OrganisationService,
   ],
-  exports: [AuthService, JwtModule, JwtService],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

@@ -20,7 +20,9 @@ export type CellRowUserProps = {
 export const CellRowCourses = ({ cellData }: CellRowUserProps) => {
     const { authData } = useAuth();
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const { data } = useGetUser(authData?.token || '');
+    const { data } = useGetUser({
+        enabled: !!authData?.token,
+    });
     const userId = data?.id;
     return (
         <DropdownMenu

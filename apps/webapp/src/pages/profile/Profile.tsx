@@ -15,8 +15,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 const Profile = (): JSX.Element => {
-    console.log('je suis la');
-
     const { authData } = useAuth();
 
     const { city } = useCity();

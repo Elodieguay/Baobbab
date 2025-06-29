@@ -153,15 +153,63 @@ export class BookingService {
   //   return booking;
   // }
 
+  // async update(
+  //   bookingId: string,
+  //   updateUserBooking: CreateABooking & { userId: string },
+  // ) {
+  //   if (!bookingId) throw new BadRequestException('bookingId is missing');
+
+  //   const existingBooking = await this.em.findOne(
+  //     Booking,
+  //     { id: bookingId, user: { id: updateUserBooking.userId } },
+  //     { populate: ['schedule'] },
+  //   );
+
+  //   if (!existingBooking) {
+  //     throw new NotFoundException('Booking not found');
+  //   }
+
+  //   // Supprimer l'ancienne réservation (Booking + Schedule associé)
+  //   await this.em.remove(existingBooking.schedule); // Schedule lié
+  //   await this.em.remove(existingBooking); // Booking
+  //   await this.em.flush();
+
+  //   // Créer une nouvelle réservation
+  //   const course = await this.coursesService.findById(
+  //     updateUserBooking.courseId,
+  //   );
+  //   if (!course) throw new Error('Course not found');
+
+  //   const user = await this.userService.findOneUserById(
+  //     updateUserBooking.userId,
+  //   );
+  //   if (!user) throw new NotFoundException('User not found');
+
+  //   const newSchedule = new Schedule();
+  //   newSchedule.day = updateUserBooking.schedule.day;
+  //   newSchedule.hours = updateUserBooking.schedule.hours;
+  //   newSchedule.courses = course;
+
+  //   const newBooking = new Booking();
+  //   newBooking.title = updateUserBooking.title;
+  //   newBooking.user = user;
+  //   newBooking.courses = course;
+  //   newBooking.schedule = newSchedule;
+
+  //   await this.em.persistAndFlush(newBooking);
+
+  //   return newBooking;
+  // }
   async update(
     bookingId: string,
-    updateUserBooking: CreateABooking & { userId: string },
+    updateUserBooking: CreateABooking,
+    userId: string,
   ) {
     if (!bookingId) throw new BadRequestException('bookingId is missing');
 
     const existingBooking = await this.em.findOne(
       Booking,
-      { id: bookingId, user: { id: updateUserBooking.userId } },
+      { id: bookingId, user: { id: userId } },
       { populate: ['schedule'] },
     );
 
@@ -169,36 +217,24 @@ export class BookingService {
       throw new NotFoundException('Booking not found');
     }
 
-    // Supprimer l'ancienne réservation (Booking + Schedule associé)
-    await this.em.remove(existingBooking.schedule); // Schedule lié
-    await this.em.remove(existingBooking); // Booking
+    // Mettre à jour les champs
+    existingBooking.title = updateUserBooking.title;
+
+    if (existingBooking.schedule) {
+      existingBooking.schedule.day = updateUserBooking.schedule.day;
+      existingBooking.schedule.hours = updateUserBooking.schedule.hours;
+    } else {
+      // Si pas de Schedule (très rare), on crée
+      const newSchedule = new Schedule();
+      newSchedule.day = updateUserBooking.schedule.day;
+      newSchedule.hours = updateUserBooking.schedule.hours;
+      newSchedule.courses = existingBooking.courses;
+      existingBooking.schedule = newSchedule;
+    }
+
     await this.em.flush();
 
-    // Créer une nouvelle réservation
-    const course = await this.coursesService.findById(
-      updateUserBooking.courseId,
-    );
-    if (!course) throw new Error('Course not found');
-
-    const user = await this.userService.findOneUserById(
-      updateUserBooking.userId,
-    );
-    if (!user) throw new NotFoundException('User not found');
-
-    const newSchedule = new Schedule();
-    newSchedule.day = updateUserBooking.schedule.day;
-    newSchedule.hours = updateUserBooking.schedule.hours;
-    newSchedule.courses = course;
-
-    const newBooking = new Booking();
-    newBooking.title = updateUserBooking.title;
-    newBooking.user = user;
-    newBooking.courses = course;
-    newBooking.schedule = newSchedule;
-
-    await this.em.persistAndFlush(newBooking);
-
-    return newBooking;
+    return existingBooking;
   }
 
   async remove(bookingId: string, userId: string) {

@@ -62,19 +62,15 @@ export class BookingController {
     @Req() req: { user: { id: string } },
     @Param('bookingId') bookingId: string,
     @Body()
-    updateUserBooking: CreateABooking & { userId: string },
+    updateUserBooking: CreateABooking,
   ) {
     try {
-      const { userId } = updateUserBooking;
-      const userIdReq = req.user.id;
-      if (userId !== userIdReq) {
-        throw new ForbiddenException(
-          'Vous ne pouvez pas créer une réservation',
-        );
-      }
+      const userId = req.user.id;
+
       const result = await this.bookingService.update(
         bookingId,
         updateUserBooking,
+        userId,
       );
       return {
         statusCode: 200,
@@ -91,15 +87,9 @@ export class BookingController {
   async delete(
     @Req() req: { user: { id: string } },
     @Param('bookingId') bookingId: string,
-    @Body('userId') userId: string,
   ) {
     try {
-      const userIdReq = req.user.id;
-      if (userId !== userIdReq) {
-        throw new ForbiddenException(
-          'Vous ne pouvez pas créer une réservation',
-        );
-      }
+      const userId = req.user.id;
       const result = await this.bookingService.remove(bookingId, userId);
       return {
         statusCode: 200,

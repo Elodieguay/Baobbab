@@ -71,7 +71,9 @@ export class AuthService {
 
     // it generate a token
     const secret = this.configService.get('JWT_SECRET');
+    logger.debug('secret', secret);
     const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
+    logger.debug('secretRefresh', secretRefresh);
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
       expiresIn: '5m',

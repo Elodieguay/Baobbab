@@ -23,19 +23,8 @@ interface UserRequest extends Request {
 @Controller('user')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly jwtService: JwtService,
-  ) {}
-  onModuleInit() {
-    if (!this.jwtService) {
-      logger.warn(
-        'JwtService in AuthGuard is undefined during initialization!',
-      );
-    } else {
-      logger.log('JwtService inAuthGuard Injected jwt:', this.jwtService);
-    }
-  }
+  constructor(private readonly userService: UserService) {}
+
   @Roles(UserRole.USER)
   @Get()
   async getUserById(@Req() req: UserRequest): Promise<UserDTO> {

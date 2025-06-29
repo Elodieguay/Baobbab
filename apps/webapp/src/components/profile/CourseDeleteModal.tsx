@@ -23,13 +23,12 @@ type BookingDeleteModalProps = {
 const BookingDeleteModal = ({
     trigger,
     booking,
-    userId,
     setIsEditModalOpen,
 }: BookingDeleteModalProps) => {
     const { toast } = useToast();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { t } = useTranslation('common', { keyPrefix: 'Profile' });
-    const { mutate: deleteBooking } = useDeleteUserBooking(booking.id, userId, {
+    const { mutate: deleteBooking } = useDeleteUserBooking(booking.id, {
         onSuccess: () => {
             toast({
                 variant: 'success',
