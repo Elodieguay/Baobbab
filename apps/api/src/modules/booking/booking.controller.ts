@@ -10,7 +10,6 @@ import {
   UseGuards,
   BadRequestException,
   Logger,
-  ForbiddenException,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateABooking, UserBooking, UserRole } from '@baobbab/dtos';

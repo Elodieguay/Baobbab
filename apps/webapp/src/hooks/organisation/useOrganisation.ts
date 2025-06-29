@@ -9,16 +9,12 @@ import { useToast } from '../use-toast';
 import log from 'loglevel';
 
 export function useGetOrganisation(
-    token: string,
     options?: Partial<UseQueryOptions<OrganisationProfile>>
 ) {
     return useQuery({
-        queryKey: ['organisation', token],
+        queryKey: ['organisation'],
         queryFn: async () => {
-            if (!token) {
-                throw new Error(' a token is required');
-            }
-            const data = await getOrganisation(token);
+            const data = await getOrganisation();
             return data;
         },
         ...options,

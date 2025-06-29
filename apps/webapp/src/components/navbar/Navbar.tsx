@@ -16,8 +16,8 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [menuOpen, setMenuOpen] = useState(false);
-    const { data: organisation } = useGetOrganisation(authData?.token ?? '', {
-        enabled: !!authData?.token && authData.role === UserRole.ADMIN,
+    const { data: organisation } = useGetOrganisation({
+        enabled: authData?.role === UserRole.ADMIN,
     });
 
     const { data: user } = useGetUser({
@@ -89,7 +89,7 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
                                     ) : organisation?.role ===
                                       UserRole.ADMIN ? (
                                         <Link
-                                            to={`/dashboard`}
+                                            to={`/dashboard/${organisation.id}`}
                                             className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-center"
                                         >
                                             {t('menuDashboard')}

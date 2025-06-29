@@ -7,8 +7,10 @@ import { Navigate } from 'react-router';
 const ProtectedRoutes = (): JSX.Element => {
     const location = useLocation();
 
-    const { authData } = useAuth();
-
+    const { authData, loading } = useAuth();
+    if (loading) {
+        return <></>;
+    }
     const findCurrentRoute = (
         pathname: string
     ): (typeof AppRoutes)[keyof typeof AppRoutes] | undefined => {
@@ -26,7 +28,7 @@ const ProtectedRoutes = (): JSX.Element => {
         currentRoute?.accessMode === RouteAccessMode.Authenticated &&
         !authData?.token
     ) {
-        return <Navigate to={AppRoutes.Courses.path ?? '/courses'} />;
+        return <Navigate to={AppRoutes.Home.path ?? '/'} />;
     }
 
     // booking route
@@ -49,7 +51,7 @@ const ProtectedRoutes = (): JSX.Element => {
         currentRoute.path === AppRoutes.Dashboard.path &&
         authData?.role !== UserRole.ADMIN
     ) {
-        return <Navigate to={AppRoutes.Courses.path ?? '/'} />;
+        return <Navigate to={AppRoutes.Courses.path ?? '/courses'} />;
     }
 
     //  User route
@@ -58,7 +60,7 @@ const ProtectedRoutes = (): JSX.Element => {
         currentRoute.path === AppRoutes.Profile.path &&
         authData?.role !== UserRole.USER
     ) {
-        return <Navigate to={AppRoutes.Courses.path ?? '/'} />;
+        return <Navigate to={AppRoutes.Error404.path ?? '/'} />;
     }
 
     // Vérifie les redirections spécifiées dans `AppRoutes`

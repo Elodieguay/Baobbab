@@ -13,7 +13,6 @@ import { UserRole } from '@baobbab/dtos';
 import { logger } from '@mikro-orm/nestjs';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Request } from 'express';
-import { JwtService } from '@nestjs/jwt';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 

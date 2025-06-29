@@ -153,12 +153,23 @@ export class AuthService {
       const payload = this.jwtService.verify(refreshTokenValue, {
         secret: this.configService.get('JWT_REFRESH_SECRET'),
       });
-      const user = await this.userService.findOneUserById(payload.id);
-      if (!user) {
-        throw new UnauthorizedException('User not found');
+
+      let entity: User | Organisation | null = null;
+      if (payload.role === UserRole.USER) {
+        entity = await this.userService.findOneUserById(payload.id);
+      } else if (payload.role === UserRole.ADMIN) {
+        entity = await this.em.findOne(Organisation, { id: payload.id });
       }
+      if (!entity) {
+        throw new UnauthorizedException('Entity not found');
+      }
+
+      // const user = await this.userService.findOneUserById(payload.id);
+      // if (!user) {
+      //   throw new UnauthorizedException('User not found');
+      // }
       const newAccessToken = this.jwtService.sign(
-        { id: user.id, email: user.email, role: user.role },
+        { id: entity.id, email: entity.email, role: entity.role },
         {
           secret: this.configService.get('JWT_SECRET'),
           expiresIn: '10m',

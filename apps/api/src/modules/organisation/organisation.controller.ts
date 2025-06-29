@@ -2,8 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   Patch,
   Req,
@@ -12,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { OrganisationService } from './organisation.service';
 import {
-  OrganisationAuthResponse,
   OrganisationCompleteInfo,
   OrganisationInfosDTO,
   OrganisationProfile,
@@ -27,12 +24,13 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 export interface AuthenticatedRequest extends Request {
   user?: { id: string; email: string; role: UserRole };
 }
+
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(UserRole.ADMIN)
 @Controller('organisation')
 export class OrganisationController {
   constructor(private readonly organisationService: OrganisationService) {}
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN)
   @Get()
   async findOneOrganisation(
     @Req() req: AuthenticatedRequest,
@@ -58,19 +56,37 @@ export class OrganisationController {
   }
 
   @Get(':id')
-  @HttpCode(HttpStatus.OK)
   async findOrganisationById(
+    @Req() req: AuthenticatedRequest,
     @Param('id') id: string,
   ): Promise<OrganisationCompleteInfo> {
+    const orgId = req.user?.id;
+    if (!orgId) {
+      throw new UnauthorizedException('Organisation ID not found in token');
+    }
+    if (orgId !== id) {
+      throw new UnauthorizedException(
+        'You are not authorized to access this organisation',
+      );
+    }
     return this.organisationService.findById(id);
   }
 
   @Patch(':id')
-  @HttpCode(HttpStatus.OK)
   async createOrganisationInfos(
+    @Req() req: AuthenticatedRequest,
     @Param('id') id: string,
     @Body() createOrganisationInfos: OrganisationInfos,
   ): Promise<OrganisationInfosDTO> {
+    const orgId = req.user?.id;
+    if (!orgId) {
+      throw new UnauthorizedException('Organisation ID not found in token');
+    }
+    if (orgId !== id) {
+      throw new UnauthorizedException(
+        'You are not authorized to update this organisation',
+      );
+    }
     return this.organisationService.patch({ id, createOrganisationInfos });
   }
 }

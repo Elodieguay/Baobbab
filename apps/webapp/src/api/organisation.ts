@@ -4,18 +4,12 @@ import {
     OrganisationProfile,
 } from '@baobbab/dtos';
 import log from 'loglevel';
-import { config } from '../config';
-import ky from 'ky';
+import { apiClient } from './apiClient';
 
-export const getOrganisation = async (token: string) => {
+export const getOrganisation = async () => {
     try {
-        const url = `${config.apiUrl}/organisation`;
-        const response = await ky
-            .get(url, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
+        const response = await apiClient
+            .get('organisation')
             .json<OrganisationProfile>();
         return response;
     } catch (error) {
@@ -34,8 +28,10 @@ export const getOrganisationById = async (
     }
 
     try {
-        const url = `${config.apiUrl}/organisation/${organisationId}`;
-        const response = await ky.get(url).json<OrganisationCompleteInfo>();
+        const url = `organisation/${organisationId}`;
+        const response = await apiClient
+            .get(url)
+            .json<OrganisationCompleteInfo>();
         return response;
     } catch (error) {
         log.error(`Error to get organisation information:`, error);
@@ -57,8 +53,8 @@ export const updateOrganisationInfos = async ({
         throw new Error('Invalid organisation Id');
     }
     try {
-        const url = `${config.apiUrl}/organisation/${organisationId}`;
-        const response = await ky
+        const url = `organisation/${organisationId}`;
+        const response = await apiClient
             .patch(url, { json: updateOrganisationInfo })
             .json<OrganisationInfosDTO>();
         return response;

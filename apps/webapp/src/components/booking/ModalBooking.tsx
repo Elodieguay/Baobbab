@@ -38,7 +38,7 @@ const ModalBooking = ({
     const { t } = useTranslation('common');
     const { toast } = useToast();
 
-    const { mutateAsync: createBooking } = useCreateABooking();
+    const { mutateAsync: createBooking, isPending } = useCreateABooking();
 
     const { mutateAsync: updateBooking } = useUpdateUserBooking();
 
@@ -147,6 +147,7 @@ const ModalBooking = ({
                 />
                 <Button
                     type="submit"
+                    disabled={isPending}
                     variant="outline"
                     className="rounded-xl w-full bg-[#ffcd00] text-base"
                 >
