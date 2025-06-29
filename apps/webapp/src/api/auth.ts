@@ -127,7 +127,7 @@ export async function registerOrganisation(
 }
 
 export async function loginOrganisation(
-    loginOrganisation: OrganisationLoginDTO
+    loginOrganisation: Omit<OrganisationLoginDTO, 'role'>
 ): Promise<OrganisationAuthResponse> {
     const validationResult =
         loginOrganisationSchema.safeParse(loginOrganisation);

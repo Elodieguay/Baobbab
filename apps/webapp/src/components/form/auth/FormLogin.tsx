@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { formLoginSchema, UserLoginDTO, UserRole } from '@baobbab/dtos';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
+import { InputPassword } from '@/components/ui/inputPassword';
 
 export default function Login({
     form,
@@ -58,7 +59,7 @@ export default function Login({
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Input
+                                <InputPassword
                                     {...field}
                                     type="password"
                                     placeholder={t('userLogin.form.password')}

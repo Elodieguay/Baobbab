@@ -9,6 +9,7 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { EmailService } from '../email/email.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { OrganisationService } from '../organisation/organisation.service';
 dotenv.config();
 @Module({
   imports: [
@@ -30,6 +31,7 @@ dotenv.config();
     UserService,
     EmailService,
     UserService,
+    OrganisationService,
   ],
   exports: [AuthService, JwtModule, JwtService],
 })

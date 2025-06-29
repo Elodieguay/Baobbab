@@ -14,12 +14,14 @@ import { logger } from '@mikro-orm/nestjs';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 interface UserRequest extends Request {
   user?: { id: string; email: string };
 }
 @Controller('user')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -34,7 +36,7 @@ export class UserController {
       logger.log('JwtService inAuthGuard Injected jwt:', this.jwtService);
     }
   }
-  //Récuperer un utilisateur par son nom d'utilisateur
+  @Roles(UserRole.USER)
   @Get()
   async getUserById(@Req() req: UserRequest): Promise<UserDTO> {
     const userId = req?.user?.id;
@@ -55,11 +57,4 @@ export class UserController {
       updated_at: user.updatedAt || new Date(),
     };
   }
-
-  // @Get('users')
-  // async getAllUsers(): Promise<Omit<UserDTO, 'password'>[]>{
-  //     const users = await this.userService.findAllUsers();
-  //     console.log('users', users);
-  //     return users.map(({id, username, email, role, createdAt, updatedAt}) => ({id, username, email, role, created_at: createdAt, updated_at: updatedAt}))
-  // }
 }

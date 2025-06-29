@@ -14,7 +14,7 @@ async function bootstrap() {
     origin:
       process.env.NODE_ENV === 'production'
         ? ['https://baobbab-app.onrender.com']
-        : ['http://localhost:5173'],
+        : ['http://localhost:5174', 'http://localhost:5173'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });

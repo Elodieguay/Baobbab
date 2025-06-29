@@ -67,7 +67,7 @@ export class AuthService {
     });
     await this.em.persistAndFlush(user);
 
-    const payload = { id: user.id, email: user.email };
+    const payload = { id: user.id, email: user.email, role: user.role };
 
     // it generate a token
     const secret = this.configService.get('JWT_SECRET');
@@ -124,7 +124,7 @@ export class AuthService {
     // we validate the user with email and password
     const user = await this.validateUser({ email, password });
     // we generate the payload for the JWT
-    const payload = { id: user.id, email: user.email };
+    const payload = { id: user.id, email: user.email, role: user.role };
     //we generate the token
     const secret = this.configService.get('JWT_SECRET');
     const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
@@ -195,7 +195,11 @@ export class AuthService {
     });
 
     await this.em.persistAndFlush(organisation);
-    const payload = { id: organisation.id, email: organisation.email };
+    const payload = {
+      id: organisation.id,
+      email: organisation.email,
+      role: organisation.role,
+    };
     const secret = this.configService.get('JWT_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
@@ -212,7 +216,11 @@ export class AuthService {
     loginOrganisation: AuthPayloadDto,
   ): Promise<Omit<Organisation, 'password'> & { access_token: string }> {
     const organisation = await this.validateUser(loginOrganisation);
-    const payload = { id: organisation.id, email: organisation.email };
+    const payload = {
+      id: organisation.id,
+      email: organisation.email,
+      role: organisation.role,
+    };
     const secret = this.configService.get('JWT_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       secret,

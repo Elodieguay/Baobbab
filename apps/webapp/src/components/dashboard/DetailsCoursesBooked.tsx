@@ -1,8 +1,14 @@
-import { useOrganisationById } from '@/hooks/organisation/useOrganisation';
+import {
+    useGetOrganisation,
+    useOrganisationById,
+} from '@/hooks/organisation/useOrganisation';
 import { Card, CardContent } from '../ui/card';
+import { useAuth } from '@/context/Auth.context';
 
 const DetailsCoursesBooked = () => {
-    const organisationId = sessionStorage.getItem('organisationId');
+    const { authToken } = useAuth();
+    const { data: organisationData } = useGetOrganisation(authToken || '');
+    const organisationId = organisationData?.id;
     if (!organisationId) {
         throw new Error(" Vous n'avez pas accès à cette page");
     }
@@ -12,7 +18,7 @@ const DetailsCoursesBooked = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-10  w-3/4">
                 <Card>
                     <CardContent className="p-6 space-y-2">
-                        <h2 className="text-lg font-semibold">Votre cours</h2>
+                        <h2 className="text-lg font-semibold">Vos cours</h2>
                         {organisation?.courses.map((course) => (
                             <ul
                                 key={course.id}

@@ -67,7 +67,7 @@ export const organisationRegisterFormSchema = z.object({
         message: 'Le nom doit contenir au moins 2 caractères',
     }),
     email: z.string().email({
-        message: 'l/email n/est pas valide',
+        message: "l'email n'est pas valide",
     }),
     password: z
         .string()
@@ -82,7 +82,7 @@ export const organisationRegisterFormSchema = z.object({
 
 export const organisationLoginFormSchema = z.object({
     email: z.string().email({
-        message: 'l/email n/est pas valide',
+        message: "l'email n'est pas valide",
     }),
     password: z
         .string()

@@ -12,7 +12,7 @@ import { useAuth } from '@/context/Auth.context';
 import { useGetCategory } from '@/hooks/courses/query';
 import { getCategoryTitle } from '@/utils/getCategoryTitle';
 import { cn } from '@/utils/utils';
-import { CoursesDTOGeojson } from '@baobbab/dtos';
+import { CoursesDTOGeojson, UserRole } from '@baobbab/dtos';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -23,8 +23,7 @@ export interface HeaderCourseProps {
 const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
     const { data: category } = useGetCategory();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const [showAuthMessage, setShowAuthMessage] = useState(false);
-    const { authToken } = useAuth();
+    const { authToken, role } = useAuth();
     const { t } = useTranslation('common', { keyPrefix: 'Courses' });
     const categoryTitle = coursesInfos
         ? getCategoryTitle({ category, coursesInfos })
@@ -64,7 +63,7 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                 </div>
 
                 <div className="flex justify-center items-center">
-                    {authToken ? (
+                    {authToken && role === UserRole.USER ? (
                         <Dialog
                             open={isModalOpen}
                             onOpenChange={setIsModalOpen}

@@ -14,6 +14,7 @@ import { formSchema, UserRegisterDTO, UserRole } from '@baobbab/dtos';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useTranslation } from 'react-i18next';
 import log from 'loglevel';
+import { InputPassword } from '@/components/ui/inputPassword';
 
 export default function Register({
     form,
@@ -88,7 +89,7 @@ export default function Register({
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Input
+                                <InputPassword
                                     {...field}
                                     type="password"
                                     placeholder={t(

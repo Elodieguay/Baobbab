@@ -1,9 +1,9 @@
 import ky from 'ky';
 import { config } from '@/config';
 import log from 'loglevel';
-import { UserDTO } from '@baobbab/dtos';
+import { UserDTO, UserProfile } from '@baobbab/dtos';
 
-export const getUser = async (token: string) => {
+export const getUser = async (token: string): Promise<UserProfile> => {
     try {
         const url = `${config.apiUrl}/user`;
         const response = await ky

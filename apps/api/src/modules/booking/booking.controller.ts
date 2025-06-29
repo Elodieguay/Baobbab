@@ -6,28 +6,35 @@ import {
   Patch,
   Param,
   Delete,
-  HttpException,
-  HttpStatus,
   Req,
   UseGuards,
   BadRequestException,
   Logger,
+  ForbiddenException,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
-import { CreateABooking, UserBooking } from '@baobbab/dtos';
+import { CreateABooking, UserBooking, UserRole } from '@baobbab/dtos';
 import { entityToDto } from './booking.entityToDto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { logger } from '@mikro-orm/nestjs';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.USER)
   async create(
+    @Req() req: { user: { id: string } },
     @Body() createABooking: { userId: string; createBooking: CreateABooking },
   ): Promise<CreateABooking> {
+    const userIdReq = req.user.id;
     const { userId, createBooking } = createABooking;
+    if (userId !== userIdReq) {
+      throw new ForbiddenException('Vous ne pouvez pas créer une réservation');
+    }
     const booking = await this.bookingService.create(userId, createBooking);
     return entityToDto(booking);
   }
@@ -52,24 +59,23 @@ export class BookingController {
     return bookings;
   }
 
-  // @Get(':bookingId')
-  // async findOne(
-  //   @Param('bookingId') bookingId: string,
-  // ): Promise<CreateABooking> {
-  //   const booking = await this.bookingService.findOne(bookingId);
-  //   return entityToDto(booking);
-  // }
-
   @Patch(':bookingId')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.USER)
   async update(
+    @Req() req: { user: { id: string } },
     @Param('bookingId') bookingId: string,
     @Body()
     updateUserBooking: CreateABooking & { userId: string },
   ) {
     try {
-      const { userId, scheduleId, title, courseId, schedule } =
-        updateUserBooking;
-
+      const { userId } = updateUserBooking;
+      const userIdReq = req.user.id;
+      if (userId !== userIdReq) {
+        throw new ForbiddenException(
+          'Vous ne pouvez pas créer une réservation',
+        );
+      }
       const result = await this.bookingService.update(
         bookingId,
         updateUserBooking,
@@ -84,11 +90,20 @@ export class BookingController {
   }
 
   @Delete(':bookingId')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.USER)
   async delete(
+    @Req() req: { user: { id: string } },
     @Param('bookingId') bookingId: string,
     @Body('userId') userId: string,
   ) {
     try {
+      const userIdReq = req.user.id;
+      if (userId !== userIdReq) {
+        throw new ForbiddenException(
+          'Vous ne pouvez pas créer une réservation',
+        );
+      }
       const result = await this.bookingService.remove(bookingId, userId);
       return {
         statusCode: 200,

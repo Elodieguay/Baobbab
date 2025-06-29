@@ -5,20 +5,32 @@ import { Link, useNavigate } from 'react-router';
 import { Button } from '../ui/button';
 import AvatarUser from '../auth/AvatarUser';
 import { Trans, useTranslation } from 'react-i18next';
-import { UserRole } from '@baobbab/dtos';
+import { OrganisationAuthResponse, UserProfile, UserRole } from '@baobbab/dtos';
 import { cn } from '@/utils/utils';
+import { useGetOrganisation } from '@/hooks/organisation/useOrganisation';
+import { useGetUser } from '@/hooks/user/query';
+import { useQueryClient } from '@tanstack/react-query';
+import log from 'loglevel';
 
 const Navbar = ({ className }: { className?: string }): JSX.Element => {
-    const {
-        authToken,
-        removeAuthData,
-        username,
-        role,
-        entityId,
-        organisationName,
-    } = useAuth();
+    const { authToken, removeAuthData } = useAuth();
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const userData = queryClient.getQueryData<UserProfile>(['user', authToken]);
+    const orgData = queryClient.getQueryData<OrganisationAuthResponse>([
+        'organisation',
+        authToken,
+    ]);
+    const role = userData?.role ?? orgData?.role;
+    log.debug(role);
     const [menuOpen, setMenuOpen] = useState(false);
+    const { data: organisation } = useGetOrganisation(authToken ?? '', {
+        enabled: !!authToken && role === 'ADMIN',
+    });
+
+    const { data: user } = useGetUser(authToken ?? '', {
+        enabled: !!authToken && role === 'USER',
+    });
     const { t } = useTranslation('common', {
         keyPrefix: 'Navbar',
     });
@@ -32,6 +44,7 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
         if (removeAuthData) {
             await removeAuthData();
         }
+        queryClient.clear();
         navigate('/');
     };
     useEffect(() => {
@@ -67,23 +80,24 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
                         <div className="relative">
                             <AvatarUser
                                 name={
-                                    (username ?? null) ||
-                                    (organisationName ?? null)
+                                    (user?.username ?? null) ||
+                                    (organisation?.organisationName ?? null)
                                 }
                                 onClick={toggleMenu}
                             />
                             {menuOpen && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl py-1 z-20">
-                                    {role === UserRole.USER ? (
+                                    {user?.role === UserRole.USER ? (
                                         <Link
                                             to="/profile"
                                             className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-center"
                                         >
                                             {t('menuProfile')}
                                         </Link>
-                                    ) : role === UserRole.ADMIN ? (
+                                    ) : organisation?.role ===
+                                      UserRole.ADMIN ? (
                                         <Link
-                                            to={`/dashboard/${entityId}`}
+                                            to={`/dashboard`}
                                             className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-center"
                                         >
                                             {t('menuDashboard')}

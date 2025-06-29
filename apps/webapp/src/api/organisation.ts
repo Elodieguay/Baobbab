@@ -1,8 +1,31 @@
-import { OrganisationCompleteInfo, OrganisationInfosDTO } from '@baobbab/dtos';
+import {
+    OrganisationAuthResponse,
+    OrganisationCompleteInfo,
+    OrganisationInfosDTO,
+} from '@baobbab/dtos';
 // import { loginOrganisationSchema } from './auth';
 import log from 'loglevel';
 import { config } from '../config';
 import ky from 'ky';
+
+export const getOrganisation = async (token: string) => {
+    try {
+        const url = `${config.apiUrl}/organisation`;
+        const response = await ky
+            .get(url, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .json<OrganisationAuthResponse>();
+        return response;
+    } catch (error) {
+        log.error('Error fetching organisation profile:', error);
+        throw new Error(
+            error instanceof Error ? error.message : 'Unknown error'
+        );
+    }
+};
 
 export const getOrganisationById = async (
     organisationId: string
@@ -14,7 +37,6 @@ export const getOrganisationById = async (
     try {
         const url = `${config.apiUrl}/organisation/${organisationId}`;
         const response = await ky.get(url).json<OrganisationCompleteInfo>();
-        log.debug('GetOrganisationById:', response);
         return response;
     } catch (error) {
         log.error(`Error to get organisation information:`, error);
@@ -40,7 +62,6 @@ export const updateOrganisationInfos = async ({
         const response = await ky
             .patch(url, { json: updateOrganisationInfo })
             .json<OrganisationInfosDTO>();
-        log.debug('UpdateOrganisationInfos:', response);
         return response;
     } catch (error) {
         log.error(`Error to update the  organisation'information:`, error);

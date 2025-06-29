@@ -1,12 +1,29 @@
 import {
+    getOrganisation,
     getOrganisationById,
     updateOrganisationInfos,
 } from '@/api/organisation';
-import { OrganisationInfosDTO } from '@baobbab/dtos';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { OrganisationAuthResponse, OrganisationInfosDTO } from '@baobbab/dtos';
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useToast } from '../use-toast';
 import log from 'loglevel';
 
+export function useGetOrganisation(
+    token: string,
+    options?: Partial<UseQueryOptions<OrganisationAuthResponse>>
+) {
+    return useQuery({
+        queryKey: ['organisation', token],
+        queryFn: async () => {
+            if (!token) {
+                throw new Error(' a token is required');
+            }
+            const data = await getOrganisation(token);
+            return data;
+        },
+        ...options,
+    });
+}
 export const useOrganisationById = (organisationId: string) => {
     return useQuery({
         queryKey: ['organisationId', organisationId],

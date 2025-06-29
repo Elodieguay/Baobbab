@@ -17,8 +17,6 @@ import {
     UserRegisterDTO,
     formLoginSchema,
     LoginResponse,
-    EntityType,
-    UserRole,
 } from '@baobbab/dtos';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,10 +26,13 @@ import { UserRound } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import log from 'loglevel';
 import { useLoginMutation, useRegisterMutation } from '@/hooks/auth/query';
+import { useQueryClient } from '@tanstack/react-query';
 
 export type FormSchemaType = z.infer<typeof formSchema>;
 
 const Modal = (): JSX.Element => {
+    const queryClient = useQueryClient();
+
     const navigate = useNavigate();
     const { setAuthData } = useAuth();
     const [isRegister, setIsRegister] = useState(false);
@@ -42,14 +43,10 @@ const Modal = (): JSX.Element => {
         registerMutate(userRegister, {
             onSuccess: (data: RegisterResponse) => {
                 if (setAuthData) {
-                    setAuthData(
-                        data.access_token,
-                        data.refresh_token,
-                        UserRole.USER,
-                        EntityType.USER,
-                        data.username,
-                        data.email
-                    );
+                    setAuthData(data.access_token, data.refresh_token);
+                    queryClient.setQueryData(['user', data.access_token], {
+                        role: data.role,
+                    });
                 } else {
                     log.error('setAuthData is not defined');
                 }
@@ -60,14 +57,10 @@ const Modal = (): JSX.Element => {
         loginMutate(userLogin, {
             onSuccess: (data: LoginResponse) => {
                 if (setAuthData) {
-                    setAuthData(
-                        data.access_token,
-                        data.refresh_token,
-                        UserRole.USER,
-                        EntityType.USER,
-                        data.username,
-                        data.email
-                    );
+                    setAuthData(data.access_token, data.refresh_token);
+                    queryClient.setQueryData(['user', data.access_token], {
+                        role: data.role,
+                    });
                 } else {
                     log.error('setAuthData is not defined');
                 }

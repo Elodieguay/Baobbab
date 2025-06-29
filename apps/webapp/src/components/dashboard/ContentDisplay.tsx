@@ -1,7 +1,7 @@
 import CoursesForm from '@/components/dashboard/CoursesForm';
 import { DashName } from './OrganisationSidebar';
-import UsersBookingTable from './UsersBookingTable';
 import InformationsForm from '../form/organisation/InformationsForm';
+import DetailsCoursesBooked from './DetailsCoursesBooked';
 
 export const ContentDisplay = ({
     activeItem,
@@ -11,7 +11,7 @@ export const ContentDisplay = ({
     const contentMap: Record<DashName, JSX.Element> = {
         [DashName.ACCOUNT_INFO]: <InformationsForm />,
         [DashName.CREATE]: <CoursesForm />,
-        [DashName.BOOKING]: <UsersBookingTable />,
+        [DashName.BOOKING]: <DetailsCoursesBooked />,
     };
 
     return (

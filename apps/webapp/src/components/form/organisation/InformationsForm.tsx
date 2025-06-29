@@ -25,10 +25,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import {
+    useGetOrganisation,
     useOrganisationById,
     useUpdateOrganisationInfos,
 } from '@/hooks/organisation/useOrganisation';
 import { ImageUploadForm } from './ImageUploadForm';
+import { useAuth } from '@/context/Auth.context';
 
 const formSchema = z.object({
     firstname: z
@@ -53,7 +55,9 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const InformationsForm = () => {
-    const organisationId = sessionStorage.getItem('organisationId');
+    const { authToken } = useAuth();
+    const { data: organisation } = useGetOrganisation(authToken || '');
+    const organisationId = organisation?.id;
     const [isEditing, setIsEditing] = useState(false);
     const { toast } = useToast();
 

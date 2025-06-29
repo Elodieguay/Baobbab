@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 const Profile = (): JSX.Element => {
-    const { authToken, username } = useAuth();
+    const { authToken } = useAuth();
     const { city } = useCity();
     const navigate = useNavigate();
     const { data } = useGetUser(authToken || '');
@@ -66,7 +66,7 @@ const Profile = (): JSX.Element => {
                         <ul className="mt-4 space-y-3">
                             <li className="flex items-center border-b pb-2">
                                 <CircleUser />
-                                <span className="ml-4">{username}</span>
+                                <span className="ml-4">{user?.username}</span>
                             </li>
                             <li className="flex items-center border-b pb-2">
                                 <AtSign />
