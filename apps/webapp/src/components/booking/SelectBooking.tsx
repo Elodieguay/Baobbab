@@ -57,8 +57,11 @@ const SelectBooking = React.forwardRef<HTMLButtonElement, SelectBookingProps>(
                 <SelectContent>
                     <SelectGroup>
                         <SelectLabel>{title}</SelectLabel>
-                        {data?.map((item, index) => (
-                            <SelectItem key={index} value={item.day}>
+                        {data?.map((item) => (
+                            <SelectItem
+                                key={`${item.hours}-${item.day}`}
+                                value={item.day}
+                            >
                                 {item.day} à {item.hours}
                             </SelectItem>
                         ))}

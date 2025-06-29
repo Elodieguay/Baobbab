@@ -7,7 +7,7 @@ import { Navigate } from 'react-router';
 const ProtectedRoutes = (): JSX.Element => {
     const location = useLocation();
 
-    const { authToken, role } = useAuth();
+    const { authData } = useAuth();
 
     const findCurrentRoute = (
         pathname: string
@@ -24,7 +24,7 @@ const ProtectedRoutes = (): JSX.Element => {
     // Redirection si l'utilisateur n'est pas authentifié
     if (
         currentRoute?.accessMode === RouteAccessMode.Authenticated &&
-        !authToken
+        !authData?.token
     ) {
         return <Navigate to={AppRoutes.Courses.path ?? '/courses'} />;
     }
@@ -33,7 +33,7 @@ const ProtectedRoutes = (): JSX.Element => {
     if (
         currentRoute?.accessMode === RouteAccessMode.Authenticated &&
         currentRoute.path === AppRoutes.Booking.path &&
-        role !== UserRole.USER
+        authData?.role !== UserRole.USER
     ) {
         const redirectTo = AppRoutes.Booking.redirects as {
             authenticated: RouteNames;
@@ -47,7 +47,7 @@ const ProtectedRoutes = (): JSX.Element => {
     if (
         currentRoute?.accessMode === RouteAccessMode.Authenticated &&
         currentRoute.path === AppRoutes.Dashboard.path &&
-        role !== UserRole.ADMIN
+        authData?.role !== UserRole.ADMIN
     ) {
         return <Navigate to={AppRoutes.Courses.path ?? '/'} />;
     }
@@ -56,7 +56,7 @@ const ProtectedRoutes = (): JSX.Element => {
     if (
         currentRoute?.accessMode === RouteAccessMode.Authenticated &&
         currentRoute.path === AppRoutes.Profile.path &&
-        role !== UserRole.USER
+        authData?.role !== UserRole.USER
     ) {
         return <Navigate to={AppRoutes.Courses.path ?? '/'} />;
     }
@@ -65,7 +65,7 @@ const ProtectedRoutes = (): JSX.Element => {
     if (currentRoute?.redirects) {
         const route =
             typeof currentRoute.redirects === 'object'
-                ? authToken
+                ? authData?.token
                     ? currentRoute.redirects.authenticated
                     : currentRoute.redirects.unauthenticated
                 : currentRoute.redirects;

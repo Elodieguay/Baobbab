@@ -6,8 +6,8 @@ import log from 'loglevel';
 import { useEffect, useMemo, useState } from 'react';
 
 export const useGetOrganisationInfoController = () => {
-    const { authToken } = useAuth();
-    const { data } = useGetUser(authToken || '');
+    const { authData } = useAuth();
+    const { data } = useGetUser(authData?.token || '');
     const userId = data?.id;
     const { data: userBooking } = useGetUserBooking(userId || '');
     //eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -28,13 +28,9 @@ export class BookingController {
   @Roles(UserRole.USER)
   async create(
     @Req() req: { user: { id: string } },
-    @Body() createABooking: { userId: string; createBooking: CreateABooking },
+    @Body() createBooking: CreateABooking,
   ): Promise<CreateABooking> {
-    const userIdReq = req.user.id;
-    const { userId, createBooking } = createABooking;
-    if (userId !== userIdReq) {
-      throw new ForbiddenException('Vous ne pouvez pas créer une réservation');
-    }
+    const userId = req.user.id;
     const booking = await this.bookingService.create(userId, createBooking);
     return entityToDto(booking);
   }

@@ -5,31 +5,23 @@ import { Link, useNavigate } from 'react-router';
 import { Button } from '../ui/button';
 import AvatarUser from '../auth/AvatarUser';
 import { Trans, useTranslation } from 'react-i18next';
-import { OrganisationAuthResponse, UserProfile, UserRole } from '@baobbab/dtos';
+import { UserRole } from '@baobbab/dtos';
 import { cn } from '@/utils/utils';
 import { useGetOrganisation } from '@/hooks/organisation/useOrganisation';
 import { useGetUser } from '@/hooks/user/query';
 import { useQueryClient } from '@tanstack/react-query';
-import log from 'loglevel';
 
 const Navbar = ({ className }: { className?: string }): JSX.Element => {
-    const { authToken, removeAuthData } = useAuth();
+    const { authData, removeAuthData } = useAuth();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const userData = queryClient.getQueryData<UserProfile>(['user', authToken]);
-    const orgData = queryClient.getQueryData<OrganisationAuthResponse>([
-        'organisation',
-        authToken,
-    ]);
-    const role = userData?.role ?? orgData?.role;
-    log.debug(role);
     const [menuOpen, setMenuOpen] = useState(false);
-    const { data: organisation } = useGetOrganisation(authToken ?? '', {
-        enabled: !!authToken && role === 'ADMIN',
+    const { data: organisation } = useGetOrganisation(authData?.token ?? '', {
+        enabled: !!authData?.token && authData.role === UserRole.ADMIN,
     });
 
-    const { data: user } = useGetUser(authToken ?? '', {
-        enabled: !!authToken && role === 'USER',
+    const { data: user } = useGetUser({
+        enabled: authData?.role === UserRole.USER,
     });
     const { t } = useTranslation('common', {
         keyPrefix: 'Navbar',
@@ -76,7 +68,7 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
                     </h1>
                 </Link>
                 <div className={cn('mt-5', className)}>
-                    {authToken ? (
+                    {authData?.token ? (
                         <div className="relative">
                             <AvatarUser
                                 name={

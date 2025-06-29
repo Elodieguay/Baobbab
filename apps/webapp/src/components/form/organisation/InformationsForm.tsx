@@ -55,8 +55,8 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const InformationsForm = () => {
-    const { authToken } = useAuth();
-    const { data: organisation } = useGetOrganisation(authToken || '');
+    const { authData } = useAuth();
+    const { data: organisation } = useGetOrganisation(authData?.token || '');
     const organisationId = organisation?.id;
     const [isEditing, setIsEditing] = useState(false);
     const { toast } = useToast();

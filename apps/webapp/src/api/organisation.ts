@@ -1,9 +1,8 @@
 import {
-    OrganisationAuthResponse,
     OrganisationCompleteInfo,
     OrganisationInfosDTO,
+    OrganisationProfile,
 } from '@baobbab/dtos';
-// import { loginOrganisationSchema } from './auth';
 import log from 'loglevel';
 import { config } from '../config';
 import ky from 'ky';
@@ -17,7 +16,7 @@ export const getOrganisation = async (token: string) => {
                     Authorization: `Bearer ${token}`,
                 },
             })
-            .json<OrganisationAuthResponse>();
+            .json<OrganisationProfile>();
         return response;
     } catch (error) {
         log.error('Error fetching organisation profile:', error);

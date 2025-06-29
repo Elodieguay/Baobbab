@@ -11,16 +11,11 @@ import { Button } from '../ui/button';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router';
 import { Trans } from 'react-i18next';
 import { useOrganisationById } from '@/hooks/organisation/useOrganisation';
-import { OrganisationAuthResponse } from '@baobbab/dtos';
+import { OrganisationProfile } from '@baobbab/dtos';
 import { useQueryClient } from '@tanstack/react-query';
 
-export enum DashName {
-    ACCOUNT_INFO = 'Informations',
-    CREATE = 'Créer une activité',
-    BOOKING = 'Activités réservées',
-}
 interface OrganisationSidebarContentProps {
-    organisation: OrganisationAuthResponse;
+    organisation: OrganisationProfile;
 }
 export function OrganisationSidebar({
     organisation,

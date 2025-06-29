@@ -60,11 +60,6 @@ const Organisation = (): JSX.Element => {
             ...values,
         });
     };
-    // useEffect(() => {
-    //     if (authToken && role === UserRole.ADMIN) {
-    //         navigate('/dashboard');
-    //     }
-    // }, [authToken, role]);
 
     return (
         <div className="w-full min-h-screen">

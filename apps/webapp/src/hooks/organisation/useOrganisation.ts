@@ -3,14 +3,14 @@ import {
     getOrganisationById,
     updateOrganisationInfos,
 } from '@/api/organisation';
-import { OrganisationAuthResponse, OrganisationInfosDTO } from '@baobbab/dtos';
+import { OrganisationInfosDTO, OrganisationProfile } from '@baobbab/dtos';
 import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useToast } from '../use-toast';
 import log from 'loglevel';
 
 export function useGetOrganisation(
     token: string,
-    options?: Partial<UseQueryOptions<OrganisationAuthResponse>>
+    options?: Partial<UseQueryOptions<OrganisationProfile>>
 ) {
     return useQuery({
         queryKey: ['organisation', token],

@@ -12,23 +12,18 @@ import CoursesForm from '@/components/dashboard/CoursesForm';
 import HomePage from '@/pages/home/HomePage';
 import NotFound from '@/pages/notFound/NotFound';
 import PrivatyPolicy from '@/pages/privatyPolicy/PrivatyPolicy';
-import { lazy, Suspense } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { lazy } from 'react';
 import InformationsForm from '@/components/form/organisation/InformationsForm';
 import DetailsCoursesBooked from '@/components/dashboard/DetailsCoursesBooked';
 const CourseByCity = lazy(() => import('@/pages/courses/CourseByCity'));
 const CourseById = lazy(() => import('@/pages/courses/CourseById'));
-
-const withSuspense = (element: React.ReactNode) => (
-    <Suspense fallback={<Skeleton />}>{element}</Suspense>
-);
 
 const router = createBrowserRouter([
     // version v7
 
     {
         path: AppRoutes.Home.path,
-        element: withSuspense(
+        element: (
             <>
                 <HomePage />
                 <Footer />
@@ -54,7 +49,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: ':city',
-                element: withSuspense(<CourseByCity />),
+                element: <CourseByCity />,
             },
             {
                 path: ':city/:id',

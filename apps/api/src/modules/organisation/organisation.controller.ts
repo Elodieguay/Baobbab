@@ -15,6 +15,7 @@ import {
   OrganisationAuthResponse,
   OrganisationCompleteInfo,
   OrganisationInfosDTO,
+  OrganisationProfile,
   UserRole,
 } from '@baobbab/dtos';
 import { OrganisationInfos } from 'src/entities/organisationInfos.entity';
@@ -35,7 +36,7 @@ export class OrganisationController {
   @Get()
   async findOneOrganisation(
     @Req() req: AuthenticatedRequest,
-  ): Promise<OrganisationAuthResponse> {
+  ): Promise<OrganisationProfile> {
     const orgId = req.user?.id;
     if (!orgId) {
       throw new UnauthorizedException('Organisation ID not found in token');

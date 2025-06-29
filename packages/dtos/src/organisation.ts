@@ -114,8 +114,16 @@ export interface OrganisationAuthResponse {
     email: string;
     role: UserRole.ADMIN;
     access_token: string;
+    refresh_token: string;
 }
 
+export interface OrganisationProfile {
+    id: string;
+    organisationName: string;
+    email: string;
+    role: UserRole.ADMIN;
+    access_token: string;
+}
 export interface OrganisationInfosDTO {
     firstname: string;
     lastname: string;

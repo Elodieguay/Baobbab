@@ -7,15 +7,14 @@ import {
 } from '@baobbab/dtos';
 import ky from 'ky';
 import log from 'loglevel';
+import { apiClient } from './apiClient';
 
-export const createBookingCourse = async (
-    userId: string,
-    createBooking: CreateABooking
-) => {
+export const createBookingCourse = async (createBooking: CreateABooking) => {
     try {
-        const url = `${config.apiUrl}/booking`;
-        const response = await ky
-            .post(url, { json: { createBooking, userId } })
+        const response = await apiClient
+            .post('booking', {
+                json: createBooking,
+            })
             .json<CreateABooking>();
         log.debug('response:', response);
         return response;

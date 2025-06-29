@@ -15,30 +15,31 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 const Profile = (): JSX.Element => {
-    const { authToken } = useAuth();
+    console.log('je suis la');
+
+    const { authData } = useAuth();
+
     const { city } = useCity();
     const navigate = useNavigate();
-    const { data } = useGetUser(authToken || '');
-    const { data: user } = useGetUser(authToken || '');
+    const { data: user } = useGetUser();
     const userId = user?.id;
 
     const { data: userBooking } = useGetUserBooking(userId || '');
-
     const { t } = useTranslation('common', {
         keyPrefix: 'Profile',
     });
 
     useEffect(() => {
-        if (!authToken) {
+        if (!authData?.token) {
             navigate('/login');
         }
-    }, [authToken, navigate]);
+    }, [authData?.token, navigate]);
 
-    if (!authToken) {
+    if (!authData?.token) {
         log.error('No authToken is found');
         return <div>{t('page.error.authToken')}</div>;
     }
-    if (!data) {
+    if (!user) {
         log.error('No data is found');
         return <div>{t('page.loading.data.user')}</div>;
     }
@@ -70,7 +71,7 @@ const Profile = (): JSX.Element => {
                             </li>
                             <li className="flex items-center border-b pb-2">
                                 <AtSign />
-                                <span className="ml-4">{data.email}</span>
+                                <span className="ml-4">{user.email}</span>
                             </li>
                         </ul>
                     </Card>

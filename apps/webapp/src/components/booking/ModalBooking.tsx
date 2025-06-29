@@ -30,8 +30,8 @@ const ModalBooking = ({
     bookingId,
     setIsModalOpen,
 }: ModalBookingProps): JSX.Element => {
-    const { authToken } = useAuth();
-    const { data } = useGetUser(authToken || '');
+    const { authData } = useAuth();
+    const { data } = useGetUser(authData?.token || '');
     const userId = data?.id;
     const { t } = useTranslation('common');
     const { toast } = useToast();

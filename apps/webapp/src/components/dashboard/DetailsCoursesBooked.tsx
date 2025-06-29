@@ -6,8 +6,10 @@ import { Card, CardContent } from '../ui/card';
 import { useAuth } from '@/context/Auth.context';
 
 const DetailsCoursesBooked = () => {
-    const { authToken } = useAuth();
-    const { data: organisationData } = useGetOrganisation(authToken || '');
+    const { authData } = useAuth();
+    const { data: organisationData } = useGetOrganisation(
+        authData?.token || ''
+    );
     const organisationId = organisationData?.id;
     if (!organisationId) {
         throw new Error(" Vous n'avez pas accès à cette page");

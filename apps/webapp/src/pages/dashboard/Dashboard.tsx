@@ -5,12 +5,12 @@ import { useGetOrganisation } from '@/hooks/organisation/useOrganisation';
 import { useTranslation } from 'react-i18next';
 
 const Dashboard = (): JSX.Element => {
-    const { authToken } = useAuth();
+    const { authData } = useAuth();
     const { t } = useTranslation('common', {
         keyPrefix: 'Profile',
     });
-    const { data: organisation } = useGetOrganisation(authToken || '');
-    if (!authToken) {
+    const { data: organisation } = useGetOrganisation(authData?.token || '');
+    if (!authData?.token) {
         return <div>{t('page.error.authToken')}</div>;
     }
     if (!organisation) {

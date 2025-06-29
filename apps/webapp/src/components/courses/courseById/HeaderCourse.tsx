@@ -23,7 +23,7 @@ export interface HeaderCourseProps {
 const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
     const { data: category } = useGetCategory();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { authToken, role } = useAuth();
+    const { authData } = useAuth();
     const { t } = useTranslation('common', { keyPrefix: 'Courses' });
     const categoryTitle = coursesInfos
         ? getCategoryTitle({ category, coursesInfos })
@@ -63,7 +63,7 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                 </div>
 
                 <div className="flex justify-center items-center">
-                    {authToken && role === UserRole.USER ? (
+                    {authData?.token && authData?.role === UserRole.USER ? (
                         <Dialog
                             open={isModalOpen}
                             onOpenChange={setIsModalOpen}

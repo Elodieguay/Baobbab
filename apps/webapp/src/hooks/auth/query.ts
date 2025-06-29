@@ -44,8 +44,6 @@ export const useLoginMutation = (): UseMutationResult<
 };
 
 export const useOrganisationRegister = (): any => {
-    const queryClient = useQueryClient();
-
     const { setAuthData } = useAuth();
     const navigate = useNavigate();
 
@@ -53,10 +51,7 @@ export const useOrganisationRegister = (): any => {
         mutationFn: registerOrganisation,
         onSuccess: (data: OrganisationAuthResponse) => {
             if (setAuthData) {
-                setAuthData(data.access_token, data.refresh_token);
-                queryClient.setQueryData(['organisation', data.access_token], {
-                    role: data.role,
-                });
+                setAuthData(data.access_token, data.refresh_token, data.role);
                 navigate(`/dashboard/${data.id}`);
             } else {
                 log.error('setAuthData is not defined');
@@ -69,7 +64,6 @@ export const useOrganisationRegister = (): any => {
 };
 
 export const useOrganisationLogin = (): any => {
-    const queryClient = useQueryClient();
     const { setAuthData } = useAuth();
     const navigate = useNavigate();
 
@@ -77,10 +71,7 @@ export const useOrganisationLogin = (): any => {
         mutationFn: loginOrganisation,
         onSuccess: (data: OrganisationAuthResponse) => {
             if (setAuthData) {
-                setAuthData(data.access_token, data.refresh_token);
-                queryClient.setQueryData(['organisation', data.access_token], {
-                    role: data.role,
-                });
+                setAuthData(data.access_token, data.refresh_token, data.role);
             } else {
                 log.error('setAuthData is not defined');
             }
