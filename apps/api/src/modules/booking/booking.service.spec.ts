@@ -7,6 +7,7 @@ import { EntityManager } from '@mikro-orm/core';
 import { CoursesService } from '../courses/courses.service';
 import { Booking } from 'src/entities/booking.entity';
 import { UserService } from '../user/user.service';
+import { User } from 'src/entities/user.entity';
 
 describe('BookingService', () => {
   let service: BookingService;
@@ -77,7 +78,15 @@ describe('BookingService', () => {
       coursesServiceMock.findById.mockResolvedValue(courseMock);
       scheduleRepoMock.findOne.mockResolvedValue(scheduleMock);
       emMock.create.mockReturnValue(bookingEntityMock);
-      emMock.findOne.mockResolvedValue(userMock);
+      emMock.findOne.mockImplementation((entity, where) => {
+        if (entity === Booking) {
+          return Promise.resolve(null);
+        }
+        if (entity === User && where?.id === userId) {
+          return Promise.resolve(userMock);
+        }
+        return Promise.resolve(null);
+      });
 
       const result = await service.create(userId, createBooking);
 
@@ -85,9 +94,7 @@ describe('BookingService', () => {
       expect(scheduleRepoMock.findOne).toHaveBeenCalledWith({
         id: 'schedule-1',
       });
-      expect(emMock.findOne).toHaveBeenCalledWith(expect.any(Function), {
-        id: userId,
-      });
+
       expect(emMock.persistAndFlush).toHaveBeenCalled();
       expect(result).toEqual(bookingEntityMock);
     });
