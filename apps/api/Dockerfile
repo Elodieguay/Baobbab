@@ -1,33 +1,27 @@
 FROM node:18-alpine
 
-# Installer pnpm + nestjs CLI
-RUN npm install -g pnpm @nestjs/cli
-
 WORKDIR /app
 
-# Copier les fichiers monorepo
+# Installer PNPM
+RUN npm install -g pnpm @nestjs/cli
+
+# Copier le monorepo config
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY tsconfig.base.json ./  
-COPY tsconfig.json ./ 
-# Installer toutes les dépendances du monorepo
+COPY tsconfig*.json ./
+
+# Installer les dépendances globales
 RUN pnpm install --frozen-lockfile
 
-# Copier le reste du code
+# Copier le code de l'API et les packages partagés
 COPY apps/api ./apps/api
 COPY packages ./packages
 
-# Copier le script
-COPY apps/api/start.sh ./apps/api/start.sh
-RUN chmod +x ./apps/api/start.sh
-
-# Installation ciblée dans apps/api (obligatoire ici)
 WORKDIR /app/apps/api
 RUN pnpm install
-
-# :arrow_down: :wrench: Retour à la racine pour le build
-WORKDIR /app
+# Construire l'API
 RUN pnpm --filter api build
 
-# Lancer le serveur
-EXPOSE 4000
-CMD ["sh", "./apps/api/start.sh"]
+EXPOSE 3000
+
+CMD ["pnpm", "--filter", "api", "start"]

@@ -1,19 +1,25 @@
 FROM node:18-alpine
 
-RUN npm install -g pnpm
-
 WORKDIR /app
 
-COPY . .
+RUN npm install -g pnpm
 
+# Copier les manifests à la racine
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY tsconfig.base.json ./  
+COPY tsconfig*.json ./
+
+# Installer toutes les dépendances du monorepo
 RUN pnpm install
-RUN pnpm --filter webapp run build
 
+# Copier le code du webapp et les packages partagés
+COPY apps/webapp ./apps/webapp
+COPY packages ./packages
+
+# Installer les dépendances spécifiques du webapp
 WORKDIR /app/apps/webapp
+RUN pnpm install
 
-RUN ls -l dist
+EXPOSE 5173
 
-EXPOSE 4173
-
-CMD ["npx", "serve", "-s", "dist", "--single", "-l", "4173"]
-
+CMD ["pnpm", "dev", "--host"]

@@ -1,11 +1,14 @@
-#!/bin/sh
+# #!/bin/sh
 
-echo "Running migrations..."
-pnpm --filter api mikro-orm migration:up
+# echo "Waiting for database to be ready..."
+# sleep 5
 
-# echo "Migrations applied."
-# echo "Running seeders..."
-# pnpm --filter api mikro-orm seeder:run
+# echo "Running migrations..."
+# pnpm --filter api mikro-orm migration:up
 
-echo "Starting the server..."
-node apps/api/dist/src/main.js
+# # echo "Migrations applied."
+# # echo "Running seeders..."
+# # pnpm --filter api mikro-orm seeder:run
+
+# echo "Starting the server..."
+# node apps/api/dist/src/main.js

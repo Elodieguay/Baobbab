@@ -13,6 +13,15 @@ export default defineConfig({
             plugins: [tailwindcss()],
         },
     },
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://api:3000',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api/, ''),
+            },
+        },
+    },
     test: {
         globals: true,
         environment: 'jsdom',
