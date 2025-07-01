@@ -102,7 +102,7 @@ export class DatabaseSeeder extends Seeder {
         categories[Math.floor(Math.random() * categories.length)];
       const randomCategoryName = randomCategory.title;
       const selectedImages = courseImages[randomCategoryName] || [
-        'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp',
+        'https://images.pexels.com/photos/207983/pexels-photo-207983.jpeg?_gl=1*ikdshm*_ga*MzQyNDM4NTk2LjE3NTEzNzY3NjI.*_ga_8JE65Q40S6*czE3NTEzNzY3NjEkbzEkZzAkdDE3NTEzNzY3NjEkajYwJGwwJGgw&w=800&q=75&fm=webp',
       ];
       const courseImage =
         selectedImages[Math.floor(Math.random() * selectedImages.length)];

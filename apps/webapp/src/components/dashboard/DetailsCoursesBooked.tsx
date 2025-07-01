@@ -7,9 +7,9 @@ import { useAuth } from '@/context/Auth.context';
 
 const DetailsCoursesBooked = () => {
     const { authData } = useAuth();
-    const { data: organisationData } = useGetOrganisation(
-        authData?.token || ''
-    );
+    const { data: organisationData } = useGetOrganisation({
+        enabled: !!authData?.token,
+    });
     const organisationId = organisationData?.id;
     if (!organisationId) {
         throw new Error(" Vous n'avez pas accès à cette page");

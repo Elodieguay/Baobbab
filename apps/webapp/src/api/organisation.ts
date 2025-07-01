@@ -26,7 +26,7 @@ export const getOrganisationById = async (
     if (typeof organisationId !== 'string' || !organisationId.trim()) {
         log.error('Invalid organisation Id');
     }
-
+    log.debug('organisationId', organisationId);
     try {
         const url = `organisation/${organisationId}`;
         const response = await apiClient

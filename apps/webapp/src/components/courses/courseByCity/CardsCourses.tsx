@@ -44,6 +44,10 @@ const CardsCourses = ({
                     fetchPriority="low"
                     width={400}
                     height={300}
+                    onError={(e) => {
+                        e.currentTarget.src =
+                            'https://images.pexels.com/photos/207983/pexels-photo-207983.jpeg?_gl=1*ikdshm*_ga*MzQyNDM4NTk2LjE3NTEzNzY3NjI.*_ga_8JE65Q40S6*czE3NTEzNzY3NjEkbzEkZzAkdDE3NTEzNzY3NjEkajYwJGwwJGgw&w=800&q=75&fm=webp';
+                    }}
                 />
                 <Button
                     aria-label="Ajouter aux favoris"

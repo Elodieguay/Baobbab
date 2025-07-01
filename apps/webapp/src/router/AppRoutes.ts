@@ -7,7 +7,7 @@ export enum RouteNames {
     Organisation = 'Organisation',
     PrivatyPolicy = 'PrivatyPolicy',
     Error404 = 'Error404',
-
+    Error401 = 'Error401',
     ForgottenPassword = 'ForgottenPassword',
     ResetPassword = 'ResetPassword',
     ChangePassword = 'ChangePassword',
@@ -96,6 +96,10 @@ const AppRoutes: { [key in RouteNames]: AppRoute } = {
     },
     Error404: {
         path: '*',
+        accessMode: RouteAccessMode.Public,
+    },
+    Error401: {
+        path: '/error401',
         accessMode: RouteAccessMode.Public,
     },
 };

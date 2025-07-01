@@ -15,6 +15,7 @@ import PrivatyPolicy from '@/pages/privatyPolicy/PrivatyPolicy';
 import { lazy } from 'react';
 import InformationsForm from '@/components/form/organisation/InformationsForm';
 import DetailsCoursesBooked from '@/components/dashboard/DetailsCoursesBooked';
+import NotLogin from '@/pages/notFound/NotLogin';
 const CourseByCity = lazy(() => import('@/pages/courses/CourseByCity'));
 const CourseById = lazy(() => import('@/pages/courses/CourseById'));
 
@@ -100,6 +101,10 @@ const router = createBrowserRouter([
     {
         path: AppRoutes.Error404.path,
         element: <NotFound />,
+    },
+    {
+        path: AppRoutes.Error401.path,
+        element: <NotLogin />,
     },
     {
         path: '*',

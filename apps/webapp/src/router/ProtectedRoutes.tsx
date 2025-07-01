@@ -51,7 +51,7 @@ const ProtectedRoutes = (): JSX.Element => {
         currentRoute.path === AppRoutes.Dashboard.path &&
         authData?.role !== UserRole.ADMIN
     ) {
-        return <Navigate to={AppRoutes.Courses.path ?? '/courses'} />;
+        return <Navigate to={AppRoutes.Error401.path ?? '/'} />;
     }
 
     //  User route
@@ -60,7 +60,7 @@ const ProtectedRoutes = (): JSX.Element => {
         currentRoute.path === AppRoutes.Profile.path &&
         authData?.role !== UserRole.USER
     ) {
-        return <Navigate to={AppRoutes.Error404.path ?? '/'} />;
+        return <Navigate to={AppRoutes.Error401.path ?? '/'} />;
     }
 
     // Vérifie les redirections spécifiées dans `AppRoutes`

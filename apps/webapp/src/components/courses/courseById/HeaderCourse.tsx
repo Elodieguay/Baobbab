@@ -49,6 +49,10 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                     className="object-cover w-full h-full"
                     loading="eager"
                     fetchPriority="high"
+                    onError={(e) => {
+                        e.currentTarget.src =
+                            'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp/';
+                    }}
                 />
             </figure>
             <div className="w-full lg:w-1/3 flex flex-col items-center justify-center gap-10 px-4 py-6">

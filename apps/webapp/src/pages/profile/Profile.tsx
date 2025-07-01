@@ -8,11 +8,11 @@ import { useAuth } from '@/context/Auth.context';
 import { useCity } from '@/context/City.context';
 import { useGetUserBooking } from '@/hooks/booking/query';
 import { useGetUser } from '@/hooks/user/query';
-import log from 'loglevel';
 import { AtSign, CircleUser } from 'lucide-react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
+import NotLogin from '../notFound/NotLogin';
 
 const Profile = (): JSX.Element => {
     const { authData } = useAuth();
@@ -34,12 +34,18 @@ const Profile = (): JSX.Element => {
     }, [authData?.token, navigate]);
 
     if (!authData?.token) {
-        log.error('No authToken is found');
-        return <div>{t('page.error.authToken')}</div>;
+        return (
+            <div>
+                <NotLogin />
+            </div>
+        );
     }
     if (!user) {
-        log.error('No data is found');
-        return <div>{t('page.loading.data.user')}</div>;
+        return (
+            <div>
+                <NotLogin />
+            </div>
+        );
     }
 
     const handleGoBack = () => {
