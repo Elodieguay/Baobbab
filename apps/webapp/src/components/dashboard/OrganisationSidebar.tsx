@@ -13,6 +13,7 @@ import { Trans } from 'react-i18next';
 import { useOrganisationById } from '@/hooks/organisation/useOrganisation';
 import { OrganisationProfile } from '@baobbab/dtos';
 import { useQueryClient } from '@tanstack/react-query';
+import log from 'loglevel';
 
 interface OrganisationSidebarContentProps {
     organisation: OrganisationProfile;
@@ -29,6 +30,7 @@ export function OrganisationSidebar({
     }
 
     const { data: organisationData } = useOrganisationById(organisationId);
+    log.debug('organisationData', organisationData);
     const handleLogout = (): void => {
         if (removeAuthData) {
             removeAuthData();
