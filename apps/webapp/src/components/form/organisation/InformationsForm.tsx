@@ -30,7 +30,6 @@ import {
     useUpdateOrganisationInfos,
 } from '@/hooks/organisation/useOrganisation';
 import { ImageUploadForm } from './ImageUploadForm';
-import { useAuth } from '@/context/Auth.context';
 
 const formSchema = z.object({
     firstname: z
@@ -55,8 +54,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const InformationsForm = () => {
-    const { authData } = useAuth();
-    const { data: organisation } = useGetOrganisation(authData?.token || '');
+    const { data: organisation } = useGetOrganisation();
     const organisationId = organisation?.id;
     const [isEditing, setIsEditing] = useState(false);
     const { toast } = useToast();
