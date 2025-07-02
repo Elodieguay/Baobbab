@@ -94,25 +94,27 @@ git clone git@github.com:Elodieguay/baobbab.git
 cd baobbab
 ```
 
-2. **Install all dependencies** 
-`pnpm install`
-
-3. **Create .env files** 
+2. **Create .env files** 
 You need one .env file in:
+```bash
 ./apps/api
 ./apps/web
-root (optional)
-Use the .env.example files provided.
+root
+```
+Use the `.env.example` files provided.
 
-### Start with Docker (PostgreSQL + API):
+3. **Install all dependencies** 
+`pnpm install`
+
+### Start with Docker (PostgreSQL + API + Frontend):
 
 1. **Launch Docker containers**
 `docker-compose up --build`
 
 This will start:
-PostgreSQL database and NestJS API
+PostgreSQL database, NestJS API and React Vite Front
 
-2. **If you're not using Docker for the API, start it manually:**
+2. **If you do not use Docker for the API, start it manually:**
 
 ```bash
 cd apps/api
@@ -126,17 +128,45 @@ pnpm dev
 
 `pnpm dev`
 
+## Execute Migrations and Seeders
+
+1. **In a shell execute :**
+`docker compose exec api sh`
+
+**Then inside the api container execute:**
+`pnpm mikro-orm migration:up`
+
+**Create initial categories using an API client like HTTPie :**
+`http POST http://localhost:4000/categories`
+
+After you can seed ( it is optional)
+Synchronize schemas:  `pnpm orm:sync`
+Launch seeders : `pnpm orm:seed`
+
 ## Developper Notes
 
-- API + Database can be fully managed with Docker.
+- Front + API +  Database can be fully managed with Docker.
 
-- The frontend is launched locally using pnpm dev for hot reload and development.
+- Make sure ports 5432 (Postgres), 3000 (API), 5173 (Frontend Vite) are free.
 
-- Database connection string (in .env):
+## Interact with the Database
 
-`DATABASE_URL=postgresql://sunagenda:password@localhost:5432/sunagenda `
+**Open a shell in the database container:**
 
-- Make sure ports 5432 (Postgres) and 3000 (API) are free.
+`docker compose exec db sh`
 
+**Launch the psql interactive console**
 
-----
+`psql -U postgres -d baobbab_db`
+-U postgres: the defaul database user
+-d baobbab_db: your database name
+
+## Example commands inside 
+
+**List all tables:**
+
+`\dt`
+
+**Run SQL Query:**
+
+`SELECT* FROM "categories"`

@@ -13,15 +13,14 @@ COPY tsconfig*.json ./
 # Installer les dépendances globales
 RUN pnpm install --frozen-lockfile
 
-# Copier le code de l'API et les packages partagés
-COPY apps/api ./apps/api
+# Copier le code de l'API et les packages partagés sans le src
+COPY apps/api/package.json ./apps/api/
+COPY apps/api/tsconfig*.json ./apps/api/
 COPY packages ./packages
 
 WORKDIR /app/apps/api
 RUN pnpm install
-# Construire l'API
-RUN pnpm --filter api build
 
 EXPOSE 3000
 
-CMD ["pnpm", "--filter", "api", "start"]
+CMD ["pnpm", "--filter", "api", "dev"]
