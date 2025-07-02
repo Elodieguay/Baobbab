@@ -24,6 +24,7 @@ export function OrganisationSidebar({
     const organisationId = organisation.id;
     const queryClient = useQueryClient();
     const { removeAuthData } = useAuth();
+
     const navigate = useNavigate();
     if (!organisationId) {
         throw new Error(" Vous n'avez pas accès à cette page");
