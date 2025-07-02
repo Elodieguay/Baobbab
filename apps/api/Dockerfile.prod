@@ -28,7 +28,7 @@ RUN pnpm build
 # Étape 2 : Runner
 FROM node:18-alpine
 
-WORKDIR /app
+WORKDIR /app/apps/api
 
 # Copier uniquement les node_modules spécifiques de l'API
 COPY --from=builder /app/apps/api/node_modules ./node_modules
