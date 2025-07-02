@@ -3,7 +3,7 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm @nestjs/cli
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY tsconfig.base.json ./
@@ -16,6 +16,7 @@ COPY packages ./packages
 
 WORKDIR /app/apps/api
 
+# Ici c'est important : le CLI nest est global grâce à @nestjs/cli
 RUN pnpm build
 
 # Étape 2 : Runner (exécution)

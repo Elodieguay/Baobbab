@@ -1,9 +1,10 @@
-# Étape 1 : Build
+# Étape 1 : Builder
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-RUN npm install -g pnpm
+# Installer PNPM et TypeScript globalement
+RUN npm install -g pnpm typescript
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY tsconfig.base.json ./
@@ -21,10 +22,11 @@ RUN pnpm build
 # Étape 2 : Serveur NGINX
 FROM nginx:alpine
 
-COPY --from=builder /app/apps/webapp/dist /usr/share/nginx/html
+# Copier la config NGINX
+COPY apps/webapp/nginx.conf /etc/nginx/nginx.conf
 
-# (Optionnel) Custom NGINX conf si besoin
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copier les assets construits
+COPY --from=builder /app/apps/webapp/dist /usr/share/nginx/html
 
 EXPOSE 80
 
