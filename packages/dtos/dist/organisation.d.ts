@@ -43,15 +43,15 @@ export declare const organisationRegisterFormSchema: z.ZodObject<{
     email: z.ZodString;
     password: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    siret: string;
-    organisationName: string;
     email: string;
     password: string;
+    siret: string;
+    organisationName: string;
 }, {
-    siret: string;
-    organisationName: string;
     email: string;
     password: string;
+    siret: string;
+    organisationName: string;
 }>;
 export declare const organisationLoginFormSchema: z.ZodObject<{
     email: z.ZodString;
