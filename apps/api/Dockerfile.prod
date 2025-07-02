@@ -1,24 +1,28 @@
-# Étape 1 : Builder
+# Étape 1 : Build
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Installer PNPM et NestJS CLI
+# Installer PNPM et Nest CLI
 RUN npm install -g pnpm @nestjs/cli
 
-# Copier configs et installer deps
+# Copier les fichiers de config du monorepo
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY tsconfig.base.json ./
 COPY tsconfig*.json ./
 
-RUN pnpm install --frozen-lockfile
+# Installer toutes les dépendances globales
+RUN pnpm install
 
-# Copier le code et packages
+# Copier le code API et packages
 COPY apps/api ./apps/api
 COPY packages ./packages
 
-# Builder l'API
+# Installer les dépendances de l'API (IMPORTANT!)
 WORKDIR /app/apps/api
+RUN pnpm install
+
+# Builder l'API
 RUN pnpm build
 
 # Étape 2 : Runner
@@ -26,19 +30,16 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Installer PNPM uniquement
 RUN npm install -g pnpm
 
-# Copier uniquement node_modules et dist du builder
+# Copier node_modules de prod uniquement
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/apps/api/node_modules ./apps/api/node_modules
-COPY --from=builder /app/packages ./packages
 
-# Copier le dist buildé
-COPY --from=builder /app/apps/api/dist ./apps/api/dist
-COPY apps/api/package.json ./apps/api/package.json
+# Copier le dist compilé
+COPY --from=builder /app/apps/api/dist ./dist
 
-WORKDIR /app/apps/api
+# Copier le package.json pour les dépendances runtime
+COPY apps/api/package.json ./
 
 EXPOSE 3000
 
