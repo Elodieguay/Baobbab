@@ -9,8 +9,9 @@ const CourseOrgDetails = () => {
     const courseId = params.id;
     const { data: courseById } = useGetCourseById(courseId || '');
     const orgId = courseById?.organisationId;
-
+    log.debug('orgId', orgId);
     const { data: orgInfoData } = useOrganisationById(orgId || '');
+    log.debug('organisation info data', orgInfoData);
     if (!orgId) {
         return;
     }

@@ -9,11 +9,9 @@ import {
 } from '@/api/auth';
 import { useAuth } from '@/context/Auth.context';
 import {
-    EntityType,
     OrganisationAuthResponse,
     UserLoginDTO,
     UserRegisterDTO,
-    UserRole,
 } from '@baobbab/dtos';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -53,15 +51,7 @@ export const useOrganisationRegister = (): any => {
         mutationFn: registerOrganisation,
         onSuccess: (data: OrganisationAuthResponse) => {
             if (setAuthData) {
-                setAuthData(
-                    data.access_token,
-                    data.role,
-                    UserRole.ADMIN,
-                    EntityType.ORGANISATION,
-                    data.organisationName,
-                    data.email
-                );
-                sessionStorage.setItem('organisationId', data.id);
+                setAuthData(data.access_token, data.refresh_token, data.role);
                 navigate(`/dashboard/${data.id}`);
             } else {
                 log.error('setAuthData is not defined');
@@ -81,20 +71,11 @@ export const useOrganisationLogin = (): any => {
         mutationFn: loginOrganisation,
         onSuccess: (data: OrganisationAuthResponse) => {
             if (setAuthData) {
-                setAuthData(
-                    data.access_token,
-                    data.role,
-                    UserRole.ADMIN,
-                    EntityType.ORGANISATION,
-                    data.email,
-                    data.organisationName,
-                    data.id
-                );
+                setAuthData(data.access_token, data.refresh_token, data.role);
             } else {
                 log.error('setAuthData is not defined');
             }
 
-            sessionStorage.setItem('organisationId', data.id);
             navigate(`/dashboard/${data.id}`);
 
             log.info('The login is a success', data);

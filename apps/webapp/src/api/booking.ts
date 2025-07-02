@@ -7,15 +7,14 @@ import {
 } from '@baobbab/dtos';
 import ky from 'ky';
 import log from 'loglevel';
+import { apiClient } from './apiClient';
 
-export const createBookingCourse = async (
-    userId: string,
-    createBooking: CreateABooking
-) => {
+export const createBookingCourse = async (createBooking: CreateABooking) => {
     try {
-        const url = `${config.apiUrl}/booking`;
-        const response = await ky
-            .post(url, { json: { createBooking, userId } })
+        const response = await apiClient
+            .post('booking', {
+                json: createBooking,
+            })
             .json<CreateABooking>();
         log.debug('response:', response);
         return response;
@@ -80,20 +79,13 @@ export const getOrganisationUserBooking = async (
     }
 };
 
-export const deleteUserBooking = async (bookingId: string, userId?: string) => {
-    if (!userId) {
-        throw new Error('User ID is required');
-    }
+export const deleteUserBooking = async (bookingId: string) => {
     if (!bookingId) {
         throw new Error(' bookingId is missing');
     }
 
     try {
-        const url = `${config.apiUrl}/booking/${bookingId}`;
-        const response = await ky
-            .delete(url, { json: { userId, bookingId } })
-            .json();
-
+        const response = await apiClient.delete(`booking/${bookingId}`);
         return response;
     } catch (error) {
         throw new Error(
@@ -104,18 +96,12 @@ export const deleteUserBooking = async (bookingId: string, userId?: string) => {
 
 export const updateUserBooking = async (
     bookingId: string,
-    userId: string,
     updateBooking: CreateABooking
 ) => {
-    log.debug(bookingId, userId, updateBooking);
     try {
-        log.debug('laloup');
-        const url = `${config.apiUrl}/booking/${bookingId}`;
-        const response = await ky
-            .patch(url, { json: { ...updateBooking, userId } })
+        const response = await apiClient
+            .patch(`booking/${bookingId}`, { json: updateBooking })
             .json();
-
-        log.debug('Booking successfully updated:', response);
         return response;
     } catch (error) {
         throw new Error(

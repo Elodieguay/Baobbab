@@ -7,18 +7,22 @@ import AvatarUser from '../auth/AvatarUser';
 import { Trans, useTranslation } from 'react-i18next';
 import { UserRole } from '@baobbab/dtos';
 import { cn } from '@/utils/utils';
+import { useGetOrganisation } from '@/hooks/organisation/useOrganisation';
+import { useGetUser } from '@/hooks/user/query';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Navbar = ({ className }: { className?: string }): JSX.Element => {
-    const {
-        authToken,
-        removeAuthData,
-        username,
-        role,
-        entityId,
-        organisationName,
-    } = useAuth();
+    const { authData, removeAuthData } = useAuth();
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const [menuOpen, setMenuOpen] = useState(false);
+    const { data: organisation } = useGetOrganisation({
+        enabled: authData?.role === UserRole.ADMIN,
+    });
+
+    const { data: user } = useGetUser({
+        enabled: authData?.role === UserRole.USER,
+    });
     const { t } = useTranslation('common', {
         keyPrefix: 'Navbar',
     });
@@ -32,6 +36,7 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
         if (removeAuthData) {
             await removeAuthData();
         }
+        queryClient.clear();
         navigate('/');
     };
     useEffect(() => {
@@ -63,27 +68,28 @@ const Navbar = ({ className }: { className?: string }): JSX.Element => {
                     </h1>
                 </Link>
                 <div className={cn('mt-5', className)}>
-                    {authToken ? (
+                    {authData?.token ? (
                         <div className="relative">
                             <AvatarUser
                                 name={
-                                    (username ?? null) ||
-                                    (organisationName ?? null)
+                                    (user?.username ?? null) ||
+                                    (organisation?.organisationName ?? null)
                                 }
                                 onClick={toggleMenu}
                             />
                             {menuOpen && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl py-1 z-20">
-                                    {role === UserRole.USER ? (
+                                    {user?.role === UserRole.USER ? (
                                         <Link
                                             to="/profile"
                                             className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-center"
                                         >
                                             {t('menuProfile')}
                                         </Link>
-                                    ) : role === UserRole.ADMIN ? (
+                                    ) : organisation?.role ===
+                                      UserRole.ADMIN ? (
                                         <Link
-                                            to={`/dashboard/${entityId}`}
+                                            to={`/dashboard/${organisation.id}`}
                                             className="block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-center"
                                         >
                                             {t('menuDashboard')}

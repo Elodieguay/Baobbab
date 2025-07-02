@@ -7,6 +7,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { InputPassword } from '@/components/ui/inputPassword';
 import {
     OrganisationLoginDTO,
     organisationLoginFormSchema,
@@ -33,6 +34,7 @@ const OrganisationFormLogin = ({
         });
         log.error('Erreur de soumission du formulaire');
     }
+
     return (
         <Form {...form}>
             <form
@@ -64,7 +66,7 @@ const OrganisationFormLogin = ({
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input
+                                    <InputPassword
                                         {...field}
                                         type="password"
                                         placeholder="mot de passe"

@@ -1,8 +1,24 @@
-import { OrganisationCompleteInfo, OrganisationInfosDTO } from '@baobbab/dtos';
-// import { loginOrganisationSchema } from './auth';
+import {
+    OrganisationCompleteInfo,
+    OrganisationInfosDTO,
+    OrganisationProfile,
+} from '@baobbab/dtos';
 import log from 'loglevel';
-import { config } from '../config';
-import ky from 'ky';
+import { apiClient } from './apiClient';
+
+export const getOrganisation = async () => {
+    try {
+        const response = await apiClient
+            .get('organisation')
+            .json<OrganisationProfile>();
+        return response;
+    } catch (error) {
+        log.error('Error fetching organisation profile:', error);
+        throw new Error(
+            error instanceof Error ? error.message : 'Unknown error'
+        );
+    }
+};
 
 export const getOrganisationById = async (
     organisationId: string
@@ -10,11 +26,12 @@ export const getOrganisationById = async (
     if (typeof organisationId !== 'string' || !organisationId.trim()) {
         log.error('Invalid organisation Id');
     }
-
+    log.debug('organisationId', organisationId);
     try {
-        const url = `${config.apiUrl}/organisation/${organisationId}`;
-        const response = await ky.get(url).json<OrganisationCompleteInfo>();
-        log.debug('GetOrganisationById:', response);
+        const url = `organisation/${organisationId}`;
+        const response = await apiClient
+            .get(url)
+            .json<OrganisationCompleteInfo>();
         return response;
     } catch (error) {
         log.error(`Error to get organisation information:`, error);
@@ -36,11 +53,10 @@ export const updateOrganisationInfos = async ({
         throw new Error('Invalid organisation Id');
     }
     try {
-        const url = `${config.apiUrl}/organisation/${organisationId}`;
-        const response = await ky
+        const url = `organisation/${organisationId}`;
+        const response = await apiClient
             .patch(url, { json: updateOrganisationInfo })
             .json<OrganisationInfosDTO>();
-        log.debug('UpdateOrganisationInfos:', response);
         return response;
     } catch (error) {
         log.error(`Error to update the  organisation'information:`, error);

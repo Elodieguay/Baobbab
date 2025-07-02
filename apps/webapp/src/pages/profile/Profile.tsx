@@ -8,39 +8,44 @@ import { useAuth } from '@/context/Auth.context';
 import { useCity } from '@/context/City.context';
 import { useGetUserBooking } from '@/hooks/booking/query';
 import { useGetUser } from '@/hooks/user/query';
-import log from 'loglevel';
 import { AtSign, CircleUser } from 'lucide-react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
+import NotLogin from '../notFound/NotLogin';
 
 const Profile = (): JSX.Element => {
-    const { authToken, username } = useAuth();
+    const { authData } = useAuth();
+
     const { city } = useCity();
     const navigate = useNavigate();
-    const { data } = useGetUser(authToken || '');
-    const { data: user } = useGetUser(authToken || '');
+    const { data: user } = useGetUser();
     const userId = user?.id;
 
     const { data: userBooking } = useGetUserBooking(userId || '');
-
     const { t } = useTranslation('common', {
         keyPrefix: 'Profile',
     });
 
     useEffect(() => {
-        if (!authToken) {
+        if (!authData?.token) {
             navigate('/login');
         }
-    }, [authToken, navigate]);
+    }, [authData?.token, navigate]);
 
-    if (!authToken) {
-        log.error('No authToken is found');
-        return <div>{t('page.error.authToken')}</div>;
+    if (!authData?.token) {
+        return (
+            <div>
+                <NotLogin />
+            </div>
+        );
     }
-    if (!data) {
-        log.error('No data is found');
-        return <div>{t('page.loading.data.user')}</div>;
+    if (!user) {
+        return (
+            <div>
+                <NotLogin />
+            </div>
+        );
     }
 
     const handleGoBack = () => {
@@ -66,11 +71,11 @@ const Profile = (): JSX.Element => {
                         <ul className="mt-4 space-y-3">
                             <li className="flex items-center border-b pb-2">
                                 <CircleUser />
-                                <span className="ml-4">{username}</span>
+                                <span className="ml-4">{user?.username}</span>
                             </li>
                             <li className="flex items-center border-b pb-2">
                                 <AtSign />
-                                <span className="ml-4">{data.email}</span>
+                                <span className="ml-4">{user.email}</span>
                             </li>
                         </ul>
                     </Card>

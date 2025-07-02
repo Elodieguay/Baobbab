@@ -834,16 +834,6 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "schedule_id"
-          ],
-          "composite": false,
-          "keyName": "booking_schedule_id_unique",
-          "constraint": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "booking_pkey",
           "columnNames": [
             "id"
@@ -866,7 +856,8 @@
             "id"
           ],
           "referencedTableName": "public.schedule",
-          "deleteRule": "cascade"
+          "deleteRule": "set null",
+          "updateRule": "cascade"
         },
         "booking_courses_id_foreign": {
           "constraintName": "booking_courses_id_foreign",

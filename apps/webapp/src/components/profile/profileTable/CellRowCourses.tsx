@@ -18,9 +18,11 @@ export type CellRowUserProps = {
     cellData: BookingResponse;
 };
 export const CellRowCourses = ({ cellData }: CellRowUserProps) => {
-    const { authToken } = useAuth();
+    const { authData } = useAuth();
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const { data } = useGetUser(authToken || '');
+    const { data } = useGetUser({
+        enabled: !!authData?.token,
+    });
     const userId = data?.id;
     return (
         <DropdownMenu

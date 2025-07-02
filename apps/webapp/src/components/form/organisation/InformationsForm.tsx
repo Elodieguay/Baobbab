@@ -25,6 +25,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import {
+    useGetOrganisation,
     useOrganisationById,
     useUpdateOrganisationInfos,
 } from '@/hooks/organisation/useOrganisation';
@@ -53,7 +54,8 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const InformationsForm = () => {
-    const organisationId = sessionStorage.getItem('organisationId');
+    const { data: organisation } = useGetOrganisation();
+    const organisationId = organisation?.id;
     const [isEditing, setIsEditing] = useState(false);
     const { toast } = useToast();
 

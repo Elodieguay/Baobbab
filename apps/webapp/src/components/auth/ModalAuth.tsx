@@ -17,8 +17,6 @@ import {
     UserRegisterDTO,
     formLoginSchema,
     LoginResponse,
-    EntityType,
-    UserRole,
 } from '@baobbab/dtos';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -45,10 +43,7 @@ const Modal = (): JSX.Element => {
                     setAuthData(
                         data.access_token,
                         data.refresh_token,
-                        UserRole.USER,
-                        EntityType.USER,
-                        data.username,
-                        data.email
+                        data.role
                     );
                 } else {
                     log.error('setAuthData is not defined');
@@ -63,10 +58,7 @@ const Modal = (): JSX.Element => {
                     setAuthData(
                         data.access_token,
                         data.refresh_token,
-                        UserRole.USER,
-                        EntityType.USER,
-                        data.username,
-                        data.email
+                        data.role
                     );
                 } else {
                     log.error('setAuthData is not defined');

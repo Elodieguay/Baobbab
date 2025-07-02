@@ -30,18 +30,9 @@ export const useGetCourseByCategory = (categoryId: string) => {
     return useQuery({
         queryKey: ['courseCategory', categoryId],
         queryFn: () => getCoursesByCategory(categoryId),
-        enabled: categoryId !== undefined,
+        enabled: true,
         placeholderData: (previous) => previous,
         staleTime: 5 * 60 * 1000,
-        initialData: () => {
-            const queryClient = useQueryClient();
-
-            const cached = queryClient.getQueryData([
-                'courseCategory',
-                categoryId,
-            ]);
-            return cached ?? undefined;
-        },
     });
 };
 

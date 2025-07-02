@@ -3,3 +3,8 @@ packages/**/node_modules
 .git
 *.md
 node_modules
+
+# This is the directory where Postgres data will be stored
+# It should not be included in the Docker build context
+services/postgres/data
+pgdata

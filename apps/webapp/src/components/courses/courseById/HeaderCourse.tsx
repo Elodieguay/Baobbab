@@ -12,7 +12,7 @@ import { useAuth } from '@/context/Auth.context';
 import { useGetCategory } from '@/hooks/courses/query';
 import { getCategoryTitle } from '@/utils/getCategoryTitle';
 import { cn } from '@/utils/utils';
-import { CoursesDTOGeojson } from '@baobbab/dtos';
+import { CoursesDTOGeojson, UserRole } from '@baobbab/dtos';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -23,8 +23,7 @@ export interface HeaderCourseProps {
 const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
     const { data: category } = useGetCategory();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const [showAuthMessage, setShowAuthMessage] = useState(false);
-    const { authToken } = useAuth();
+    const { authData } = useAuth();
     const { t } = useTranslation('common', { keyPrefix: 'Courses' });
     const categoryTitle = coursesInfos
         ? getCategoryTitle({ category, coursesInfos })
@@ -50,6 +49,10 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                     className="object-cover w-full h-full"
                     loading="eager"
                     fetchPriority="high"
+                    onError={(e) => {
+                        e.currentTarget.src =
+                            'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp/';
+                    }}
                 />
             </figure>
             <div className="w-full lg:w-1/3 flex flex-col items-center justify-center gap-10 px-4 py-6">
@@ -64,7 +67,7 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                 </div>
 
                 <div className="flex justify-center items-center">
-                    {authToken ? (
+                    {authData?.token && authData?.role === UserRole.USER ? (
                         <Dialog
                             open={isModalOpen}
                             onOpenChange={setIsModalOpen}

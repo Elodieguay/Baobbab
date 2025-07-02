@@ -11,7 +11,7 @@ export class Booking {
   @Property({ type: 'text' })
   title: string;
 
-  @ManyToOne(() => Schedule, { nullable: false })
+  @ManyToOne(() => Schedule, { nullable: true })
   schedule: Schedule;
 
   @ManyToOne(() => Courses, { nullable: true })

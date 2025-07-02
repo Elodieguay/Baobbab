@@ -67,11 +67,13 @@ export class AuthService {
     });
     await this.em.persistAndFlush(user);
 
-    const payload = { id: user.id, email: user.email };
+    const payload = { id: user.id, email: user.email, role: user.role };
 
     // it generate a token
     const secret = this.configService.get('JWT_SECRET');
+    logger.debug('secret', secret);
     const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
+    logger.debug('secretRefresh', secretRefresh);
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
       expiresIn: '5m',
@@ -124,7 +126,7 @@ export class AuthService {
     // we validate the user with email and password
     const user = await this.validateUser({ email, password });
     // we generate the payload for the JWT
-    const payload = { id: user.id, email: user.email };
+    const payload = { id: user.id, email: user.email, role: user.role };
     //we generate the token
     const secret = this.configService.get('JWT_SECRET');
     const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
@@ -151,12 +153,23 @@ export class AuthService {
       const payload = this.jwtService.verify(refreshTokenValue, {
         secret: this.configService.get('JWT_REFRESH_SECRET'),
       });
-      const user = await this.userService.findOneUserById(payload.id);
-      if (!user) {
-        throw new UnauthorizedException('User not found');
+
+      let entity: User | Organisation | null = null;
+      if (payload.role === UserRole.USER) {
+        entity = await this.userService.findOneUserById(payload.id);
+      } else if (payload.role === UserRole.ADMIN) {
+        entity = await this.em.findOne(Organisation, { id: payload.id });
       }
+      if (!entity) {
+        throw new UnauthorizedException('Entity not found');
+      }
+
+      // const user = await this.userService.findOneUserById(payload.id);
+      // if (!user) {
+      //   throw new UnauthorizedException('User not found');
+      // }
       const newAccessToken = this.jwtService.sign(
-        { id: user.id, email: user.email },
+        { id: entity.id, email: entity.email, role: entity.role },
         {
           secret: this.configService.get('JWT_SECRET'),
           expiresIn: '10m',
@@ -170,7 +183,12 @@ export class AuthService {
 
   async organisationRegister(
     createOrganisation: OrganisationRegisterDTO,
-  ): Promise<Omit<Organisation, ' password'> & { access_token: string }> {
+  ): Promise<
+    Omit<Organisation, ' password'> & {
+      access_token: string;
+      refresh_token: string;
+    }
+  > {
     const existingOrganisation = await this.em.findOne(Organisation, {
       $or: [
         { siret: createOrganisation.siret },
@@ -195,33 +213,62 @@ export class AuthService {
     });
 
     await this.em.persistAndFlush(organisation);
-    const payload = { id: organisation.id, email: organisation.email };
+    const payload = {
+      id: organisation.id,
+      email: organisation.email,
+      role: organisation.role,
+    };
     const secret = this.configService.get('JWT_SECRET');
+    const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
+      expiresIn: '2m',
+    });
+    const refresh_token = await this.jwtService.signAsync(payload, {
+      secret: secretRefresh,
+      expiresIn: '7d',
     });
 
     return {
       ...organisation,
       access_token,
+      refresh_token,
       role: UserRole.ADMIN,
     };
   }
 
-  async organisationLogin(
-    loginOrganisation: AuthPayloadDto,
-  ): Promise<Omit<Organisation, 'password'> & { access_token: string }> {
+  async organisationLogin(loginOrganisation: AuthPayloadDto): Promise<
+    Omit<Organisation, 'password'> & {
+      access_token: string;
+      refresh_token: string;
+    }
+  > {
     const organisation = await this.validateUser(loginOrganisation);
-    const payload = { id: organisation.id, email: organisation.email };
+    const payload = {
+      id: organisation.id,
+      email: organisation.email,
+      role: organisation.role,
+    };
     const secret = this.configService.get('JWT_SECRET');
+    const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
+      expiresIn: '2m',
+    });
+    const refresh_token = await this.jwtService.signAsync(payload, {
+      secret: secretRefresh,
+      expiresIn: '7d',
     });
 
     return {
       ...organisation,
       access_token,
-    } as Omit<Organisation, 'password'> & { access_token: string };
+      refresh_token,
+      role: UserRole.ADMIN,
+    } as Omit<Organisation, 'password'> & {
+      access_token: string;
+      refresh_token: string;
+    };
   }
 
   // async createSuperAdmin(

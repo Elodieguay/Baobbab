@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20250303000156 extends Migration {
+export class Migration20250622233211 extends Migration {
   override async up(): Promise<void> {
     this.addSql(
       `create table "categories" ("id" uuid not null default gen_random_uuid(), "title" text not null, constraint "categories_pkey" primary key ("id"));`,
@@ -11,10 +11,13 @@ export class Migration20250303000156 extends Migration {
     );
 
     this.addSql(
-      `create table "organisation" ("id" uuid not null default gen_random_uuid(), "role" text check ("role" in ('ADMIN', 'USER', 'SUPERADMIN')) not null default 'ADMIN', "status" text check ("status" in ('PENDING', 'APPROVED', 'REJECTED', 'ARCHIVED', 'DRAFT', 'CANCELLED')) not null default 'PENDING', "organisation_name" text not null, "siret" bigint not null, "email" text not null, "password" text not null, "created_at" timestamptz null, "updated_at" timestamptz null, "organisation_infos_id" uuid null, constraint "organisation_pkey" primary key ("id"));`,
+      `create table "organisation" ("id" uuid not null default gen_random_uuid(), "role" text check ("role" in ('ADMIN', 'USER', 'SUPERADMIN')) not null default 'ADMIN', "status" text check ("status" in ('PENDING', 'APPROVED', 'REJECTED', 'ARCHIVED', 'DRAFT', 'CANCELLED')) not null default 'PENDING', "organisation_name" text not null, "siret" text not null, "email" text not null, "password" text not null, "created_at" timestamptz null, "updated_at" timestamptz null, "organisation_infos_id" uuid null, constraint "organisation_pkey" primary key ("id"));`,
     );
     this.addSql(
       `alter table "organisation" add constraint "organisation_organisation_name_unique" unique ("organisation_name");`,
+    );
+    this.addSql(
+      `alter table "organisation" add constraint "organisation_siret_unique" unique ("siret");`,
     );
     this.addSql(
       `alter table "organisation" add constraint "organisation_organisation_infos_id_unique" unique ("organisation_infos_id");`,
@@ -29,13 +32,6 @@ export class Migration20250303000156 extends Migration {
     );
 
     this.addSql(
-      `create table "booking" ("id" uuid not null default gen_random_uuid(), "title" text not null, "schedule_id" uuid null, "courses_id" uuid null, constraint "booking_pkey" primary key ("id"));`,
-    );
-    this.addSql(
-      `alter table "booking" add constraint "booking_schedule_id_unique" unique ("schedule_id");`,
-    );
-
-    this.addSql(
       `create table "super_admin" ("id" uuid not null default gen_random_uuid(), "role" text check ("role" in ('ADMIN', 'USER', 'SUPERADMIN')) not null default 'SUPERADMIN', "username" text not null, "email" text not null, "password" text not null, "created_at" timestamptz null, constraint "super_admin_pkey" primary key ("id"));`,
     );
     this.addSql(
@@ -47,6 +43,10 @@ export class Migration20250303000156 extends Migration {
     );
     this.addSql(
       `alter table "user" add constraint "user_username_unique" unique ("username");`,
+    );
+
+    this.addSql(
+      `create table "booking" ("id" uuid not null default gen_random_uuid(), "title" text not null, "schedule_id" uuid null, "courses_id" uuid null, "user_id" uuid not null, constraint "booking_pkey" primary key ("id"));`,
     );
 
     this.addSql(
@@ -65,10 +65,13 @@ export class Migration20250303000156 extends Migration {
     );
 
     this.addSql(
-      `alter table "booking" add constraint "booking_schedule_id_foreign" foreign key ("schedule_id") references "schedule" ("id") on delete cascade;`,
+      `alter table "booking" add constraint "booking_schedule_id_foreign" foreign key ("schedule_id") references "schedule" ("id") on update cascade on delete set null;`,
     );
     this.addSql(
       `alter table "booking" add constraint "booking_courses_id_foreign" foreign key ("courses_id") references "courses" ("id") on update cascade on delete set null;`,
+    );
+    this.addSql(
+      `alter table "booking" add constraint "booking_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade;`,
     );
   }
 
@@ -97,6 +100,10 @@ export class Migration20250303000156 extends Migration {
       `alter table "booking" drop constraint "booking_schedule_id_foreign";`,
     );
 
+    this.addSql(
+      `alter table "booking" drop constraint "booking_user_id_foreign";`,
+    );
+
     this.addSql(`drop table if exists "categories" cascade;`);
 
     this.addSql(`drop table if exists "organisation_infos" cascade;`);
@@ -107,10 +114,10 @@ export class Migration20250303000156 extends Migration {
 
     this.addSql(`drop table if exists "schedule" cascade;`);
 
-    this.addSql(`drop table if exists "booking" cascade;`);
-
     this.addSql(`drop table if exists "super_admin" cascade;`);
 
     this.addSql(`drop table if exists "user" cascade;`);
+
+    this.addSql(`drop table if exists "booking" cascade;`);
   }
 }

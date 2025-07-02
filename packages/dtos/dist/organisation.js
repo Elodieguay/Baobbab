@@ -57,7 +57,7 @@ exports.organisationRegisterFormSchema = zod_1.default.object({
         message: 'Le nom doit contenir au moins 2 caractères',
     }),
     email: zod_1.default.string().email({
-        message: 'l/email n/est pas valide',
+        message: "l'email n'est pas valide",
     }),
     password: zod_1.default
         .string()
@@ -70,7 +70,7 @@ exports.organisationRegisterFormSchema = zod_1.default.object({
 });
 exports.organisationLoginFormSchema = zod_1.default.object({
     email: zod_1.default.string().email({
-        message: 'l/email n/est pas valide',
+        message: "l'email n'est pas valide",
     }),
     password: zod_1.default
         .string()

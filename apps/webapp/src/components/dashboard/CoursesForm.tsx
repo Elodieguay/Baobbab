@@ -62,28 +62,25 @@ const CoursesForm = (): JSX.Element => {
         },
     });
 
-    const onSubmit = () => {
+    const onSubmit = (): void => {
         // createCourse({
-        //     createCourse: {
-        //         title: values.title,
-        //         description: values.description,
-        //         address: values.address,
-        //         city: values.city ?? null,
-        //         category: values.category ,
-        //         price: values.price,
-        //         duration: values.duration,
-        //         schedule: values.days.map((day, idx) => ({
-        //             id: `${day}-${idx}-${Date.now()}`,
-        //             day,
-        //             hours: values.hours,
-        //         })),
-        //         image: 'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp',
-        //         position: {
-        //             type: 'Point',
-        //             coordinates: [-1.553621, 47.218371],
-        //         },
-        //         organisationId: sessionStorage.getItem('organisationId')!,
+        //     title: values.title,
+        //     description: values.description,
+        //     address: values.address,
+        //     city: values.city,
+        //     category: values.category,
+        //     price: values.price,
+        //     duration: values.duration,
+        //     schedule: values.days.map((day) => ({
+        //         day,
+        //         hours: values.hours,
+        //     })),
+        //     image: 'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp',
+        //     position: {
+        //         type: 'Point',
+        //         coordinates: [-1.553621, 47.218371],
         //     },
+        //     organisationId: sessionStorage.getItem('organisationId')!,
         // });
     };
 

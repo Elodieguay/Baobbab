@@ -1,0 +1,55 @@
+services:
+    db:
+        image: postgis/postgis:16-3.5-alpine
+        container_name: baobbab-postgres
+        environment:
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_NAME}
+        ports:
+            - '5432:5432'
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U postgres -d baobbab_db']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    api:
+        build:
+            context: .
+            dockerfile: apps/api/Dockerfile
+        container_name: baobbab-api
+        env_file:
+            - .env
+        environment:
+            DB_HOST: db
+            DB_PORT: ${DB_PORT}
+            DB_USER: ${DB_USER}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_NAME: ${DB_NAME}
+        depends_on:
+            db:
+                condition: service_healthy
+        ports:
+            - '4000:3000'
+        volumes:
+            - ./apps/api/src:/app/apps/api/src
+            - ./packages:/app/packages
+
+    webapp:
+        build:
+            context: .
+            dockerfile: apps/webapp/Dockerfile
+        container_name: baobbab-web
+        ports:
+            - '5173:5173'
+        depends_on:
+            - api
+        volumes:
+            - ./apps/webapp:/app/apps/webapp
+            - ./packages:/app/packages
+            - /app/apps/webapp/node_modules
+volumes:
+    pgdata:

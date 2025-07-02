@@ -1,5 +1,4 @@
 import { fakerFR as faker } from '@faker-js/faker';
-
 import { Status, UserRole } from '@baobbab/dtos';
 import { EntityManager } from '@mikro-orm/core';
 import { Organisation } from '../entities/organisation.entity';
@@ -8,8 +7,6 @@ import { Courses } from '../entities/courses.entity';
 import { Seeder } from '@mikro-orm/seeder';
 import { Categories } from '../entities/categories.entity';
 import { Schedule } from '../entities/schedule.entity';
-import { logger } from '@mikro-orm/nestjs';
-import { Logger } from '@nestjs/common';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -90,25 +87,22 @@ export class DatabaseSeeder extends Seeder {
           ],
       });
 
-      //  const location =
-      //  nantesLocations[Math.floor(Math.random() * nantesLocations.length)];
-
       // Génération d'une position unique autour de Nantes
       let lat, lon, key;
       do {
-        lat = centerLat + (Math.random() * 0.04 - 0.02); // ± 0.02 degrés
+        lat = centerLat + (Math.random() * 0.04 - 0.02);
         lon = centerLon + (Math.random() * 0.04 - 0.02);
-        key = `${lat.toFixed(6)},${lon.toFixed(6)}`; // Format unique pour éviter les doublons
+        key = `${lat.toFixed(6)},${lon.toFixed(6)}`;
       } while (usedLocations.has(key));
 
-      usedLocations.add(key); // Ajouter la position à l'ensemble des utilisées
+      usedLocations.add(key);
 
       // Sélection d'une catégorie aléatoire
       const randomCategory =
         categories[Math.floor(Math.random() * categories.length)];
       const randomCategoryName = randomCategory.title;
       const selectedImages = courseImages[randomCategoryName] || [
-        'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp',
+        'https://images.pexels.com/photos/207983/pexels-photo-207983.jpeg?_gl=1*ikdshm*_ga*MzQyNDM4NTk2LjE3NTEzNzY3NjI.*_ga_8JE65Q40S6*czE3NTEzNzY3NjEkbzEkZzAkdDE3NTEzNzY3NjEkajYwJGwwJGgw&w=800&q=75&fm=webp',
       ];
       const courseImage =
         selectedImages[Math.floor(Math.random() * selectedImages.length)];
@@ -133,12 +127,12 @@ export class DatabaseSeeder extends Seeder {
 
       // Ajout des Schedules pour ce Course sans dates spécifiques
       const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
-      const scheduleCount = faker.number.int({ min: 1, max: 5 }); // Créer entre 1 et 5 horaires pour chaque cours
+      const scheduleCount = faker.number.int({ min: 1, max: 5 });
       const schedules: Schedule[] = [];
 
       for (let j = 0; j < scheduleCount; j++) {
         const day = daysOfWeek[Math.floor(Math.random() * daysOfWeek.length)];
-        const hour = `${faker.number.int({ min: 8, max: 18 })}:00`; // Horaire entre 8h00 et 18h00
+        const hour = `${faker.number.int({ min: 8, max: 18 })}:00`;
         const schedule = em.create(Schedule, {
           courses: course,
           day: day,

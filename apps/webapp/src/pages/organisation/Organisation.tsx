@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import {
     organisationLoginFormSchema,
     organisationRegisterFormSchema,
-    UserRole,
 } from '@baobbab/dtos';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -59,14 +58,8 @@ const Organisation = (): JSX.Element => {
     ): void => {
         organisationLogin({
             ...values,
-            role: UserRole.ADMIN,
         });
     };
-    // useEffect(() => {
-    //     if (authToken && role === UserRole.ADMIN) {
-    //         navigate('/dashboard');
-    //     }
-    // }, [authToken, role]);
 
     return (
         <div className="w-full min-h-screen">

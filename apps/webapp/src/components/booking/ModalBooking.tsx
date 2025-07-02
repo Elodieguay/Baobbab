@@ -30,13 +30,15 @@ const ModalBooking = ({
     bookingId,
     setIsModalOpen,
 }: ModalBookingProps): JSX.Element => {
-    const { authToken } = useAuth();
-    const { data } = useGetUser(authToken || '');
+    const { authData } = useAuth();
+    const { data } = useGetUser({
+        enabled: !!authData?.token,
+    });
     const userId = data?.id;
     const { t } = useTranslation('common');
     const { toast } = useToast();
 
-    const { mutateAsync: createBooking } = useCreateABooking();
+    const { mutateAsync: createBooking, isPending } = useCreateABooking();
 
     const { mutateAsync: updateBooking } = useUpdateUserBooking();
 
@@ -66,7 +68,6 @@ const ModalBooking = ({
             updateBooking(
                 {
                     bookingId: bookingId,
-                    userId: userId,
                     updateBooking: {
                         title: values.title,
                         schedule: dayObject,
@@ -95,7 +96,6 @@ const ModalBooking = ({
         } else {
             createBooking(
                 {
-                    userId: userId,
                     createBooking: {
                         title: values.title,
                         schedule: dayObject,
@@ -147,6 +147,7 @@ const ModalBooking = ({
                 />
                 <Button
                     type="submit"
+                    disabled={isPending}
                     variant="outline"
                     className="rounded-xl w-full bg-[#ffcd00] text-base"
                 >

@@ -17,21 +17,17 @@ export const useCreateABooking = (options?: {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async ({
-            userId,
             createBooking,
         }: {
-            userId: string;
             createBooking: CreateABooking;
         }) => {
-            if (!userId) {
-                throw new Error('un id est requis');
-            }
-            return createBookingCourse(userId, createBooking);
+            log.debug('createBooking:', createBooking);
+            return createBookingCourse(createBooking);
         },
-        onSuccess: (data, variables) => {
+        onSuccess: (data) => {
             const userbooking = data;
             queryClient.invalidateQueries({
-                queryKey: ['booking', 'user', variables.userId],
+                queryKey: ['booking', 'user'],
             });
             options?.onSuccess?.(userbooking);
             log.debug('Les modifications sont enregistrées:', data);
@@ -70,7 +66,6 @@ export const useGetOrganisationUserBooking = (
 
 export const useDeleteUserBooking = (
     bookingId: string,
-    userId?: string,
     options?: {
         onSuccess: () => void;
         onError: (error: Error) => void;
@@ -79,11 +74,11 @@ export const useDeleteUserBooking = (
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async () => {
-            return deleteUserBooking(bookingId, userId);
+            return deleteUserBooking(bookingId);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ['booking', 'user', userId],
+                queryKey: ['booking', 'user'],
             });
             options?.onSuccess?.();
         },
@@ -101,24 +96,19 @@ export const useUpdateUserBooking = (options?: {
     return useMutation({
         mutationFn: async ({
             bookingId,
-            userId,
             updateBooking,
         }: {
             bookingId?: string;
-            userId: string;
             updateBooking: CreateABooking;
         }) => {
-            if (!userId) {
-                throw new Error('an id is required');
-            }
             if (!bookingId) {
                 throw new Error('an bookingId is required');
             }
-            return updateUserBooking(bookingId, userId, updateBooking);
+            return updateUserBooking(bookingId, updateBooking);
         },
         onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({
-                queryKey: ['booking', 'user', variables.userId],
+                queryKey: ['booking', 'user'],
             });
             queryClient.invalidateQueries({
                 queryKey: ['booking', 'by-id', variables.bookingId],

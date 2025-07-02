@@ -48,14 +48,7 @@ const CourseByCity = (): JSX.Element | null => {
             setCategoryList(category);
         }
     }, [category]);
-
-    if (!coordinates) {
-        return null;
-    }
-    if (!city) {
-        return null;
-    }
-    if (!Array.isArray(courses)) {
+    if (!city || !coordinates || !Array.isArray(courses)) {
         return null;
     }
 
