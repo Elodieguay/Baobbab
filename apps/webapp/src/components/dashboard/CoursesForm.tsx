@@ -62,6 +62,7 @@ const CoursesForm = (): JSX.Element => {
         },
     });
 
+
     const onSubmit = (): void => {
         // createCourse({
         //     title: values.title,
@@ -81,6 +82,7 @@ const CoursesForm = (): JSX.Element => {
         //         coordinates: [-1.553621, 47.218371],
         //     },
         //     organisationId: sessionStorage.getItem('organisationId')!,
+
         // });
     };
 

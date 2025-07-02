@@ -1,3 +1,4 @@
+
 // import CoursesForm from '@/components/dashboard/CoursesForm';
 // import InformationsForm from '../form/organisation/InformationsForm';
 // import DetailsCoursesBooked from './DetailsCoursesBooked';
