@@ -1,0 +1,31 @@
+# Étape 1 : Build
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+RUN npm install -g pnpm
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY tsconfig.base.json ./
+COPY tsconfig*.json ./
+
+RUN pnpm install --frozen-lockfile
+
+COPY apps/webapp ./apps/webapp
+COPY packages ./packages
+
+WORKDIR /app/apps/webapp
+
+RUN pnpm build
+
+# Étape 2 : Serveur NGINX
+FROM nginx:alpine
+
+COPY --from=builder /app/apps/webapp/dist /usr/share/nginx/html
+
+# (Optionnel) Custom NGINX conf si besoin
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
