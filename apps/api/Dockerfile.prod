@@ -2,23 +2,32 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Installer PNPM
+# Installer PNPM et Nest CLI
 RUN npm install -g pnpm @nestjs/cli
 
-# Copier le monorepo config
+# Copier les fichiers du monorepo
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY tsconfig.base.json ./
 COPY tsconfig*.json ./
 
-# Installer toutes les dépendances globales
+# Installer toutes les dépendances de tous les workspaces
 RUN pnpm install --frozen-lockfile
 
-# Copier le code complet
+# Copier le code
 COPY apps/api ./apps/api
 COPY packages ./packages
 
+# Builder les DTOs
+WORKDIR /app/packages/dtos
+RUN pnpm install
+RUN pnpm build
+
+# Builder l'API
 WORKDIR /app/apps/api
+RUN pnpm install
+RUN pnpm build
 
 EXPOSE 3000
 
+# Lancer en mode start
 CMD ["pnpm", "start"]
