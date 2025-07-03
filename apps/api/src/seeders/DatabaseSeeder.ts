@@ -10,6 +10,22 @@ import { Schedule } from '../entities/schedule.entity';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
+    const existing = await em.count(Categories);
+    if (existing === 0) {
+      const categoryTitles = [
+        'Sport',
+        'Danse',
+        'Arts & Cultures',
+        'Bien-être',
+        'Vie & Solidarité',
+        'Environnement',
+        'Evènements',
+      ];
+      for (const title of categoryTitles) {
+        const category = em.create(Categories, { title });
+        em.persist(category);
+      }
+    }
     // Créer une organisation
     // Récupérer toutes les catégories depuis la base de données
     const categories = await em.find(Categories, {});
