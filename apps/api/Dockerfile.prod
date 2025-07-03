@@ -6,23 +6,20 @@ WORKDIR /app
 # Installer PNPM et Nest CLI
 RUN npm install -g pnpm @nestjs/cli
 
-# Copier les fichiers du monorepo
+# Copier tout le monorepo config
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY tsconfig.base.json ./
 COPY tsconfig*.json ./
 
-# Installer les dépendances globales
+# Installer toutes les dépendances
 RUN pnpm install
 
-# Copier le code API et packages partagés
+# Copier l'API et les packages partagés
 COPY apps/api ./apps/api
 COPY packages ./packages
 
-# Installer les dépendances de l'API
+# Build API
 WORKDIR /app/apps/api
-RUN pnpm install
-
-# Builder l'API
 RUN pnpm build
 
 # Étape 2 : Runner
@@ -30,13 +27,16 @@ FROM node:18-alpine
 
 WORKDIR /app/apps/api
 
-# Copier uniquement les node_modules spécifiques de l'API
+RUN npm install -g pnpm
+
+# Copier TOUT le node_modules (racine et api)
+COPY --from=builder /app/node_modules /app/node_modules
 COPY --from=builder /app/apps/api/node_modules ./node_modules
 
 # Copier le dist compilé
 COPY --from=builder /app/apps/api/dist ./dist
 
-# Copier le package.json de l'API
+# Copier le package.json
 COPY apps/api/package.json ./
 
 EXPOSE 3000
