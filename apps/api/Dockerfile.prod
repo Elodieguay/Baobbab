@@ -17,7 +17,10 @@ RUN pnpm install
 # Copier l'API et les packages partagés
 COPY apps/api ./apps/api
 COPY packages ./packages
-
+# Build DTOs
+WORKDIR /app/packages/dtos
+RUN pnpm install
+RUN pnpm build
 # Build API
 WORKDIR /app/apps/api
 RUN pnpm install
