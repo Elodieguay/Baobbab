@@ -10,7 +10,10 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: ['http://localhost:5174', 'http://localhost:5173'],
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? ['https://baobbab-app.onrender.com']
+        : ['http://localhost:5174', 'http://localhost:5173'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
