@@ -30,4 +30,4 @@ RUN pnpm build
 EXPOSE 3000
 
 # Lancer en mode start
-CMD pnpm --filter api mikro-orm migration:up && pnpm --filter api mikro-orm seeder:run && node dist/src/main
+CMD ["pnpm", "start"]
