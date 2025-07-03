@@ -36,10 +36,11 @@ COPY --from=builder /app/apps/api/node_modules ./node_modules
 
 # Copier le dist compilé
 COPY --from=builder /app/apps/api/dist ./dist
+RUN ls -R ./dist
 
 # Copier le package.json
 COPY apps/api/package.json ./
 
 EXPOSE 3000
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main"]
