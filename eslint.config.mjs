@@ -14,9 +14,18 @@ export default [
     // Configuration TS par défaut
     ...tseslint.configs.recommended,
     // Common
-    { ignores: ['**/dist/*', 'node_modules/*', 'services/postgres/data/**'] },
-
-    
+    { ignores: [
+        '**/dist/*', 
+        'node_modules/*', 
+        'services/postgres/data/**',     
+        "**/dist/**",
+        "node_modules/**",
+        "**/playwright-report/**",
+        "**/coverage/**",
+        "**/reports/**",
+        "**/*.json"
+        ] 
+    },
     {
         files: ['**/*.ts', '**/*.tsx'],
         plugins: {
@@ -122,7 +131,7 @@ export default [
             '@typescript-eslint/explicit-function-return-type': [
                 'error',
                 {
-                    allowExpressions: false, 
+                    allowExpressions: true, 
                     allowTypedFunctionExpressions: false,
                     allowHigherOrderFunctions: false,
                 },
