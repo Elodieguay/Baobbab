@@ -27,10 +27,13 @@ const Footer = (): JSX.Element => {
                     <Link to="/" className="text-base hover:underline">
                         {t('aboutUs')}
                     </Link>
-                    <Link to="/courses" className="text-base hover:underline">
+                    <Link to="/" className="text-base hover:underline">
                         {t('findCourse')}
                     </Link>
-                    <Link to="/" className="text-base hover:underline">
+                    <Link
+                        to="/privatyPolicy"
+                        className="text-base hover:underline"
+                    >
                         {t('legal')}
                     </Link>
                     <Link to="/" className="text-base hover:underline">

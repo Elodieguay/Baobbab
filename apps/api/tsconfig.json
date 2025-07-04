@@ -13,7 +13,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "rootDir": "src",
+    "rootDir": "./",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
@@ -24,7 +24,7 @@
     "resolveJsonModule": true,
     "strictPropertyInitialization": false,
       "paths": {
-      "src/*": ["src/*"]                 // alias pour que "src/..." fonctionne
+      "src/*": ["src/*"]                 
     },
   },
    "include": ["src", "src/test"],

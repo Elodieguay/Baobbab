@@ -1,6 +1,5 @@
 import log from 'loglevel';
 
-// Config des logs
 export const configureLogs = (): void => {
     log.setLevel('debug');
     if (process.env.NODE_ENV == 'production') {

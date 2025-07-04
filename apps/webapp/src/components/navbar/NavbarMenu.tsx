@@ -7,7 +7,6 @@ type NavbarMenuProps = {
     categoryList: CategoryDTO[];
 };
 
-// Fonction pour trouver l'id de la catégorie correspondant au titre
 export const getCategoryIdFromTitle = (
     categoryList: CategoryDTO[],
     title: string
@@ -23,14 +22,6 @@ const NavbarMenu = ({
     const { t } = useTranslation('common', {
         keyPrefix: 'SubNavbar',
     });
-
-    // // Fonction pour trouver l'id de la catégorie correspondant au titre
-    // const getCategoryIdFromTitle = (title: string): string | null => {
-    //     const category = categoryList?.find((cat) => cat.title === title);
-
-    //     log.debug('category', category);
-    //     return category ? category.id : null;
-    // };
 
     const handleCategoryClick = (categoryTitle: string) => {
         log.debug('categoryTitle', categoryTitle);

@@ -73,8 +73,10 @@ describe('BookingController', () => {
       (bookingService.create as jest.Mock).mockResolvedValue(bookingMock);
 
       // 4. Appel du contrôleur
-      const result = await controller.create({ userId, createBooking });
-
+      const result = await controller.create(
+        { user: { id: userId } } as any,
+        createBooking,
+      );
       // 5. Vérifications
       expect(bookingService.create).toHaveBeenCalledWith(userId, createBooking);
       expect(result).toEqual(entityToDto(bookingMock));
@@ -89,7 +91,7 @@ describe('BookingController', () => {
       // Simuler la méthode delete
       bookingService.remove = jest.fn().mockResolvedValue(undefined);
 
-      await controller.delete(bookingId, userId);
+      await controller.delete({ user: { id: userId } } as any, bookingId);
 
       expect(bookingService.remove).toHaveBeenCalledWith(bookingId, userId);
     });

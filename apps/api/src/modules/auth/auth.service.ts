@@ -3,6 +3,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -44,17 +45,18 @@ export class AuthService {
 
   async register(
     createUserInput: UserRegisterDTO,
-  ): Promise<Omit<User, 'password'> & { access_token: string }> {
-    // On vérifie si le user existe déjà
+  ): Promise<
+    Omit<User, 'password'> & { access_token: string; refresh_token: string }
+  > {
     const existingUser = await this.em.findOne(User, {
       username: createUserInput.username,
     });
     if (existingUser) {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
-    //Haschage du mot de passe
     const haschPassword = await bcrypt.hash(createUserInput.password, 10);
-    // On créé une instance de l'utilisateur
+
+    // it create an instance of the user
     const user = this.em.create(User, {
       ...createUserInput,
       role: UserRole.USER,
@@ -63,19 +65,27 @@ export class AuthService {
       updatedAt: new Date().toISOString(),
       bookings: [],
     });
-    // On l'enregistre dans la base de données
     await this.em.persistAndFlush(user);
 
-    // On génére un JWT pour l'utilisateur nouvellement créé
-    const payload = { id: user.id, email: user.email };
-    // On génère le token
+    const payload = { id: user.id, email: user.email, role: user.role };
+
+    // it generate a token
     const secret = this.configService.get('JWT_SECRET');
+    logger.debug('secret', secret);
+    const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
+    logger.debug('secretRefresh', secretRefresh);
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
+      expiresIn: '5m',
+    });
+    const refresh_token = await this.jwtService.signAsync(payload, {
+      secret: secretRefresh,
+      expiresIn: '7d',
     });
     return {
       ...user,
       access_token,
+      refresh_token,
     };
   }
 
@@ -93,9 +103,8 @@ export class AuthService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
-    const haschPassword = await bcrypt.hash(password, 10);
+    // Compare of the password hash with the password sent
 
-    // Comparaison du mot de passe hasché avec celui envoyé
     const passwordValid = await bcrypt.compare(password, entity.password);
 
     if (!passwordValid) {
@@ -103,12 +112,6 @@ export class AuthService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
-    // Logique spécifique à l'organisation (par exemple, vérifie le statut)
-    // if (organisation && organisation.status !== Status.ACTIVE) {
-    // throw new UnauthorizedException('Organisation not active');
-    // }
-
-    // Si tout est valide, on renvoie l'utilisateur sans le password
     const { password: pass, ...result } = entity;
     return result;
   }
@@ -118,26 +121,74 @@ export class AuthService {
     email,
     password,
   }: AuthPayloadDto): Promise<
-    Omit<User, 'password'> & { access_token: string }
+    Omit<User, 'password'> & { access_token: string; refresh_token: string }
   > {
-    // On valide l'utilisateur
+    // we validate the user with email and password
     const user = await this.validateUser({ email, password });
-    // On génère le payload pour le JWT
-    const payload = { id: user.id, email: user.email };
-    //on génère le token
+    // we generate the payload for the JWT
+    const payload = { id: user.id, email: user.email, role: user.role };
+    //we generate the token
     const secret = this.configService.get('JWT_SECRET');
+    const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
+      expiresIn: '2m',
+    });
+    const refresh_token = await this.jwtService.signAsync(payload, {
+      secret: secretRefresh,
+      expiresIn: '7d',
     });
     return {
       ...user,
       access_token,
-    } as Omit<User, 'password'> & { access_token: string };
+      refresh_token,
+    } as Omit<User, 'password'> & {
+      access_token: string;
+      refresh_token: string;
+    };
+  }
+
+  async refreshToken(refreshTokenValue: string): Promise<string> {
+    try {
+      const payload = this.jwtService.verify(refreshTokenValue, {
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
+      });
+
+      let entity: User | Organisation | null = null;
+      if (payload.role === UserRole.USER) {
+        entity = await this.userService.findOneUserById(payload.id);
+      } else if (payload.role === UserRole.ADMIN) {
+        entity = await this.em.findOne(Organisation, { id: payload.id });
+      }
+      if (!entity) {
+        throw new UnauthorizedException('Entity not found');
+      }
+
+      // const user = await this.userService.findOneUserById(payload.id);
+      // if (!user) {
+      //   throw new UnauthorizedException('User not found');
+      // }
+      const newAccessToken = this.jwtService.sign(
+        { id: entity.id, email: entity.email, role: entity.role },
+        {
+          secret: this.configService.get('JWT_SECRET'),
+          expiresIn: '10m',
+        },
+      );
+      return newAccessToken;
+    } catch (err) {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
   }
 
   async organisationRegister(
     createOrganisation: OrganisationRegisterDTO,
-  ): Promise<Omit<Organisation, ' password'> & { access_token: string }> {
+  ): Promise<
+    Omit<Organisation, ' password'> & {
+      access_token: string;
+      refresh_token: string;
+    }
+  > {
     const existingOrganisation = await this.em.findOne(Organisation, {
       $or: [
         { siret: createOrganisation.siret },
@@ -162,37 +213,62 @@ export class AuthService {
     });
 
     await this.em.persistAndFlush(organisation);
-    const payload = { id: organisation.id, email: organisation.email };
+    const payload = {
+      id: organisation.id,
+      email: organisation.email,
+      role: organisation.role,
+    };
     const secret = this.configService.get('JWT_SECRET');
-    logger.debug('secret', secret);
+    const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
+      expiresIn: '2m',
     });
-    logger.debug('token', access_token);
+    const refresh_token = await this.jwtService.signAsync(payload, {
+      secret: secretRefresh,
+      expiresIn: '7d',
+    });
 
     return {
       ...organisation,
       access_token,
+      refresh_token,
       role: UserRole.ADMIN,
     };
   }
 
-  async organisationLogin(
-    loginOrganisation: AuthPayloadDto,
-  ): Promise<Omit<Organisation, 'password'> & { access_token: string }> {
-    // On valide l'utilisateur
+  async organisationLogin(loginOrganisation: AuthPayloadDto): Promise<
+    Omit<Organisation, 'password'> & {
+      access_token: string;
+      refresh_token: string;
+    }
+  > {
     const organisation = await this.validateUser(loginOrganisation);
-    // On génère le payload pour le JWT
-    const payload = { id: organisation.id, email: organisation.email };
+    const payload = {
+      id: organisation.id,
+      email: organisation.email,
+      role: organisation.role,
+    };
     const secret = this.configService.get('JWT_SECRET');
+    const secretRefresh = this.configService.get('JWT_REFRESH_SECRET');
     const access_token = await this.jwtService.signAsync(payload, {
       secret,
+      expiresIn: '2m',
+    });
+    const refresh_token = await this.jwtService.signAsync(payload, {
+      secret: secretRefresh,
+      expiresIn: '7d',
     });
 
     return {
       ...organisation,
       access_token,
-    } as Omit<Organisation, 'password'> & { access_token: string };
+      refresh_token,
+      role: UserRole.ADMIN,
+    } as Omit<Organisation, 'password'> & {
+      access_token: string;
+      refresh_token: string;
+    };
   }
 
   // async createSuperAdmin(

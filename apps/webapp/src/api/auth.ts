@@ -61,7 +61,7 @@ export async function registerUser(
 // la fonction permet de connecter un utilisateur
 export async function loginUser(
     loginUser: UserLoginDTO
-): Promise<UserLoginDTO> {
+): Promise<LoginResponse> {
     const validationResult = registerSchema.safeParse(loginUser);
 
     if (!validationResult.success) {
@@ -127,7 +127,7 @@ export async function registerOrganisation(
 }
 
 export async function loginOrganisation(
-    loginOrganisation: OrganisationLoginDTO
+    loginOrganisation: Omit<OrganisationLoginDTO, 'role'>
 ): Promise<OrganisationAuthResponse> {
     const validationResult =
         loginOrganisationSchema.safeParse(loginOrganisation);
@@ -180,6 +180,23 @@ export async function resetPassword(
         return response;
     } catch (error) {
         log.error('error resetting password', error);
+        throw error;
+    }
+}
+
+export async function refreshToken(
+    refreshTokenValue: string
+): Promise<{ access_token: string }> {
+    try {
+        log.debug('je suis ici dans le refresh');
+        const url = `${config.apiUrl}/auth/refreshToken`;
+        const response = await ky
+            .post(url, { json: { refreshTokenValue } })
+            .json<{ access_token: string }>();
+        log.info('response refresh token:', response);
+        return response;
+    } catch (error) {
+        log.error('error refreshing token', error);
         throw error;
     }
 }

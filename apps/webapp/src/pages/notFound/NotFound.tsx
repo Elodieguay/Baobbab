@@ -10,7 +10,7 @@ const NotFound = () => {
             <Navbar />
             <div className="flex flex-col items-center justify-center h-full text-center bg-gray-100">
                 <h2 className="max-w-xl ">{t('404')}</h2>
-                <p className="bottom-0 text-[40rem] -rotate-[10deg] origin-right leading-none">
+                <p className="bottom-0 text-[38rem] -rotate-[10deg] origin-right leading-none">
                     <Trans
                         i18nKey="NotFound.logo"
                         components={{

@@ -14,6 +14,7 @@ import {
     organisationRegisterFormSchema,
 } from '@baobbab/dtos';
 import log from 'loglevel';
+import { InputPassword } from '@/components/ui/inputPassword';
 
 const OrganisationFormRegister = ({
     form,
@@ -103,7 +104,7 @@ const OrganisationFormRegister = ({
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input
+                                    <InputPassword
                                         {...field}
                                         type="password"
                                         placeholder="mot de passe"

@@ -5,9 +5,9 @@ export enum RouteNames {
     Login = 'Login',
     Register = 'Register',
     Organisation = 'Organisation',
+    PrivatyPolicy = 'PrivatyPolicy',
     Error404 = 'Error404',
-
-    // action de validation de l'inscription
+    Error401 = 'Error401',
     ForgottenPassword = 'ForgottenPassword',
     ResetPassword = 'ResetPassword',
     ChangePassword = 'ChangePassword',
@@ -90,8 +90,16 @@ const AppRoutes: { [key in RouteNames]: AppRoute } = {
         path: '/profile',
         accessMode: RouteAccessMode.Authenticated,
     },
+    PrivatyPolicy: {
+        path: '/privatyPolicy',
+        accessMode: RouteAccessMode.Public,
+    },
     Error404: {
         path: '*',
+        accessMode: RouteAccessMode.Public,
+    },
+    Error401: {
+        path: '/error401',
         accessMode: RouteAccessMode.Public,
     },
 };

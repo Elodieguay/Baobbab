@@ -16,9 +16,9 @@ const CardContent = () => {
             {cards.map((item, index) => (
                 <Card
                     key={index}
-                    className="w-full md:w-[30%] h-auto min-h-[200px] rounded-3xl bg-[#cb8501] flex items-center"
+                    className="w-full md:w-[30%] h-auto min-h-[20rem] xl:w-[40%] rounded-3xl bg-[#cb8501] flex items-center"
                 >
-                    <CardDescription className="text-base md:text-lg text-white font-semibold p-6 text-center">
+                    <CardDescription className="text-base md:text-lg xl:text-2xl text-white font-semibold p-6 text-center">
                         {item}
                     </CardDescription>
                 </Card>

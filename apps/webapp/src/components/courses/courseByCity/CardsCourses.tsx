@@ -26,7 +26,6 @@ const CardsCourses = ({
         keyPrefix: 'Courses.cardsCourses',
     });
     const navigate = useNavigate();
-    log.debug('schedule', item.schedule);
 
     return (
         <Card
@@ -34,14 +33,24 @@ const CardsCourses = ({
             className="w-full h-auto md:h-64 shadow-md border rounded-md overflow-hidden flex flex-col md:flex-row border-none relative"
             onMouseEnter={() => setHoveredCardId(item.id)}
             onMouseLeave={() => setHoveredCardId(null)}
+            data-testid="course-card"
         >
             <div className="relative w-full md:w-1/3 h-48 md:h-full">
                 <img
                     src={item.image}
                     alt={item.title}
                     className="w-full h-full object-cover"
+                    loading="lazy"
+                    fetchPriority="low"
+                    width={400}
+                    height={300}
+                    onError={(e) => {
+                        e.currentTarget.src =
+                            'https://images.pexels.com/photos/207983/pexels-photo-207983.jpeg?_gl=1*ikdshm*_ga*MzQyNDM4NTk2LjE3NTEzNzY3NjI.*_ga_8JE65Q40S6*czE3NTEzNzY3NjEkbzEkZzAkdDE3NTEzNzY3NjEkajYwJGwwJGgw&w=800&q=75&fm=webp';
+                    }}
                 />
                 <Button
+                    aria-label="Ajouter aux favoris"
                     variant="ghost"
                     size="icon"
                     className="absolute bottom-2 right-2 transition-transform transform hover:scale-110"
@@ -66,6 +75,7 @@ const CardsCourses = ({
                 </CardHeader>
                 <div className="mt-4">
                     <Button
+                        aria-label="Voir plus de détails"
                         className="text-sm px-4 py-2 rounded-xl hover:bg-[#dfa438]"
                         onClick={() => navigate(`/courses/${city}/${item.id}`)}
                     >

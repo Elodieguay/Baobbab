@@ -8,6 +8,7 @@ export interface RegisterResponse {
     password: string;
     role: UserRole.USER;
     access_token: string;
+    refresh_token: string;
     entityType: EntityType.USER;
     created_at: Date;
 }
@@ -19,6 +20,7 @@ export interface LoginResponse {
     email: string;
     role: UserRole.USER;
     access_token: string;
+    refresh_token: string;
     entityType: EntityType.USER;
     created_at?: Date;
     updated_at?: Date;
@@ -32,6 +34,12 @@ export interface UserDTO {
     role: UserRole;
     created_at?: Date;
     updated_at?: Date;
+}
+export interface UserProfile {
+    id: string;
+    username?: string;
+    email: string;
+    role: UserRole;
 }
 
 export interface UserCreateInput {

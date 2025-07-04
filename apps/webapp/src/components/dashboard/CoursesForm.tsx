@@ -12,15 +12,20 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import MultiSelect from '../form/input/Multiselect';
+import { useGetCategory } from '@/hooks/courses/query';
+import { useState } from 'react';
 
 const courseSchema = z.object({
     title: z.string().min(3, 'Le titre est requis'),
     description: z
         .string()
         .min(10, 'La description doit contenir au moins 10 caractères'),
-    price: z.number().positive('Le prix doit être un nombre positif'),
-    duration: z.string(),
+    price: z.coerce.number().min(1, 'Le prix est requis'),
+    duration: z.coerce.number(),
     hours: z.string(),
+    category: z
+        .array(z.string())
+        .nonempty('Sélectionne au moins une catégorie'),
     days: z.array(z.string()).nonempty('Sélectionne au moins un jour'),
     address: z.string().min(5, "L'adresse est requise"),
     city: z.string().optional(),
@@ -38,15 +43,19 @@ const optionsDays = [
 ];
 
 const CoursesForm = (): JSX.Element => {
+    const { data: category } = useGetCategory();
+    // const { mutateAsync: createCourse } = useCreateCourse();
+    const [disabled] = useState(true);
     const form = useForm({
         resolver: zodResolver(courseSchema),
         defaultValues: {
             title: '',
             description: '',
             price: 0,
-            duration: '',
+            duration: 0,
             hours: '',
             days: [],
+            category: [],
             address: '',
             city: '',
             image: null,
@@ -54,11 +63,29 @@ const CoursesForm = (): JSX.Element => {
     });
 
     const onSubmit = (): void => {
-        // console.log('Données envoyées :');
+        // createCourse({
+        //     title: values.title,
+        //     description: values.description,
+        //     address: values.address,
+        //     city: values.city,
+        //     category: values.category,
+        //     price: values.price,
+        //     duration: values.duration,
+        //     schedule: values.days.map((day) => ({
+        //         day,
+        //         hours: values.hours,
+        //     })),
+        //     image: 'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp',
+        //     position: {
+        //         type: 'Point',
+        //         coordinates: [-1.553621, 47.218371],
+        //     },
+        //     organisationId: sessionStorage.getItem('organisationId')!,
+        // });
     };
 
     return (
-        <div className="w-full">
+        <div className="w-full relative">
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -112,7 +139,7 @@ const CoursesForm = (): JSX.Element => {
                                     <FormControl>
                                         <Input
                                             {...field}
-                                            type="number"
+                                            type="text"
                                             placeholder="Prix (€)"
                                             className="w-full"
                                         />
@@ -140,25 +167,48 @@ const CoursesForm = (): JSX.Element => {
                             )}
                         />
                     </div>
-
-                    <FormField
-                        control={form.control}
-                        name="hours"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        type="text"
-                                        placeholder="Horaires (ex: 14h-16h)"
-                                        className="w-full"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
+                    <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                            control={form.control}
+                            name="category"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <MultiSelect
+                                            options={
+                                                Array.isArray(category)
+                                                    ? category.map((cat) => ({
+                                                          label: cat.title,
+                                                          value: cat.id,
+                                                      }))
+                                                    : []
+                                            }
+                                            field={field}
+                                            placeholder="Sélectionner une catégorie"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="hours"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type="text"
+                                            placeholder="Horaires (ex: 14h-16h)"
+                                            className="w-full"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
                     <FormField
                         control={form.control}
                         name="days"
@@ -168,6 +218,7 @@ const CoursesForm = (): JSX.Element => {
                                     <MultiSelect
                                         options={optionsDays}
                                         field={field}
+                                        placeholder="Sélectionner les jours"
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -240,6 +291,22 @@ const CoursesForm = (): JSX.Element => {
                     </Button>
                 </form>
             </Form>
+            {disabled && (
+                <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-50 flex items-center justify-center pointer-events-auto">
+                    <div className="text-center space-y-2 px-4">
+                        <p className="text-lg font-semibold text-red-700">
+                            Cette fonctionnailité arrive bientôt.
+                        </p>
+                        <p className="text-sm text-gray-700">
+                            Vous ne pouvez pas encore créer de cours sur la
+                            plateforme.
+                            <br />
+                            Contactez-nous à :
+                            <span className="font-medium ">pro@baobbab.fr</span>
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

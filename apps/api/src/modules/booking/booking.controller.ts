@@ -6,29 +6,30 @@ import {
   Patch,
   Param,
   Delete,
-  HttpException,
-  HttpStatus,
   Req,
   UseGuards,
   BadRequestException,
   Logger,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
-import { CreateABooking, UserBooking } from '@baobbab/dtos';
+import { CreateABooking, UserBooking, UserRole } from '@baobbab/dtos';
 import { entityToDto } from './booking.entityToDto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { logger } from '@mikro-orm/nestjs';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.USER)
   async create(
-    @Body() createABooking: { userId: string; createBooking: CreateABooking },
+    @Req() req: { user: { id: string } },
+    @Body() createBooking: CreateABooking,
   ): Promise<CreateABooking> {
-    // Récupération de l'ID de l'utilisateur (à condition que l'authentification soit en place)
-    const { userId, createBooking } = createABooking;
+    const userId = req.user.id;
     const booking = await this.bookingService.create(userId, createBooking);
     return entityToDto(booking);
   }
@@ -53,66 +54,52 @@ export class BookingController {
     return bookings;
   }
 
-  // @Get(':bookingId')
-  // async findOne(
-  //   @Param('bookingId') bookingId: string,
-  // ): Promise<CreateABooking> {
-  //   const booking = await this.bookingService.findOne(bookingId);
-  //   return entityToDto(booking);
-  // }
-
   @Patch(':bookingId')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.USER)
   async update(
+    @Req() req: { user: { id: string } },
     @Param('bookingId') bookingId: string,
     @Body()
-    updateUserBooking: CreateABooking & { userId: string },
+    updateUserBooking: CreateABooking,
   ) {
     try {
-      Logger.debug('control', updateUserBooking, bookingId);
-      const { userId, scheduleId, title, courseId, schedule } =
-        updateUserBooking;
+      const userId = req.user.id;
 
       const result = await this.bookingService.update(
         bookingId,
         updateUserBooking,
+        userId,
       );
-      Logger.debug('result', result);
       return {
         statusCode: 200,
-        message: 'Booking successfully updated',
         data: result,
       };
     } catch (error) {
-      const message =
-        error && typeof error === 'object' && 'message' in error
-          ? (error as any).message
-          : 'An unknown error occurred';
-      throw new HttpException(message, HttpStatus.BAD_REQUEST);
+      Logger.error('Error updating booking:', error);
     }
   }
 
   @Delete(':bookingId')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.USER)
   async delete(
+    @Req() req: { user: { id: string } },
     @Param('bookingId') bookingId: string,
-    @Body('userId') userId: string,
   ) {
-    logger.log('bookingId', bookingId);
-
     try {
-      logger.log('bookingId', bookingId);
-
+      const userId = req.user.id;
       const result = await this.bookingService.remove(bookingId, userId);
       return {
         statusCode: 200,
-        message: 'Booking successfully deleted',
         data: result,
       };
     } catch (error) {
-      const message =
-        error && typeof error === 'object' && 'message' in error
-          ? (error as any).message
-          : 'An unknown error occurred';
-      throw new HttpException(message, HttpStatus.BAD_REQUEST);
+      Logger.error('Error deleting booking:', error);
+      if (error && typeof error === 'object' && 'message' in error) {
+        throw new Error((error as { message: string }).message);
+      }
+      throw new Error('An unknown error occurred');
     }
   }
 }

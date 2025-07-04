@@ -24,8 +24,6 @@ const SelectBooking = React.forwardRef<HTMLButtonElement, SelectBookingProps>(
             if (selectedItem && onChange) {
                 const item = `${selectedItem?.day},${selectedItem?.hours}`;
                 log.debug('selectedItem', item);
-
-                // Envoie l'objet sous forme de string
                 onChange(item);
             }
         };
@@ -46,7 +44,12 @@ const SelectBooking = React.forwardRef<HTMLButtonElement, SelectBookingProps>(
                 value={value}
                 onValueChange={(value) => handleChange(value)}
             >
-                <SelectTrigger ref={ref} className="w-full">
+                <SelectTrigger
+                    ref={ref}
+                    className="w-full"
+                    data-testid="select-trigger"
+                    aria-label={title}
+                >
                     <SelectValue placeholder="Sélectionner un jour">
                         {selectedValue}
                     </SelectValue>
@@ -54,8 +57,11 @@ const SelectBooking = React.forwardRef<HTMLButtonElement, SelectBookingProps>(
                 <SelectContent>
                     <SelectGroup>
                         <SelectLabel>{title}</SelectLabel>
-                        {data?.map((item, index) => (
-                            <SelectItem key={index} value={item.day}>
+                        {data?.map((item) => (
+                            <SelectItem
+                                key={`${item.hours}-${item.day}`}
+                                value={item.day}
+                            >
                                 {item.day} à {item.hours}
                             </SelectItem>
                         ))}

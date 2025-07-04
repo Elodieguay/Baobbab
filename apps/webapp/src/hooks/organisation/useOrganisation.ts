@@ -1,12 +1,25 @@
 import {
+    getOrganisation,
     getOrganisationById,
     updateOrganisationInfos,
 } from '@/api/organisation';
-import { OrganisationInfosDTO } from '@baobbab/dtos';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { OrganisationInfosDTO, OrganisationProfile } from '@baobbab/dtos';
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useToast } from '../use-toast';
 import log from 'loglevel';
 
+export function useGetOrganisation(
+    options?: Partial<UseQueryOptions<OrganisationProfile>>
+) {
+    return useQuery({
+        queryKey: ['organisation'],
+        queryFn: async () => {
+            const data = await getOrganisation();
+            return data;
+        },
+        ...options,
+    });
+}
 export const useOrganisationById = (organisationId: string) => {
     return useQuery({
         queryKey: ['organisationId', organisationId],

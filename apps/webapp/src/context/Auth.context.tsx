@@ -1,119 +1,119 @@
+import { useRefreshToken } from '@/hooks/auth/query';
+import { isTokenExpired } from '@/utils/authHelpers';
 import { UserRole } from '@baobbab/dtos';
+import { useQueryClient } from '@tanstack/react-query';
+import log from 'loglevel';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-
-type EntityType = 'user' | 'organisation';
 
 export type UserInformation = {
     email: string | null;
     username: string | null;
 };
-export type AuthContextType = {
-    authToken?: string | undefined;
-    role: UserRole | null;
-    entityType: EntityType | null;
-    entityId: string | null;
-    username: string | null;
-    organisationName: string | null;
-    email: string | null;
-    setAuthToken: (token: string, userRole: UserRole) => void;
-    removeAuthToken: () => void;
-    loading: boolean;
-    setAuthData: (
-        token: string,
-        userRole: UserRole,
-        entityType: EntityType,
-        entityId: string,
-        username?: string,
-        organizationName?: string,
-        email?: string
-    ) => void;
-    removeAuthData: () => void;
+export type AuthDataProps = {
+    token: string;
+    refreshToken?: string;
+    role?: UserRole;
 };
-// On Crée le contexte
+export type AuthContextType = {
+    authData?: AuthDataProps;
+    setAuthData: (token: string, refreshToken: string, role: UserRole) => void;
+    removeAuthData: () => void;
+    loading: boolean;
+};
+// We create the context
 const AuthContext = createContext<Partial<AuthContextType>>({});
 
-// Fournisseur du contexte
+// Provider of the context
 export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
     children,
 }) => {
-    const [authToken, setAuthToken] = useState<string | undefined>(
-        sessionStorage.getItem('JWT_AUTH') || undefined
-    );
-    const [role, setRole] = useState<UserRole | null>(
-        (sessionStorage.getItem('ROLE') as UserRole) || null
-    );
-    const [entityType, setEntityType] = useState<EntityType | null>(
-        (sessionStorage.getItem('ENTITY_TYPE') as EntityType) || null
-    );
-    const [entityId, setEntityId] = useState<string | null>(
-        sessionStorage.getItem('ENTITY_ID') || null
-    );
-    const [username, setUsername] = useState<string | null>(
-        sessionStorage.getItem('USERNAME') || null
-    );
-    const [organisationName, setOrganisationName] = useState<string | null>(
-        sessionStorage.getItem('ORG_NAME') || null
-    );
-    const [email, setEmail] = useState<string | null>(
-        sessionStorage.getItem('EMAIL') || null
-    );
+    const queryClient = useQueryClient();
 
+    const [authData, setAuthDataState] = useState<AuthDataProps | undefined>(
+        () => {
+            const token = sessionStorage.getItem('JWT_AUTH') || undefined;
+            const refreshToken =
+                localStorage.getItem('REFRESH_TOKEN') || undefined;
+            const role = sessionStorage.getItem('USER_ROLE') as
+                | UserRole
+                | undefined;
+
+            if (token) {
+                return { token, refreshToken, role };
+            }
+            return undefined;
+        }
+    );
+    const { mutateAsync: tokenRefreshed } = useRefreshToken();
     const [loading, setLoading] = useState<boolean>(true);
 
+    const handleRefreshToken = async (refreshTokenValue: string) => {
+        const response = await tokenRefreshed(refreshTokenValue);
+        if (response?.access_token) {
+            setAuthData(
+                response.access_token,
+                refreshTokenValue,
+                authData?.role
+            );
+            queryClient.invalidateQueries();
+        } else {
+            removeAuthData();
+        }
+    };
     useEffect(() => {
-        setLoading(false);
+        const initAuth = async () => {
+            if (authData?.token) {
+                const expired = isTokenExpired(authData.token);
+                if (expired && authData.refreshToken) {
+                    await handleRefreshToken(authData.refreshToken);
+                }
+            }
+            setLoading(false);
+        };
+
+        initAuth();
     }, []);
-    // Mise à jour des données d'authentification
+
+    useEffect(() => {
+        if (authData?.token) {
+            const interval = setInterval(
+                async () => {
+                    const expired = isTokenExpired(authData.token);
+                    if (expired && authData?.refreshToken) {
+                        handleRefreshToken(authData?.refreshToken);
+                    }
+                },
+                1 * 60 * 1000
+            );
+            return () => clearInterval(interval);
+        } else {
+            removeAuthData();
+        }
+    }, [authData]);
 
     const setAuthData = (
         token: string,
-        userRole: UserRole,
-        entityType: EntityType,
-        entityId: string,
-        username?: string,
-        organisationName?: string,
-        email?: string
+        refreshToken: string,
+        role?: UserRole
     ): void => {
         sessionStorage.setItem('JWT_AUTH', token);
-        sessionStorage.setItem('ROLE', userRole);
-        sessionStorage.setItem('ENTITY_TYPE', entityType);
-        sessionStorage.setItem('ENTITY_ID', entityId);
-        if (username) sessionStorage.setItem('USERNAME', username);
-        if (organisationName)
-            sessionStorage.setItem('ORG_NAME', organisationName);
-        if (email) sessionStorage.setItem('EMAIL', email);
-
-        setAuthToken(token);
-        setRole(userRole);
-        setEntityType(entityType);
-        setEntityId(entityId);
-        setUsername(username || null);
-        setOrganisationName(organisationName || null);
-        setEmail(email || null);
+        localStorage.setItem('REFRESH_TOKEN', refreshToken);
+        if (role) {
+            sessionStorage.setItem('USER_ROLE', role);
+        }
+        setAuthDataState({ token, refreshToken, role });
     };
-    // Suppression des données d'authentification
 
     const removeAuthData = (): void => {
         sessionStorage.clear();
-        setAuthToken(undefined);
-        setRole(null);
-        setEntityType(null);
-        setEntityId(null);
-        setUsername(null);
-        setOrganisationName(null);
-        setEmail(null);
+        localStorage.removeItem('REFRESH_TOKEN');
+        setAuthDataState(undefined);
     };
-
+    log.debug('authdata', authData);
     return (
         <AuthContext.Provider
             value={{
-                authToken,
-                role,
-                entityType,
-                entityId,
-                username,
-                organisationName,
-                email,
+                authData,
                 loading,
                 setAuthData,
                 removeAuthData,
@@ -124,7 +124,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<unknown>> = ({
     );
 };
 
-// Hook personnalisé pour utiliser le contexte
 export const useAuth = (): Partial<AuthContextType> => {
     return useContext(AuthContext);
 };

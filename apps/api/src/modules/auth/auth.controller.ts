@@ -7,9 +7,7 @@ import {
   Post,
   Req,
   UnauthorizedException,
-  UploadedFile,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthPayloadDto } from './types/auth.types';
@@ -22,7 +20,6 @@ import { LocalGuard } from './guards/local.guards';
 import { Request } from 'express';
 import { logger } from '@mikro-orm/nestjs';
 import { UserRole } from '@baobbab/dtos';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { EntityType } from '@baobbab/dtos';
 import { OrganisationLoginDTO, OrganisationRegisterDTO } from '@baobbab/dtos';
 
@@ -30,7 +27,6 @@ import { OrganisationLoginDTO, OrganisationRegisterDTO } from '@baobbab/dtos';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // Un user s'inscrit
   @Post('register')
   async register(
     @Body() createUserInput: UserRegisterDTO,
@@ -42,22 +38,38 @@ export class AuthController {
       role: UserRole.USER,
       entityType: EntityType.USER,
       created_at: user.createdAt,
+      access_token: user.access_token,
+      refresh_token: user.refresh_token,
     };
   }
 
-  // Un user se connecte
   @Post('login')
   @UseGuards(LocalGuard)
-  async login(
-    @Body() authPayloadDto: AuthPayloadDto,
-  ): Promise<Omit<LoginResponse, 'password'> & { access_token: string }> {
+  async login(@Body() authPayloadDto: AuthPayloadDto): Promise<
+    Omit<LoginResponse, 'password'> & {
+      access_token: string;
+      refresh_token: string;
+    }
+  > {
     const user = await this.authService.login(authPayloadDto);
     return {
       ...user,
       username: user.username || '',
       entityType: EntityType.USER,
       access_token: user.access_token,
+      refresh_token: user.refresh_token,
     };
+  }
+
+  @Post('refreshToken')
+  async refreshToken(
+    @Body() { refreshTokenValue }: { refreshTokenValue: string },
+  ): Promise<{ access_token: string }> {
+    if (!refreshTokenValue) {
+      throw new BadRequestException('Refresh token is required');
+    }
+    const accessToken = await this.authService.refreshToken(refreshTokenValue);
+    return { access_token: accessToken };
   }
 
   // Endpoint protégé : on verifie si l'utilisateur est authentifié // route auth/protected
@@ -81,10 +93,8 @@ export class AuthController {
   async organisationRegister(
     @Body() createOrganisation: OrganisationRegisterDTO,
   ): Promise<Omit<OrganisationRegisterDTO, 'password'>> {
-    logger.debug(createOrganisation);
     const organisation =
       await this.authService.organisationRegister(createOrganisation);
-    logger.debug(organisation);
     return organisation;
   }
 
@@ -132,7 +142,6 @@ export class AuthController {
     @Body('email') email: string,
   ): Promise<{ token: string }> {
     const result = await this.authService.forgotPassword(email);
-    logger.debug('result forgotPassword:', result);
     return result;
   }
 
@@ -141,12 +150,10 @@ export class AuthController {
     @Body('token') token: string,
     @Body('newPassword') newPassword: string,
   ): Promise<{ message: string }> {
-    logger.debug('result resetpassword', token, newPassword);
     if (!token || !newPassword) {
       throw new BadRequestException('Token and new password are required');
     }
     const result = await this.authService.resetPassword(token, newPassword);
-    logger.debug('resltat du reset', result);
     return { message: result };
   }
 }

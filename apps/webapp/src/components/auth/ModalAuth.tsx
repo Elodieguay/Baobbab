@@ -21,7 +21,6 @@ import {
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-
 import { useAuth } from '@/context/Auth.context';
 import { UserRound } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
@@ -43,10 +42,8 @@ const Modal = (): JSX.Element => {
                 if (setAuthData) {
                     setAuthData(
                         data.access_token,
-                        data.role,
-                        'user',
-                        data.username,
-                        data.email
+                        data.refresh_token,
+                        data.role
                     );
                 } else {
                     log.error('setAuthData is not defined');
@@ -60,10 +57,8 @@ const Modal = (): JSX.Element => {
                 if (setAuthData) {
                     setAuthData(
                         data.access_token,
-                        data.role,
-                        'user',
-                        data.username,
-                        data.email
+                        data.refresh_token,
+                        data.role
                     );
                 } else {
                     log.error('setAuthData is not defined');

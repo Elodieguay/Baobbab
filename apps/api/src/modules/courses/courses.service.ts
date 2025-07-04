@@ -1,8 +1,4 @@
-import {
-  CoursesDTO,
-  CoursesDTOGeojson,
-  UpdateCoursesDTOGeojson,
-} from '@baobbab/dtos';
+import { CoursesDTO, UpdateCoursesDTOGeojson } from '@baobbab/dtos';
 import { EntityManager, wrap } from '@mikro-orm/core';
 import {
   BadRequestException,
@@ -36,7 +32,11 @@ export class CoursesService {
 
     // Assigner les données restantes
     wrap(course).assign(courseData, { em: this.em });
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    course.image === null
+      ? (course.image =
+          'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp')
+      : (course.image = createCourse.image);
     course.organisation = organisation;
     await this.em.persistAndFlush(course);
 
@@ -63,8 +63,6 @@ export class CoursesService {
       },
       { populate: ['schedule', 'booking'] },
     );
-
-    // Vérification pour éviter les erreurs si schedule n'est pas chargé
     coursesCategory.forEach((course) => {
       if (!course.schedule.isInitialized()) {
         this.logger.warn(`Schedules not initialized for course ${course.id}`);

@@ -12,7 +12,7 @@ import { useAuth } from '@/context/Auth.context';
 import { useGetCategory } from '@/hooks/courses/query';
 import { getCategoryTitle } from '@/utils/getCategoryTitle';
 import { cn } from '@/utils/utils';
-import { CoursesDTOGeojson } from '@baobbab/dtos';
+import { CoursesDTOGeojson, UserRole } from '@baobbab/dtos';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -23,8 +23,7 @@ export interface HeaderCourseProps {
 const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
     const { data: category } = useGetCategory();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const [showAuthMessage, setShowAuthMessage] = useState(false);
-    const { authToken } = useAuth();
+    const { authData } = useAuth();
     const { t } = useTranslation('common', { keyPrefix: 'Courses' });
     const categoryTitle = coursesInfos
         ? getCategoryTitle({ category, coursesInfos })
@@ -39,11 +38,21 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
     };
     return (
         <section className="flex flex-col lg:flex-row w-full min-h-[30rem]">
-            <figure className="w-full lg:w-2/3 h-64 lg:h-auto overflow-hidden rounded-b-md lg:rounded-r-md lg:rounded-b-none">
+            <figure className="w-full lg:w-2/3 h-64 lg:h-auto overflow-hidden rounded-b-md lg:rounded-r-md lg:rounded-b-none ">
                 <img
-                    src={coursesInfos?.image}
+                    src={
+                        coursesInfos?.image !== ''
+                            ? coursesInfos?.image
+                            : 'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp/'
+                    }
                     alt="Activity Image"
                     className="object-cover w-full h-full"
+                    loading="eager"
+                    fetchPriority="high"
+                    onError={(e) => {
+                        e.currentTarget.src =
+                            'https://www.pexels.com/fr-fr/photo/deux-emoji-jaunes-sur-etui-jaune-207983&w=800&q=75&fm=webp/';
+                    }}
                 />
             </figure>
             <div className="w-full lg:w-1/3 flex flex-col items-center justify-center gap-10 px-4 py-6">
@@ -58,7 +67,7 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                 </div>
 
                 <div className="flex justify-center items-center">
-                    {authToken ? (
+                    {authData?.token && authData?.role === UserRole.USER ? (
                         <Dialog
                             open={isModalOpen}
                             onOpenChange={setIsModalOpen}
@@ -66,8 +75,9 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                             <DialogTrigger asChild>
                                 <div className="flex flex-col justify-center items-center gap-2">
                                     <Button
+                                        aria-label="Réserver un cours"
                                         variant="default"
-                                        className={cn('bg-[#be3565]')}
+                                        className={cn('bg-buttonPink')}
                                         onClick={() => setIsModalOpen(true)}
                                     >
                                         {t('page.courseById.button')}
@@ -93,7 +103,7 @@ const HeaderCourse = ({ coursesInfos }: HeaderCourseProps) => {
                                 className={cn('bg-[#be3565]')}
                                 onClick={() => showMessage()}
                             >
-                                blablaaaaaaa {t('page.courseById.button')}
+                                {t('page.courseById.button')}
                             </Button>
                             {showMessage()}
                         </div>

@@ -1,4 +1,3 @@
-import './App.css';
 import Router from './router/Router';
 import { AuthProvider } from './context/Auth.context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -29,8 +28,8 @@ function App(): JSX.Element {
     const queryClient = new QueryClient();
     return (
         <I18nextProvider i18n={i18n}>
-            <AuthProvider>
-                <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={queryClient}>
+                <AuthProvider>
                     <ModalProvider>
                         <CityProvider>
                             <div className="flex flex-col min-h-screen">
@@ -40,8 +39,8 @@ function App(): JSX.Element {
                     </ModalProvider>
                     <Toaster />
                     <ReactQueryDevtools initialIsOpen={false} />
-                </QueryClientProvider>
-            </AuthProvider>
+                </AuthProvider>
+            </QueryClientProvider>
         </I18nextProvider>
     );
 }

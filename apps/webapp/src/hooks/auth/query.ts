@@ -2,6 +2,7 @@ import {
     forgotPassword,
     loginOrganisation,
     loginUser,
+    refreshToken,
     registerOrganisation,
     registerUser,
     resetPassword,
@@ -49,17 +50,8 @@ export const useOrganisationRegister = (): any => {
     return useMutation({
         mutationFn: registerOrganisation,
         onSuccess: (data: OrganisationAuthResponse) => {
-            log.debug('je suis là');
-            log.debug(data);
             if (setAuthData) {
-                setAuthData(
-                    data.access_token,
-                    data.role,
-                    'organisation',
-                    data.organisationName,
-                    data.email
-                );
-                sessionStorage.setItem('organisationId', data.id);
+                setAuthData(data.access_token, data.refresh_token, data.role);
                 navigate(`/dashboard/${data.id}`);
             } else {
                 log.error('setAuthData is not defined');
@@ -79,19 +71,11 @@ export const useOrganisationLogin = (): any => {
         mutationFn: loginOrganisation,
         onSuccess: (data: OrganisationAuthResponse) => {
             if (setAuthData) {
-                setAuthData(
-                    data.access_token,
-                    data.role,
-                    'organisation',
-                    data.email,
-                    data.organisationName,
-                    data.id
-                );
+                setAuthData(data.access_token, data.refresh_token, data.role);
             } else {
                 log.error('setAuthData is not defined');
             }
 
-            sessionStorage.setItem('organisationId', data.id);
             navigate(`/dashboard/${data.id}`);
 
             log.info('The login is a success', data);
@@ -133,6 +117,31 @@ export const useResetPassword = (token: string): any => {
             if (error instanceof Error) {
                 error = { name: error.name, message: error.message };
             } else log.error('The useResetPassword is failed:', error);
+        },
+    });
+};
+
+export const useRefreshToken = (options?: {
+    onSuccess: () => void;
+    onError: (error: Error) => void;
+}) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (refreshTokenValue: string) => {
+            log.debug('refreshTokenValue', refreshTokenValue);
+            return refreshToken(refreshTokenValue);
+        },
+        onSuccess: (data) => {
+            localStorage.setItem('accessToken', data.access_token);
+            log.debug('The access token is refreshed:', data.access_token);
+            queryClient.invalidateQueries({
+                queryKey: ['auth', 'refreshToken'],
+            });
+            options?.onSuccess?.();
+        },
+        onError: (error) => {
+            options?.onError(error as Error);
+            log.error('The refreshToken is failed:', error);
         },
     });
 };

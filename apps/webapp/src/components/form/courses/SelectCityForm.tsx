@@ -39,7 +39,6 @@ const SelectCityForm = ({
         });
         setCity(values.city);
     };
-
     return (
         <Form {...form}>
             <form
@@ -54,7 +53,7 @@ const SelectCityForm = ({
                             <FormItem className="flex-grow ">
                                 <Select
                                     onValueChange={field.onChange}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                 >
                                     <FormControl>
                                         <SelectTrigger className="h-14 rounded-l-md text-base border shadow-none focus:ring-0 focus:outline-none px-4 bg-white">

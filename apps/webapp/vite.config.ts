@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import * as path from 'path';
@@ -10,6 +12,20 @@ export default defineConfig({
         postcss: {
             plugins: [tailwindcss()],
         },
+    },
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://api:3000',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api/, ''),
+            },
+        },
+    },
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        exclude: ['tests/tests-e2e/**', 'node_modules', 'dist'],
     },
     resolve: {
         alias: {

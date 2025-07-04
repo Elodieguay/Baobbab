@@ -48,14 +48,7 @@ const CourseByCity = (): JSX.Element | null => {
             setCategoryList(category);
         }
     }, [category]);
-
-    if (!coordinates) {
-        return null;
-    }
-    if (!city) {
-        return null;
-    }
-    if (!Array.isArray(courses)) {
+    if (!city || !coordinates || !Array.isArray(courses)) {
         return null;
     }
 
@@ -80,7 +73,7 @@ const CourseByCity = (): JSX.Element | null => {
                     />
                 </div>
             </div>
-            <div className="flex flex-col lg:flex-row w-full">
+            <div className="flex flex-col lg:flex-row w-full h-screen overflow-hidden">
                 <div className="w-full lg:w-1/2 h-full overflow-y-auto px-4 md:px-6">
                     <div className="grid grid-cols-1 gap-4">
                         {courses.map((item) => (

@@ -13,9 +13,14 @@ type MultiSelectProps = {
         value: string[];
         onChange: (value: string[]) => void;
     };
+    placeholder?: string;
 };
 
-const MultiSelect: React.FC<MultiSelectProps> = ({ options, field }) => {
+const MultiSelect: React.FC<MultiSelectProps> = ({
+    options,
+    field,
+    placeholder,
+}) => {
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -25,7 +30,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ options, field }) => {
                 >
                     {field.value?.length > 0
                         ? `${field.value.length} sélectionné(s)`
-                        : 'Jours de la semaine'}
+                        : placeholder}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-56">
