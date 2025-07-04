@@ -77,10 +77,6 @@ const AppRoutes: { [key in RouteNames]: AppRoute } = {
     Booking: {
         path: '/booking/:id',
         accessMode: RouteAccessMode.Authenticated,
-        // redirects: {
-        //   authenticated: RouteNames.CourseById,
-        //   unauthenticated: RouteNames.Login
-        // }
     },
     Dashboard: {
         path: '/dashboard/:id',
